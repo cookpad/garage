@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
   s.add_dependency "doorkeeper", "~> 0.6.7"
   s.add_dependency "cancan", "~> 1.6.9"
   s.add_dependency "rack-accept-default", "~> 0.0.2"
+  s.add_dependency "http_status_exceptions"
+  s.add_dependency "yajl-ruby"
   # s.add_dependency "jquery-rails"
 
   s.add_development_dependency "sqlite3"
