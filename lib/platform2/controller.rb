@@ -1,28 +1,30 @@
 module Platform2
-  class ResourcesController < ApplicationController # FIXME Metal?
-    use Rack::AcceptDefault
+  module Controller
+    extend ActiveSupport::Concern
+    included do
+      use Rack::AcceptDefault
+      include ::Doorkeeper::Helpers::Filter
 
-    # TODO current_user
+      # TODO current_user
 
-    def handle
-      # FIXME catch errors?
-      res = Rails.application.routes.call(env)
-      self.status = res[0]
-      self.headers = res[1] # FIXME
-      self.response_body = res[2]
-    end
+      rescue_from CanCan::AccessDenied do |exception|
+        render :json => { :error => exception.message }, :status => :forbidden
+      end
 
-    rescue_from CanCan::AccessDenied do |exception|
-      render :json => { :error => exception.message }, :status => :forbidden
-    end
+      before_filter HypermediaResponder
+
+      respond_to :json # , :msgpack
+      self.responder = Platform2::AppResponder
+
 =begin
-    before_filter Platform2::BackdoorKeeper
-    def doorkeeper_token
-      @token ||= Platform2::BackdoorKeeper.get_token(request.env) || super
-    end
+      before_filter Platform2::BackdoorKeeper
+      def doorkeeper_token
+        @token ||= Platform2::BackdoorKeeper.get_token(request.env) || super
+      end
 =end
 
-    # install them the installed application
+    end
+
     def authorized_application
       doorkeeper_token.application if doorkeeper_token
     end
@@ -41,12 +43,12 @@ module Platform2
     def has_scope?(scope)
       doorkeeper_token && doorkeeper_token.scopes.include?(scope)
     end
-=begin
+
     # for cancan
     def current_ability
       @current_ability ||= Platform2::Ability.new(current_resource_owner, doorkeeper_token)
     end
-=end
+
     def resource_owner_id
       doorkeeper_token.resource_owner_id if doorkeeper_token
     end
@@ -56,12 +58,6 @@ module Platform2
     end
 
     attr_accessor :representation, :field_selector
-    before_filter HypermediaResponder
-
-    def self.respond_platform
-      respond_to :json # , :msgpack
-      self.responder = Platform2::AppResponder
-    end
 
   private
 
@@ -91,4 +87,3 @@ module Platform2
     end
   end
 end
-

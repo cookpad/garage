@@ -1,7 +1,7 @@
 class Platform2::AppResponder < ActionController::Responder
   # like Rack middleware, responders are applied outside in, bottom to the top
   include Platform2::HypermediaResponder
-  include Platform2::ModelConvertingResponder
+#  include Platform2::ModelConvertingResponder
   include Platform2::PaginatingResponder
   include Platform2::ConflictResponder
 

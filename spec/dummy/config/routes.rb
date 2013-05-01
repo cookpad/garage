@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount Platform2::Engine => "/platform2"
+  use_doorkeeper
 
   resources :posts
 end

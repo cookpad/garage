@@ -22,5 +22,9 @@ module Platform2
         @config.instance_variable_set(:@ability, block)
       end
     end
+
+    def apply_ability(ability)
+      ability.instance_eval &@ability
+    end
   end
 end
