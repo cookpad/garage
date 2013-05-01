@@ -30,10 +30,6 @@ module Platform2
       doorkeeper_token.application if doorkeeper_token
     end
 
-    def current_resource_owner
-      @current_resource_owner ||= User.find(resource_owner_id) if resource_owner_id
-    end
-
     # Hack: returns if the current resource is the same as the requester
     def request_by?(resource)
       true # FIXME
