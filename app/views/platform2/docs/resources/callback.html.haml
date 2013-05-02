@@ -1,0 +1,5 @@
+= javascript_include_tag "platform2/application"
+= form_tag nil, :method => :post, :class => 'oauth-callback-redirect' do
+  = hidden_field_tag :authenticity_token, form_authenticity_token
+  = hidden_field_tag :access_token
+  Redirecting...
