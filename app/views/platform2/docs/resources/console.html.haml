@@ -1,0 +1,40 @@
+.span3
+  = render 'nav'
+.span9
+  %h1 API Console
+  %hr
+  = form_tag nil, :class => "console form-inline" do
+    = hidden_field_tag :base, @base_url
+    .token
+      = label_tag :access_token, "OAuth Access Token: "
+      = text_field_tag :access_token, session[:access_token], :class => "input-xxlarge"
+      = button_tag "Info", :class => "validate-token", :type => "button"
+      = button_tag "Get Token", :class => "get-oauth-token", :type => "button"
+    %br
+    .location
+      = select_tag :method, options_from_collection_for_select(["GET", "POST", "PUT", "DELETE"], :to_s, :to_s, params[:method]), :class => "span1"
+      - params[:location] += "?fields=*" if params[:location]
+      = text_field_tag :location, params[:location], :class => "input-xxlarge"
+      = submit_tag "Send", :class => "send-request"
+    %br
+    .parameters
+    %hr
+    %h3 Headers
+    %pre#api-headers
+    %h3 Response Body
+    %pre#api-response
+
+#oauth-dialog
+  .modal-header
+    %h3 Permissions
+  = form_tag authenticate_resources_path, :method => :post, :id => 'oauth-authenticate' do
+    = hidden_field_tag :authenticity_token, form_authenticity_token
+    = hidden_field_tag :return_to, request.fullpath
+    .modal-body
+      - Doorkeeper.configuration.scopes.all.each do |scope|
+        = check_box_tag 'scopes[]', scope, :selected => true
+        = scope
+        %br
+    .modal-footer
+      = button_tag "Close", :class => 'modal-close'
+      = submit_tag "Authenticate"

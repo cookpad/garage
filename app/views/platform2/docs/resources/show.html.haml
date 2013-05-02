@@ -1,0 +1,25 @@
+.span3
+  = render 'nav'
+.span9
+  %h1= @doc.resource
+  - if @examples
+    %h2 Examples
+    %ul
+      - @examples.each do |example|
+        %li= link_to example.url, console_resources_path(:location => example.url, :method => "GET")
+  %h2 Resources
+  - @doc.sections.each do |section|
+    %h3= section.title
+    .description= section.markup
+    - if (route = @routes.find {|route| route.title == section.title })
+      %h4 Request
+      %pre= route.spec
+      - if route.scopes
+        %h4.scopes Required OAuth scopes
+        .scopes
+          %i.icon-eye-open
+          - route.scopes.each do |scope|
+            %code= link_to scope, docs_root_url + "#Permissions"
+    - else
+      .alert method not found with title "#{section.title}"
+    %hr

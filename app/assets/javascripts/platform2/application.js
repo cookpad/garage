@@ -12,4 +12,5 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require platform2/docs/jquery.colorbox
+//= require platform2/docs/console
