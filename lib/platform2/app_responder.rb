@@ -3,7 +3,6 @@ class Platform2::AppResponder < ActionController::Responder
   include Platform2::HypermediaResponder
 #  include Platform2::ModelConvertingResponder
   include Platform2::PaginatingResponder
-  include Platform2::ConflictResponder
 
   # in case someone tries to do Object#to_msgpack
   undef_method(:to_msgpack) if method_defined?(:to_msgpack)
