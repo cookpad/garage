@@ -1,9 +1,7 @@
-class PostsController < ApplicationController
-  include Platform2::ControllerHelper
-
+class PostsController < ApiController
   def index
     authorize! :show, Post
-    respond_with Post.all
+    respond_with Post.all, paginate: true
   end
 
   def show

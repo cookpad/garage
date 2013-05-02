@@ -5,4 +5,7 @@ Rails.application.routes.draw do
 
   resources :posts
   resource :session
+  resource :echo do
+    get 'whoami'
+  end
 end
