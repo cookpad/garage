@@ -6,6 +6,10 @@ gem "cancan"
 gem "yajl-ruby"
 gem "doorkeeper"
 
+group :test do
+  gem "rspec-rails", "2.12"
+end
+
 # for docs
 gem "tomdoc"
 gem "redcarpet"
