@@ -1,3 +1,8 @@
+require 'doorkeeper'
+require 'rack-accept-default'
+require 'http_status_exceptions'
+require 'cancan'
+
 module Platform2
   module ControllerHelper
     extend ActiveSupport::Concern

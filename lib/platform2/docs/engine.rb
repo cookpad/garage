@@ -1,3 +1,5 @@
+require "rails"
+
 module Platform2
   module Docs
     class Engine < ::Rails::Engine

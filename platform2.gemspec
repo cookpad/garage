@@ -22,6 +22,13 @@ Gem::Specification.new do |s|
   s.add_dependency "http_status_exceptions"
   s.add_dependency "yajl-ruby"
 
+  s.add_dependency "tomdoc"
+  s.add_dependency "oauth2"
+  s.add_dependency "redcarpet"
+  s.add_dependency "haml"
+  s.add_dependency "sass-rails"
+  s.add_dependency "coffee-rails"
+
   s.add_development_dependency "rspec-rails", "~> 2.12"
   s.add_development_dependency "sqlite3"
 end

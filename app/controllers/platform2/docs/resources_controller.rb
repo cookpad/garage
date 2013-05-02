@@ -1,3 +1,5 @@
+require 'oauth2'
+
 class Platform2::Docs::ResourcesController < ApplicationController
   force_ssl
   layout 'platform2/application'
