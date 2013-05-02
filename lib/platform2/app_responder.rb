@@ -7,11 +7,4 @@ class Platform2::AppResponder < ActionController::Responder
 
   # in case someone tries to do Object#to_msgpack
   undef_method(:to_msgpack) if method_defined?(:to_msgpack)
-
-  def display(*args)
-    if controller.respond_to?(:before_display)
-      controller.before_display(self, *args)
-    end
-    super
-  end
 end
