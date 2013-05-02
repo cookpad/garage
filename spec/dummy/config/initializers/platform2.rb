@@ -7,3 +7,8 @@ Platform2.configure do
     end
   end
 end
+
+require 'exampler'
+Platform2::Docs.config do |c|
+  c.exampler = lambda {|controller, klass| Exampler.new(controller).examples_for(klass) }
+end
