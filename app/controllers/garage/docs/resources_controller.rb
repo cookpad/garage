@@ -6,12 +6,9 @@ class Garage::Docs::ResourcesController < ApplicationController
 
   @@application = Garage::PantryKit::Application.new(Rails.application)
 
-  def current_ability
-    @current_ability ||= Garage::Ability.new(current_user, nil)
-  end
-
   before_filter do
     @application = @@application
+    # FIXME configure who can access this controller (with/without using CanCan)
     #if current_user
     #  authorize! :use_doc, current_user
     #else

@@ -18,17 +18,9 @@ module Garage
         @config
       end
 
-      def ability(&block)
-        @config.instance_variable_set(:@ability, block)
-      end
-
       def cast_resource(&block)
         @config.instance_variable_set(:@cast_resource, block)
       end
-    end
-
-    def apply_ability(ability)
-      ability.instance_eval &@ability
     end
 
     def cast_resource(resource)

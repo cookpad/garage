@@ -1,7 +1,6 @@
 require 'doorkeeper'
 require 'rack-accept-default'
 require 'http_status_exceptions'
-require 'cancan'
 
 module Garage
   module ControllerHelper
@@ -13,8 +12,10 @@ module Garage
 
       # TODO current_user
 
-      rescue_from CanCan::AccessDenied do |exception|
-        render :json => { :error => exception.message }, :status => :forbidden
+      if defined?(CanCan)
+        rescue_from CanCan::AccessDenied do |exception|
+          render :json => { :error => exception.message }, :status => :forbidden
+        end
       end
 
       before_filter HypermediaResponder
@@ -48,17 +49,6 @@ module Garage
     # Public: returns if the current request includes the given OAuth scope
     def has_scope?(scope)
       doorkeeper_token && doorkeeper_token.scopes.include?(scope)
-    end
-
-    # for cancan
-    def current_ability
-      @current_ability ||= get_current_ability
-    end
-
-    def get_current_ability
-      Garage::Ability.new(current_resource_owner, doorkeeper_token).tap do |ability|
-        Garage.configuration.apply_ability(ability)
-      end
     end
 
     def resource_owner_id
