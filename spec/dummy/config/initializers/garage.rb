@@ -6,6 +6,11 @@ Garage.configure do
       post.user_id == user.id
     end
   end
+
+  cast_resource do |res|
+    p res
+    res # FIXME
+  end
 end
 
 require 'exampler'
