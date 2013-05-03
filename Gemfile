@@ -4,7 +4,7 @@ group :test do
   gem "rspec-rails", "2.12"
 end
 
-# Declare your gem's dependencies in platform2.gemspec.
+# Declare your gem's dependencies in garage.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
 gemspec

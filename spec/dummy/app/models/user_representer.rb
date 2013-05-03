@@ -1,5 +1,5 @@
 module UserRepresenter
-  include Platform2::BaseRepresenter
+  include Garage::BaseRepresenter
 
   property :id
   property :email

@@ -1,5 +1,0 @@
-.well.sidebar-nav
-  %ul.nav.nav-list
-    %li.nav-header Resources
-    - @application.resources.each do |resource|
-      %li= link_to resource, platform2_docs.resource_path(resource.to_s)

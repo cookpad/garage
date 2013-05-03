@@ -1,5 +1,5 @@
 module PostRepresenter
-  include Platform2::BaseRepresenter
+  include Garage::BaseRepresenter
 
   property :id
   property :title

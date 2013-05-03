@@ -1,7 +1,7 @@
-Platform2::Engine.routes.draw do
+Garage::Engine.routes.draw do
 end
 
-Platform2::Docs::Engine.routes.draw do
+Garage::Docs::Engine.routes.draw do
   root :to => 'resources#index'
   resources :resources do
     collection do

@@ -1,5 +1,5 @@
 ENV["RAILS_ENV"] ||= "test"
-require "platform2"
+require "garage"
 
 require File.expand_path("../dummy/config/environment", __FILE__)
 require "rspec/rails"

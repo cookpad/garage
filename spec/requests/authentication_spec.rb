@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Platform2 do
+describe Garage do
   describe 'HTTP request' do
     context 'without any token' do
       it 'returns 401' do
