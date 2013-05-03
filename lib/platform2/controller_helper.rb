@@ -36,7 +36,7 @@ module Platform2
     end
 
     def current_resource_owner
-      @current_resource_owner ||= User.find(resource_owner_id) if resource_owner_id
+      raise "Your ApplicationController needs to implement current_resource_owner!"
     end
 
     # Hack: returns if the current resource is the same as the requester
