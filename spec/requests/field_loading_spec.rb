@@ -72,41 +72,37 @@ describe 'Field loading API' do
     end
   end
 
-=begin
   describe 'cached resources' do
-    let(:recipe) { create(:recipe, user: create(:user)) }
-    let(:collection) { user.bookmarks_collection }
-    let(:location) { "/collections/#{collection.id}" }
+    let(:location) { "/users/#{user.id}/posts" }
 
-    before :each do
-      collection.add_recipe(recipe)
+    before do
+      create(:post, user: user)
     end
 
     context 'with no query' do
       it 'has all fields' do
-        subject.should have_key 'id'
-        subject.should have_key 'count'
+        subject.first.should have_key 'id'
+        subject.first.should have_key 'title'
       end
     end
 
     context 'with fields=id query' do
       let(:query) { 'fields=id' }
       it 'has id fields' do
-        subject.should have_key 'id'
-        subject.should_not have_key 'count'
+        subject.first.should have_key 'id'
+        subject.first.should_not have_key 'title'
       end
     end
 
     context 'with no query first, then access with fields' do
       it 'has only fields' do
-        subject.should have_key 'count'
+        subject.first.should have_key 'title'
         get(location + '?fields=id')
-        body.should_not have_key 'count'
+        body.first.should_not have_key 'title'
       end
     end
   end
-=end
-  
+
   describe 'Bad fields query' do
     let(:location) { '/posts' }
     subject {
