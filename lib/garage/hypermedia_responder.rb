@@ -40,11 +40,11 @@ module Garage
       if @options[:cacheable_with]
         delegate = Garage::CacheableListDelegate.new(resource, @options[:cacheable_with])
         representation = maybe_cache(delegate, nil, controller.field_selector) {
-          transform_representation(resource)
-      }
+          transform(resource)
+        }
         super(render(representation), given_options)
       else
-        super(render(transform_representation(resource)), given_options)
+        super(render(transform(resource)), given_options)
       end
     end
 
@@ -68,19 +68,27 @@ module Garage
       if data.is_a?(Array) && (data.empty? || data.first.respond_to?(:[]))
         data.index_by {|entry| entry['id'] }
       end
+      # TODO else 400?
     end
 
-    def transform_representation(resource)
+    def transform(resource)
       if resource.respond_to?(:map!)
-        resource.map {|r| encode_to_hash(r, @options[:representer], partial: true, selector: controller.field_selector) }
+        resource.map {|r| represent(r, @options[:representer], partial: true, selector: controller.field_selector) }
       else
-        encode_to_hash(resource, @options[:representer], selector: controller.field_selector)
+        represent(resource, @options[:representer], selector: controller.field_selector)
       end
     end
 
     def encode_json_safe(doc)
       # TODO use oj
       Yajl.dump(doc).gsub(/([<>])/) {|c| ESCAPE_JSON[c] }
+    end
+
+    def represent(resource, *args)
+      unless resource.respond_to?(:represent!)
+        resource = Garage::PrimitiveData.new(resource)
+      end
+      encode_to_hash(resource, *args)
     end
 
     def encode_to_hash(resource, *args)
@@ -98,8 +106,7 @@ module Garage
 private
 
     def _encode_to_hash(resource, representer=nil, options = {})
-      representer ||= (resource.class.name + "Representer").constantize
-      resource.extend(representer)
+      resource.represent!
       resource.default_url_options = {}
       resource.partial = options[:partial]
       resource.selector = options[:selector]

@@ -40,31 +40,20 @@ module Garage::BaseRepresenter
     end
   end
 
+  def represent!
+    self.representer_attrs ||= []
+    self.representer_attrs += self.class.representer_attrs
+  end
+
   def self.included(base)
     base.class_eval do
       extend ClassMethods
-
-      def self.extended(object)
-        mixins.each do |m|
-          object.extend(m)
-        end
-        object.representer_attrs ||= []
-        object.representer_attrs += representer_attrs
-      end
     end
   end
 
   module ClassMethods
     def representer_attrs
       @representer_attrs ||= []
-    end
-
-    def mixins
-      @mixins ||= []
-    end
-
-    def mixin(mod)
-      mixins << mod
     end
 
     def property(name, options={})
@@ -109,7 +98,7 @@ module Garage::BaseRepresenter
 
     def encode(object, responder, selector = nil)
       value = object.send(@name)
-      if !value.nil? && extend?
+      if !value.nil? && value.respond_to?(:represent!)
         responder.encode_to_hash(value, @options[:extend], partial: true, selector: selector)
       elsif primitive?(value.class)
         value
@@ -152,14 +141,5 @@ module Garage::BaseRepresenter
     def initialize(rel, options, block)
       @rel, @options, @block = rel, options, block
     end
-  end
-end
-
-# silly hack, should be removed
-module HashRepresenter
-  include Garage::BaseRepresenter
-
-  def to_hash(options = {})
-    self
   end
 end

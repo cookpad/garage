@@ -2,4 +2,14 @@ class User < ActiveRecord::Base
   attr_accessible :email, :name
 
   has_many :posts
+
+  include Garage::BaseRepresenter
+
+  property :id
+  property :name
+  property :email
+
+  link(:self) { user_path(self) }
+  link(:canonical) { user_path(self) }
+  link(:posts) { user_posts_path(self) }
 end
