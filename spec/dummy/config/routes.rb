@@ -3,7 +3,11 @@ Rails.application.routes.draw do
 
   mount Garage::Docs::Engine => '/docs'
 
-  resources :posts
+  resources :posts do
+    collection do
+      get :hide
+    end
+  end
   resource :session
   resource :echo do
     get 'whoami'

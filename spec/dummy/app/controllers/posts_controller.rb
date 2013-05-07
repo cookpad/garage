@@ -1,7 +1,12 @@
 class PostsController < ApiController
   def index
     authorize! :show, Post
-    respond_with Post.all, paginate: true
+    respond_with Post.scoped, paginate: true
+  end
+
+  def hide
+    authorize! :show, Post
+    respond_with Post.scoped, paginate: true, hide_total: true
   end
 
   def show

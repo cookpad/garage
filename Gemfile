@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem "cancan"
+gem "kaminari"
 
 group :test do
   gem "rspec-rails", "2.12"
@@ -8,6 +9,7 @@ group :test do
   gem "factory_girl_rails"
   gem "forgery"
   gem "link_header"
+  gem "database_cleaner"
 end
 
 # Declare your gem's dependencies in garage.gemspec.
