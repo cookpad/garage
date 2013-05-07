@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+gem "cancan"
+
 group :test do
   gem "rspec-rails", "2.12"
   gem "factory_girl"
