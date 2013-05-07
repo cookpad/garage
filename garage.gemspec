@@ -7,11 +7,11 @@ require "garage/version"
 Gem::Specification.new do |s|
   s.name        = "garage"
   s.version     = Garage::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Garage."
-  s.description = "TODO: Description of Garage."
+  s.authors     = ["Tatsuhiko Miyagawa"]
+  s.email       = ["miyagawa@bulknews.net"]
+  s.homepage    = "https://github.com/cookpad/garage"
+  s.summary     = "Garage Platform Engine"
+  s.description = "Garage extends your RESTful, Hypermedia APIs as a Platform"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
 
