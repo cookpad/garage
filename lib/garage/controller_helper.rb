@@ -54,8 +54,8 @@ module Garage
       doorkeeper_token.resource_owner_id if doorkeeper_token
     end
 
-    def require_authentication
-      head 401 unless current_resource_owner
+    def cache_context
+      { t: doorkeeper_token.try(:id) }
     end
 
     attr_accessor :representation, :field_selector
