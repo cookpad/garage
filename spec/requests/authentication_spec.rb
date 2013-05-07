@@ -4,7 +4,7 @@ describe Garage do
   let(:application) { create(:application) }
   let(:user) { create(:user) }
 
-  describe 'HTTP request' do
+  describe 'Request to echo resource' do
     before do
       with_access_token_header token_value if token_value
       get '/echo'
@@ -41,7 +41,7 @@ describe Garage do
     end
   end
 
-  describe 'HTTP request' do
+  describe 'Request to OAuth token info' do
     before do
       with_access_token_header token_value if token_value
       get '/oauth/token/info'
