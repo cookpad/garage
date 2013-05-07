@@ -8,6 +8,8 @@ module Garage
   end
 
   class Config
+    attr_accessor :cast_resource
+
     class Builder
       def initialize(&block)
         @config = Config.new
@@ -19,15 +21,7 @@ module Garage
       end
 
       def cast_resource(&block)
-        @config.instance_variable_set(:@cast_resource, block)
-      end
-    end
-
-    def cast_resource(resource)
-      if @cast_resource
-        @cast_resource.call(resource)
-      else
-        resource
+        @config.cast_resource = block
       end
     end
   end
