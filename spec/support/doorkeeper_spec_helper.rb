@@ -2,7 +2,7 @@ module DoorkeeperSpecHelper
   def client_is_authorized(client, resource_owner, access_token_attributes = {})
     attributes = {
       :application => client,
-      :resource_owner_id => resource_owner.id
+      :resource_owner_id => resource_owner.try(:id)
     }.merge(access_token_attributes)
     FactoryGirl.create(:access_token, attributes)
   end
