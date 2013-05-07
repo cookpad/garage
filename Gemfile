@@ -2,6 +2,10 @@ source "https://rubygems.org"
 
 group :test do
   gem "rspec-rails", "2.12"
+  gem "factory_girl"
+  gem "factory_girl_rails"
+  gem "forgery"
+  gem "link_header"
 end
 
 # Declare your gem's dependencies in garage.gemspec.

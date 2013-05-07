@@ -29,7 +29,6 @@ module Garage
         @token ||= Garage::BackdoorKeeper.get_token(request.env) || super
       end
 =end
-
     end
 
     def authorized_application
