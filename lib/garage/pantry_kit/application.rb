@@ -32,7 +32,7 @@ module Garage
       end
 
       def docs
-        Dir.glob("#{Garage::Docs.config.document_root}/resources/*.md").sort.map {|f| Documentation.new(f) }
+        Dir.glob("#{Garage::Docs.config.document_root}/resources/**/*.md").sort.map {|f| Documentation.new(f) }
       end
 
       def doc_for(resource)
