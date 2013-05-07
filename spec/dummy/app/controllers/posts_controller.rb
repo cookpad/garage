@@ -1,7 +1,12 @@
 class PostsController < ApiController
   def index
     authorize! :show, Post
-    respond_with Post.scoped, paginate: true
+    if params[:user_id]
+      user = User.find(params[:user_id])
+      respond_with user.posts, cacheable_with: user, paginate: true
+    else
+      respond_with Post.scoped, paginate: true
+    end
   end
 
   def hide

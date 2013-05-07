@@ -38,7 +38,7 @@ module Garage
         given_options.merge!(:content_type => mime_with(controller.representation))
       end
       if @options[:cacheable_with]
-        delegate = CacheableListDelegate.new(resource, @options[:cacheable_with])
+        delegate = Garage::CacheableListDelegate.new(resource, @options[:cacheable_with])
         representation = maybe_cache(delegate, nil, controller.field_selector) {
           transform_representation(resource)
       }
@@ -117,7 +117,7 @@ private
         }.tap do
           if cached
             Rails.logger.info "Responder Cache HIT: #{key}"
-            controller.response.headers['X-Pantry-Cache'] = Rack::Utils.build_query(key)
+            controller.response.headers['X-Garage-Cache'] = Rack::Utils.build_query(key)
           end
         end
       else
