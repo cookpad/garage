@@ -7,14 +7,10 @@ class Garage::Docs::ResourcesController < ApplicationController
 
   @@application = Garage::PantryKit::Application.new(Rails.application)
 
+  before_filter(&Garage::Docs.config.authenticate)
+
   before_filter do
     @application = @@application
-    # FIXME configure who can access this controller (with/without using CanCan)
-    #if current_user
-    #  authorize! :use_doc, current_user
-    #else
-    #  redirect_to(garage_signin_path(to: request.fullpath))
-    #end
   end
 
   before_filter do
