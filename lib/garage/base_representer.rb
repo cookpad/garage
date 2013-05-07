@@ -154,3 +154,12 @@ module Garage::BaseRepresenter
     end
   end
 end
+
+# silly hack, should be removed
+module HashRepresenter
+  include Garage::BaseRepresenter
+
+  def to_hash(options = {})
+    self
+  end
+end
