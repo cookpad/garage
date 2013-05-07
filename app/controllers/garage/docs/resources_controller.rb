@@ -62,11 +62,11 @@ class Garage::Docs::ResourcesController < ApplicationController
     end
   end
 
-  private
-
   def current_user
     instance_eval(&Garage::Docs.config.current_user_method)
   end
+
+  private
 
   def console_application
     Doorkeeper::Application.find_or_create_by_name('Pantry Console') do |app|
