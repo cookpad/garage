@@ -32,7 +32,7 @@ module Garage
       end
 
       def docs
-        Dir.glob("doc/garage/resources/*.md").sort.map {|f| Documentation.new(f) }
+        Dir.glob("#{Garage::Docs.config.document_root}/resources/*.md").sort.map {|f| Documentation.new(f) }
       end
 
       def doc_for(resource)
@@ -77,7 +77,7 @@ module Garage
       end
 
       def resource
-        path.basename.to_s.sub(/\.md$/, '').camelize
+        path.to_s.sub(%r{#{Garage::Docs.config.document_root}/resources/(.+).md$},'\1').camelize
       end
 
       def content
