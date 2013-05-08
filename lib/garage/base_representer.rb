@@ -31,8 +31,8 @@ module Garage::BaseRepresenter
   end
 
   def handle_definition?(selector, definition)
-    if definition.extend?
-      # definition uses extend - it's opt-in
+    if definition.includes?
+      # definition uses includes - it's opt-in
       selector.includes?(definition.name)
     else
       # definition is primitive - it's opt-out
@@ -88,8 +88,8 @@ module Garage::BaseRepresenter
       @options = options
     end
 
-    def extend?
-      @options[:extend]
+    def includes?
+      @options[:includes]
     end
 
     def name
@@ -98,12 +98,12 @@ module Garage::BaseRepresenter
 
     def encode(object, responder, selector = nil)
       value = object.send(@name)
-      if !value.nil? && value.respond_to?(:represent!)
+      if !value.nil? && includes?
         responder.encode_to_hash(value, @options[:extend], partial: true, selector: selector)
       elsif primitive?(value.class)
         value
       else
-        raise NonEncodableValue, "#{value.class} should not be encoded directly. Forgot :extend?"
+        raise NonEncodableValue, "#{value.class} should not be encoded directly. Forgot to mark :includes?"
       end
     end
 

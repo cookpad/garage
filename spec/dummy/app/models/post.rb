@@ -8,7 +8,7 @@ class Post < ActiveRecord::Base
   property :id
   property :title
   property :body
-  property :user, :extend => UserRepresenter
+  property :user, includes: true
 
   link(:self) { post_path(self) }
 end
