@@ -1,5 +1,5 @@
 class Garage::PrimitiveData
-  include Garage::BaseRepresenter
+  include Garage::Representer
 
   def initialize(object)
     @object = object

@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 
   has_many :posts
 
-  include Garage::BaseRepresenter
+  include Garage::Representer
 
   property :id
   property :name

@@ -3,7 +3,7 @@ class Post < ActiveRecord::Base
 
   belongs_to :user, :touch => true
 
-  include Garage::BaseRepresenter
+  include Garage::Representer
 
   property :id
   property :title

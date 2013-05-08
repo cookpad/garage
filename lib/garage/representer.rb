@@ -1,4 +1,4 @@
-module Garage::BaseRepresenter
+module Garage::Representer
   include Rails.application.routes.url_helpers
   attr_accessor :default_url_options, :representer_attrs, :partial, :selector
 
