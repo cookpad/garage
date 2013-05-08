@@ -36,7 +36,6 @@ module Garage::Representer
       selector.includes?(definition.name)
     else
       # definition is selected by default - it's opt-out
-      p self, selector, definition if selector.nil?
       ! selector.excludes?(definition.name)
     end
   end
