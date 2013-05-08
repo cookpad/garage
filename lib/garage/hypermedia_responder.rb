@@ -39,12 +39,12 @@ module Garage
       end
       if @options[:cacheable_with]
         delegate = Garage::CacheableListDelegate.new(resource, @options[:cacheable_with])
-        representation = maybe_cache(delegate, nil, controller.field_selector) {
-          transform_representation(resource)
-      }
+        representation = maybe_cache(delegate, controller.field_selector) {
+          transform(resource)
+        }
         super(render(representation), given_options)
       else
-        super(render(transform_representation(resource)), given_options)
+        super(render(transform(resource)), given_options)
       end
     end
 
@@ -68,13 +68,14 @@ module Garage
       if data.is_a?(Array) && (data.empty? || data.first.respond_to?(:[]))
         data.index_by {|entry| entry['id'] }
       end
+      # TODO else 400?
     end
 
-    def transform_representation(resource)
+    def transform(resource)
       if resource.respond_to?(:map!)
-        resource.map {|r| encode_to_hash(r, @options[:representer], partial: true, selector: controller.field_selector) }
+        resource.map {|r| represent(r, partial: true, selector: controller.field_selector) }
       else
-        encode_to_hash(resource, @options[:representer], selector: controller.field_selector)
+        represent(resource, selector: controller.field_selector)
       end
     end
 
@@ -83,33 +84,36 @@ module Garage
       Yajl.dump(doc).gsub(/([<>])/) {|c| ESCAPE_JSON[c] }
     end
 
+    def represent(resource, *args)
+      unless resource.respond_to?(:represent!)
+        resource = Garage::PrimitiveData.new(resource)
+      end
+      encode_to_hash(resource, *args)
+    end
+
     def encode_to_hash(resource, *args)
       if resource.respond_to?(:id)
         cache_key = "#{resource.class.name}:#{resource.id}"
-        if args[0]
-          cache_key = "#{cache_key}:#{args[0]}"
-        end
         @cache[cache_key] ||= _encode_to_hash(resource, *args)
       else
         _encode_to_hash(resource, *args)
       end
     end
 
-private
+  private
 
-    def _encode_to_hash(resource, representer=nil, options = {})
-      representer ||= (resource.class.name + "Representer").constantize
-      resource.extend(representer)
+    def _encode_to_hash(resource, options = {})
+      resource.represent!
       resource.default_url_options = {}
       resource.partial = options[:partial]
       resource.selector = options[:selector]
-      maybe_cache(resource, representer, options[:selector]) { resource.to_hash(:responder => self) }
+      maybe_cache(resource, options[:selector]) { resource.to_hash(:responder => self) }
     end
 
-    def maybe_cache(resource, representer, selector, &blk)
+    def maybe_cache(resource, selector, &blk)
       if resource.cacheable? && resource.respond_to?(:cache_key) &&
           /no-cache/ !~ controller.request.headers['Cache-Control']
-        key = cache_key_for(resource, representer, selector)
+        key = cache_key_for(resource, selector)
         cached = true
         Rails.cache.fetch(key) {
           cached = false
@@ -125,9 +129,8 @@ private
       end
     end
 
-    def cache_key_for(resource, representer, selector)
+    def cache_key_for(resource, selector)
       hash = controller.cache_context.merge(r: resource.cache_key)
-      hash[:rp] = representer.name if representer
       hash[:s] = selector.canonical if selector
       hash
     end

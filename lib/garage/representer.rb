@@ -1,4 +1,4 @@
-module Garage::BaseRepresenter
+module Garage::Representer
   include Rails.application.routes.url_helpers
   attr_accessor :default_url_options, :representer_attrs, :partial, :selector
 
@@ -31,8 +31,8 @@ module Garage::BaseRepresenter
   end
 
   def handle_definition?(selector, definition)
-    if definition.extend?
-      # definition uses extend - it's opt-in
+    if definition.includes?
+      # definition uses includes - it's opt-in
       selector.includes?(definition.name)
     else
       # definition is primitive - it's opt-out
@@ -40,31 +40,20 @@ module Garage::BaseRepresenter
     end
   end
 
+  def represent!
+    self.representer_attrs ||= []
+    self.representer_attrs += self.class.representer_attrs
+  end
+
   def self.included(base)
     base.class_eval do
       extend ClassMethods
-
-      def self.extended(object)
-        mixins.each do |m|
-          object.extend(m)
-        end
-        object.representer_attrs ||= []
-        object.representer_attrs += representer_attrs
-      end
     end
   end
 
   module ClassMethods
     def representer_attrs
       @representer_attrs ||= []
-    end
-
-    def mixins
-      @mixins ||= []
-    end
-
-    def mixin(mod)
-      mixins << mod
     end
 
     def property(name, options={})
@@ -99,8 +88,8 @@ module Garage::BaseRepresenter
       @options = options
     end
 
-    def extend?
-      @options[:extend]
+    def includes?
+      @options[:includes]
     end
 
     def name
@@ -109,12 +98,12 @@ module Garage::BaseRepresenter
 
     def encode(object, responder, selector = nil)
       value = object.send(@name)
-      if !value.nil? && extend?
-        responder.encode_to_hash(value, @options[:extend], partial: true, selector: selector)
+      if !value.nil? && includes?
+        responder.encode_to_hash(value, partial: true, selector: selector)
       elsif primitive?(value.class)
         value
       else
-        raise NonEncodableValue, "#{value.class} should not be encoded directly. Forgot :extend?"
+        raise NonEncodableValue, "#{value.class} should not be encoded directly. Forgot to mark :includes?"
       end
     end
 
@@ -130,15 +119,15 @@ module Garage::BaseRepresenter
       @name, @options = name, options
     end
 
-    def extend?
-      @options[:extend]
+    def includes?
+      @options[:includes]
     end
 
     def encode(object, responder, selector = nil)
       value = object.send(@name)
       value.map do |item|
-        if !item.nil? && extend?
-          responder.encode_to_hash(item, @options[:extend], selector: selector)
+        if !item.nil? && item.respond_to?(:represent!)
+          responder.encode_to_hash(item, selector: selector)
         else
           item
         end
@@ -152,14 +141,5 @@ module Garage::BaseRepresenter
     def initialize(rel, options, block)
       @rel, @options, @block = rel, options, block
     end
-  end
-end
-
-# silly hack, should be removed
-module HashRepresenter
-  include Garage::BaseRepresenter
-
-  def to_hash(options = {})
-    self
   end
 end
