@@ -11,7 +11,7 @@ class Post < ActiveRecord::Base
   property :body
   property :user, includes: true
 
-  collection :comments
+  collection :comments, includes: true
 
   link(:self) { post_path(self) }
 end

@@ -113,10 +113,14 @@ module Garage::Representer
   end
 
   class Collection
-    attr_reader :name, :options
+    attr_reader :options
 
     def initialize(name, options)
       @name, @options = name, options
+    end
+
+    def name
+      @options[:as] || @name.to_s
     end
 
     def includes?
