@@ -100,7 +100,7 @@ module Garage
       end
     end
 
-private
+  private
 
     def _encode_to_hash(resource, options = {})
       resource.represent!

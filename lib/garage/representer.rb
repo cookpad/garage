@@ -119,6 +119,10 @@ module Garage::Representer
       @name, @options = name, options
     end
 
+    def includes?
+      @options[:includes]
+    end
+
     def encode(object, responder, selector = nil)
       value = object.send(@name)
       value.map do |item|
