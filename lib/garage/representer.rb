@@ -77,6 +77,9 @@ module Garage::Representer
     end
   end
 
+  class NonEncodableValue < StandardError
+  end
+
   class Definition
     attr_reader :options
 
