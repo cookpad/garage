@@ -9,9 +9,9 @@ class Post < ActiveRecord::Base
   property :id
   property :title
   property :body
-  property :user, includes: true
+  property :user, selectable: true
 
-  collection :comments, includes: true
+  collection :comments, selectable: true
 
   link(:self) { post_path(self) }
 end

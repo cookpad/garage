@@ -81,6 +81,8 @@ describe 'Field loading API' do
         subject.should have_key 'comments'
         subject['comments'].should be_an Array
         subject['comments'].first.should have_key 'id'
+        subject['comments'].first.should have_key 'commenter'
+        subject['comments'].first.should_not have_key 'post_owner'
       end
     end
 
@@ -90,6 +92,8 @@ describe 'Field loading API' do
         subject.should have_key 'comments'
         subject['comments'].first.should have_key 'id'
         subject['comments'].first.should_not have_key 'body'
+        subject['comments'].first.should_not have_key 'commenter'
+        subject['comments'].first.should_not have_key 'post_owner'
       end
     end
 
@@ -100,6 +104,8 @@ describe 'Field loading API' do
         subject['comments'].first.should have_key 'id'
         subject['comments'].first.should have_key 'body'
         subject['comments'].first.should have_key 'commenter'
+        subject['comments'].first.should have_key 'post_owner'
+        subject['comments'].first['post_owner'].should have_key 'id'
         subject['comments'].first['commenter'].should have_key 'id'
       end
     end
@@ -109,8 +115,9 @@ describe 'Field loading API' do
       it 'has everything for comments' do
         subject.should have_key 'comments'
         subject['comments'].first.should have_key 'id'
-        subject['comments'].first.should_not have_key 'body'
         subject['comments'].first.should have_key 'commenter'
+        subject['comments'].first.should_not have_key 'body'
+        subject['comments'].first.should_not have_key 'post_owner'
         subject['comments'].first['commenter'].should have_key 'id'
         subject['comments'].first['commenter'].should_not have_key 'name'
       end

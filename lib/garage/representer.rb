@@ -31,11 +31,12 @@ module Garage::Representer
   end
 
   def handle_definition?(selector, definition)
-    if definition.includes?
-      # definition uses includes - it's opt-in
+    if definition.selectable?
+      # definition is not selected by default - opt-in
       selector.includes?(definition.name)
     else
-      # definition is primitive - it's opt-out
+      # definition is selected by default - it's opt-out
+      p self, selector, definition if selector.nil?
       ! selector.excludes?(definition.name)
     end
   end
@@ -77,9 +78,6 @@ module Garage::Representer
     end
   end
 
-  class NonEncodableValue < StandardError
-  end
-
   class Definition
     attr_reader :options
 
@@ -88,8 +86,8 @@ module Garage::Representer
       @options = options
     end
 
-    def includes?
-      @options[:includes]
+    def selectable?
+      @options[:selectable]
     end
 
     def name
@@ -98,12 +96,16 @@ module Garage::Representer
 
     def encode(object, responder, selector = nil)
       value = object.send(@name)
-      if !value.nil? && includes?
+      encode_value(value, responder, selector)
+    end
+
+    def encode_value(value, responder, selector)
+      if !value.nil? && value.respond_to?(:represent!)
         responder.encode_to_hash(value, partial: true, selector: selector)
       elsif primitive?(value.class)
         value
       else
-        raise NonEncodableValue, "#{value.class} should not be encoded directly. Forgot to mark :includes?"
+        raise NonEncodableValue, "#{value.class} can not be encoded directly. Forgot to include Garage::Representer?"
       end
     end
 
@@ -112,29 +114,11 @@ module Garage::Representer
     end
   end
 
-  class Collection
-    attr_reader :options
-
-    def initialize(name, options)
-      @name, @options = name, options
-    end
-
-    def name
-      @options[:as] || @name.to_s
-    end
-
-    def includes?
-      @options[:includes]
-    end
-
+  class Collection < Definition
     def encode(object, responder, selector = nil)
       value = object.send(@name)
       value.map do |item|
-        if !item.nil? && item.respond_to?(:represent!)
-          responder.encode_to_hash(item, selector: selector)
-        else
-          item
-        end
+        encode_value(item, responder, selector)
       end
     end
   end

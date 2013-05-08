@@ -110,7 +110,7 @@ module Garage
       end
 
       def [](name)
-        nil
+        DefaultSelector.new
       end
 
       def canonical
