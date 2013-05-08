@@ -5,7 +5,7 @@ class Garage::Docs::ResourcesController < ApplicationController
   layout 'garage/application'
   helper_method :_current_user
 
-  @@application = Garage::PantryKit::Application.new(Rails.application)
+  @@application = Garage::Docs::Application.new(Rails.application)
 
   before_filter(&Garage::Docs.config.authenticate)
 

@@ -2,7 +2,7 @@ require 'tomdoc'
 require 'rails/application/route_inspector'
 
 module Garage
-  module PantryKit
+  module Docs
     # Facade class to provide a simple interface to manage Rails routes,
     # Files and TomDoc documentation for the Platform rails app
     class Application
