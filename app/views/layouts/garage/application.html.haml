@@ -19,11 +19,11 @@
       .navbar-inner
         .container
           .brand COOKPAD
-          - if current_user
+          - if _current_user
             %ul.nav.pull-right
               %li.dropdown
                 %a.dropdown-toggle{"data-toggle" => "dropdown", :href => '#'}
-                  %span.welcome= current_user.name
+                  %span.welcome= _current_user.name
                   %b.caret
                 %ul.dropdown-menu
                   %li= link_to t('application.signout'), '/signout'

@@ -3,7 +3,7 @@ require 'oauth2'
 class Garage::Docs::ResourcesController < ApplicationController
   force_ssl
   layout 'garage/application'
-  helper_method :current_user
+  helper_method :_current_user
 
   @@application = Garage::PantryKit::Application.new(Rails.application)
 
@@ -58,7 +58,7 @@ class Garage::Docs::ResourcesController < ApplicationController
     end
   end
 
-  def current_user
+  def _current_user
     instance_eval(&Garage::Docs.config.current_user_method)
   end
 
