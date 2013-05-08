@@ -99,7 +99,7 @@ module Garage::BaseRepresenter
     def encode(object, responder, selector = nil)
       value = object.send(@name)
       if !value.nil? && includes?
-        responder.encode_to_hash(value, @options[:extend], partial: true, selector: selector)
+        responder.encode_to_hash(value, partial: true, selector: selector)
       elsif primitive?(value.class)
         value
       else
@@ -119,15 +119,11 @@ module Garage::BaseRepresenter
       @name, @options = name, options
     end
 
-    def extend?
-      @options[:extend]
-    end
-
     def encode(object, responder, selector = nil)
       value = object.send(@name)
       value.map do |item|
-        if !item.nil? && extend?
-          responder.encode_to_hash(item, @options[:extend], selector: selector)
+        if !item.nil? && item.respond_to?(:represent!)
+          responder.encode_to_hash(item, selector: selector)
         else
           item
         end
