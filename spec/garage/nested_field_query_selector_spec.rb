@@ -5,11 +5,11 @@ describe Garage::NestedFieldQuery::Selector do
     Garage::NestedFieldQuery::Selector.build(fields)
   end
 
-  it 'has default scope for everything but not nested' do
+  it 'has default scope for everything and it can also be nested' do
     sel = build_parsed nil
     sel.includes?('foo').should be_false
     sel.excludes?('foo').should be_false
-    sel['foo'].should be_nil
+    sel['foo'].should be_a Garage::NestedFieldQuery::DefaultSelector
   end
 
   it 'has full scope for everything nested' do

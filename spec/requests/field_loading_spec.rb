@@ -3,7 +3,9 @@ require 'spec_helper'
 describe 'Field loading API' do
   let(:application) { create(:application) }
   let(:user) { create(:user) }
-  let(:post) { create(:post, :user => user) }
+  let(:bob)  { create(:user) }
+  let!(:post) { create(:post, user: user) }
+  let!(:comment) { create(:comment, post: post, user: bob) }
   let(:location_with_query) { location + '?' + query }
   let(:query) { '' }
 
@@ -24,6 +26,7 @@ describe 'Field loading API' do
         subject.should have_key 'id'
         subject.should have_key 'title'
         subject.should_not have_key 'user'
+        subject.should_not have_key 'comments'
       end
     end
 
@@ -33,6 +36,7 @@ describe 'Field loading API' do
         subject.should have_key 'id'
         subject.should have_key 'title'
         subject.should have_key 'user'
+        subject.should have_key 'comments'
       end
     end
 
@@ -68,6 +72,54 @@ describe 'Field loading API' do
         subject.should have_key 'user'
         subject['user'].should have_key 'id'
         subject['user'].should_not have_key 'name'
+      end
+    end
+
+    context 'with fields=comments query' do
+      let(:query) { 'fields=comments' }
+      it 'has everything for comments' do
+        subject.should have_key 'comments'
+        subject['comments'].should be_an Array
+        subject['comments'].first.should have_key 'id'
+        subject['comments'].first.should have_key 'commenter'
+        subject['comments'].first.should_not have_key 'post_owner'
+      end
+    end
+
+    context 'with fields=comments[id] query' do
+      let(:query) { 'fields=comments[id]' }
+      it 'has only id for comments' do
+        subject.should have_key 'comments'
+        subject['comments'].first.should have_key 'id'
+        subject['comments'].first.should_not have_key 'body'
+        subject['comments'].first.should_not have_key 'commenter'
+        subject['comments'].first.should_not have_key 'post_owner'
+      end
+    end
+
+    context 'with fields=comments[*] query' do
+      let(:query) { 'fields=comments[*]' }
+      it 'has everything for comments' do
+        subject.should have_key 'comments'
+        subject['comments'].first.should have_key 'id'
+        subject['comments'].first.should have_key 'body'
+        subject['comments'].first.should have_key 'commenter'
+        subject['comments'].first.should have_key 'post_owner'
+        subject['comments'].first['post_owner'].should have_key 'id'
+        subject['comments'].first['commenter'].should have_key 'id'
+      end
+    end
+
+    context 'with fields=comments[id,commenter[id]] query' do
+      let(:query) { 'fields=comments[id,commenter[id]]' }
+      it 'has everything for comments' do
+        subject.should have_key 'comments'
+        subject['comments'].first.should have_key 'id'
+        subject['comments'].first.should have_key 'commenter'
+        subject['comments'].first.should_not have_key 'body'
+        subject['comments'].first.should_not have_key 'post_owner'
+        subject['comments'].first['commenter'].should have_key 'id'
+        subject['comments'].first['commenter'].should_not have_key 'name'
       end
     end
   end
