@@ -1,3 +1,5 @@
+require 'garage/docs/config'
+
 module Garage
   def self.configure(&block)
     @config = Config::Builder.new(&block).build
@@ -8,7 +10,11 @@ module Garage
   end
 
   class Config
-    attr_accessor :cast_resource
+    attr_accessor :cast_resource, :docs
+
+    def docs
+      @docs ||= Docs::Config.new
+    end
 
     class Builder
       def initialize(&block)
@@ -22,6 +28,10 @@ module Garage
 
       def cast_resource(&block)
         @config.cast_resource = block
+      end
+
+      def docs
+        @config.docs
       end
     end
   end
