@@ -9,7 +9,7 @@ class Garage::LinkableExample
       @example
     else
       rendered = Garage::AppResponder.new(@controller, [@example]).
-        encode_to_hash(@example, nil, selector: Garage::NestedFieldQuery::DefaultSelector.new)
+        encode_to_hash(@example, selector: Garage::NestedFieldQuery::DefaultSelector.new)
       rendered['_links']['self']['href']
     end
   end
