@@ -28,8 +28,6 @@ describe Garage::ControllerHelper do
           "updated.gte" => 0,
         }
       end
-      before do
-      end
 
       it "returns query Hash with matched operator => time" do
         controller.send(:extract_datetime_query, "created").should == {
