@@ -31,7 +31,7 @@ module Garage
       end
 
       def docs
-        @config.docs
+        @docs_builder ||= Docs::Config::Builder.new(@config.docs)
       end
     end
   end
