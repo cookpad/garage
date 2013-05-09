@@ -7,7 +7,7 @@ class Garage::Docs::ResourcesController < ApplicationController
 
   @@application = Garage::Docs::Application.new(Rails.application)
 
-  before_filter(&Garage::Docs.config.authenticate)
+  before_filter(&Garage.configuration.docs.authenticate)
 
   before_filter do
     @application = @@application
@@ -26,7 +26,7 @@ class Garage::Docs::ResourcesController < ApplicationController
   def show
     @doc = @@application.doc_for(params[:id].sub(/^Garage::/, ''))
     @routes = @@application.routes_with_docs.select {|route| route.resource == params[:id] }
-    @examples = Garage::Docs.config.exampler.call(self, params[:id]).compact.map do |e|
+    @examples = Garage.configuration.docs.exampler.call(self, params[:id]).compact.map do |e|
       Garage::LinkableExample.new(e, self)
     end
   end
@@ -59,7 +59,7 @@ class Garage::Docs::ResourcesController < ApplicationController
   end
 
   def _current_user
-    instance_eval(&Garage::Docs.config.current_user_method)
+    instance_eval(&Garage.configuration.docs.current_user_method)
   end
 
   private
