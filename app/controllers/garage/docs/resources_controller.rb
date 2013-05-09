@@ -15,6 +15,10 @@ class Garage::Docs::ResourcesController < ApplicationController
 
   before_filter do
     @app = console_application
+    unless @app
+      render text: "OAuth app does not exist", status: :forbidden
+      return
+    end
     if URI.parse(@app.redirect_uri).host != request.host
       render text: "Request URI do not match with OAuth app host: #{@app.redirect_uri}", status: :forbidden
     end
@@ -65,10 +69,7 @@ class Garage::Docs::ResourcesController < ApplicationController
   private
 
   def console_application
-    Doorkeeper::Application.find_or_create_by_name('Pantry Console') do |app|
-      app.redirect_uri = garage_docs.callback_resources_url
-      app.save! if app.changed?
-    end
+    Doorkeeper::Application.by_uid(Garage.configuration.docs.console_app_uid)
   end
 
   def oauth2_client(app)

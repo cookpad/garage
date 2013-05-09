@@ -5,6 +5,7 @@ module Garage
       attr_accessor :document_root
       attr_accessor :current_user_method
       attr_accessor :authenticate
+      attr_accessor :console_app_uid
 
       def initialize
         reset
@@ -15,6 +16,7 @@ module Garage
         @document_root = 'doc/garage'
         @current_user_method = Proc.new { current_user }
         @authenticate = Proc.new {}
+        @console_app_uid = ''
       end
 
       class Builder
@@ -36,6 +38,10 @@ module Garage
 
         def authenticate(&block)
           @config.authenticate = block
+        end
+
+        def console_app_uid=(value)
+          @config.console_app_uid = value
         end
       end
     end
