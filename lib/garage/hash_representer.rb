@@ -1,4 +1,4 @@
-class Garage::PrimitiveData
+class Garage::HashRepresenter
   include Garage::Representer
 
   def initialize(object)

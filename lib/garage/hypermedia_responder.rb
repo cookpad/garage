@@ -86,7 +86,7 @@ module Garage
 
     def represent(resource, *args)
       unless resource.respond_to?(:represent!)
-        resource = Garage::PrimitiveData.new(resource)
+        resource = Garage::HashRepresenter.new(resource)
       end
       encode_to_hash(resource, *args)
     end
