@@ -73,22 +73,15 @@ module Garage
 
     def transform(resource)
       if resource.respond_to?(:map!)
-        resource.map {|r| represent(r, partial: true, selector: controller.field_selector) }
+        resource.map {|r| encode_to_hash(r, partial: true, selector: controller.field_selector) }
       else
-        represent(resource, selector: controller.field_selector)
+        encode_to_hash(resource, selector: controller.field_selector)
       end
     end
 
     def encode_json_safe(doc)
       # TODO use oj
       Yajl.dump(doc).gsub(/([<>])/) {|c| ESCAPE_JSON[c] }
-    end
-
-    def represent(resource, *args)
-      unless resource.respond_to?(:represent!)
-        resource = Garage::HashRepresenter.new(resource)
-      end
-      encode_to_hash(resource, *args)
     end
 
     def encode_to_hash(resource, *args)
