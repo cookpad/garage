@@ -2,6 +2,7 @@ require "rails"
 require "haml"
 require "sass-rails"
 require "coffee-rails"
+require "garage/docs/application"
 
 module Garage
   module Docs

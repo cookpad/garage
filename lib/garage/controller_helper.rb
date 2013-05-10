@@ -1,7 +1,3 @@
-require 'doorkeeper'
-require 'rack-accept-default'
-require 'http_status_exceptions'
-
 module Garage
   module ControllerHelper
     extend ActiveSupport::Concern
