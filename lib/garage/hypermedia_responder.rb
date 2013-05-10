@@ -72,7 +72,7 @@ module Garage
     end
 
     def transform(resource)
-      if resource.respond_to?(:map!)
+      if resource.respond_to?(:map)
         resource.map {|r| encode_to_hash(r, partial: true, selector: controller.field_selector) }
       else
         encode_to_hash(resource, selector: controller.field_selector)
