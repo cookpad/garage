@@ -18,13 +18,6 @@ module Garage
 
       respond_to :json # , :msgpack
       self.responder = Garage::AppResponder
-
-=begin
-      before_filter Garage::BackdoorKeeper
-      def doorkeeper_token
-        @token ||= Garage::BackdoorKeeper.get_token(request.env) || super
-      end
-=end
     end
 
     def authorized_application

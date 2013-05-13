@@ -22,9 +22,3 @@ FactoryGirl.define do
     redirect_uri "https://example.com/callback"
   end
 end
-
-FactoryGirl.define do
-  factory :privileged_application, :parent => :application do
-    sequence(:name) { |n| "Application #{n} (privileged)" }
-  end
-end

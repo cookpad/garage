@@ -119,25 +119,4 @@ describe 'Request to /posts' do
       body.should have(100).items
     end
   end
-
-=begin
-  context "privileged app" do
-      let(:application) { create(:privileged_application) }
-
-      it 'does not hide total count' do
-        get '/posts'
-        response_header('X-List-TotalCount').should_not be_nil
-      end
-
-      it 'allows big per_page' do
-        200.times do
-          create(:post, :user => user)
-        end
-        get "/users/#{user.id}/posts?page=1&per_page=200"
-        body.should have(200).items
-      end
-    end
-  end
-=end
-
 end

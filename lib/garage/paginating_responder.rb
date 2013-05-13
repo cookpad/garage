@@ -7,7 +7,6 @@ module Garage
       super(resource, *args)
     end
 
-    # hooks for privileged apps
     def max_per_page=(count)
       @max_per_page = count
     end
