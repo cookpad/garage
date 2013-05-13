@@ -14,7 +14,5 @@ Rails.application.routes.draw do
   end
 
   resource :session
-  resource :echo do
-    get 'whoami'
-  end
+  resource :echo
 end
