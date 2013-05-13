@@ -15,5 +15,4 @@ require "garage/controller_helper"
 module Garage
   autoload :Representer, "garage/representer"
   autoload :HashRepresenter, "garage/hash_representer"
-  autoload :LinkableExample, "garage/linkable_example"
 end
