@@ -14,5 +14,4 @@ require "garage/controller_helper"
 require "garage/representer"
 
 module Garage
-  autoload :HashRepresenter, "garage/hash_representer"
 end
