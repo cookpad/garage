@@ -11,9 +11,7 @@ require "garage/resource_casting_responder"
 require "garage/paginating_responder"
 require "garage/app_responder"
 require "garage/controller_helper"
+require "garage/representer"
 
 module Garage
-  autoload :Representer, "garage/representer"
-  autoload :HashRepresenter, "garage/hash_representer"
-  autoload :LinkableExample, "garage/linkable_example"
 end

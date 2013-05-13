@@ -1,5 +1,4 @@
 module Garage::Representer
-  include Rails.application.routes.url_helpers
   attr_accessor :default_url_options, :representer_attrs, :partial, :selector
 
   def partial?
@@ -47,6 +46,7 @@ module Garage::Representer
 
   def self.included(base)
     base.class_eval do
+      include Rails.application.routes.url_helpers
       extend ClassMethods
     end
   end
