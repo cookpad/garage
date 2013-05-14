@@ -14,7 +14,7 @@ module Garage
         end
       end
 
-      before_filter HypermediaResponder
+      before_filter Garage::HypermediaResponder
 
       respond_to :json # , :msgpack
       self.responder = Garage::AppResponder
