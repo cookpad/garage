@@ -1,3 +1,7 @@
+require "garage/hypermedia_responder"
+require "garage/resource_casting_responder"
+require "garage/paginating_responder"
+
 class Garage::AppResponder < ActionController::Responder
   # like Rack middleware, responders are applied outside in, bottom to the top
   include Garage::HypermediaResponder
