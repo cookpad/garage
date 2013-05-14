@@ -1,6 +1,6 @@
 require 'oauth2'
 
-class Garage::Docs::ResourcesController < ApplicationController
+class Garage::Docs::ResourcesController < Garage::ApplicationController
   layout 'garage/application'
   helper_method :_current_user
 
