@@ -1,7 +1,6 @@
 require 'oauth2'
 
 class Garage::Docs::ResourcesController < ApplicationController
-  force_ssl
   layout 'garage/application'
   helper_method :_current_user
 
