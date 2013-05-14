@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency "doorkeeper", "~> 0.6.7"
   s.add_dependency "rack-accept-default", "~> 0.0.2"
   s.add_dependency "http_status_exceptions"
-  s.add_dependency "yajl-ruby"
+  s.add_dependency "oj"
 
   s.add_dependency "tomdoc"
   s.add_dependency "oauth2"
