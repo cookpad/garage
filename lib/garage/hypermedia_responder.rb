@@ -1,4 +1,5 @@
-require 'yajl'
+require 'oj'
+
 module Garage
   module HypermediaResponder
     ESCAPE_JSON = { '<' => '\u003C', '>' => '\u003E' }.freeze
@@ -80,8 +81,7 @@ module Garage
     end
 
     def encode_json_safe(doc)
-      # TODO use oj
-      Yajl.dump(doc).gsub(/([<>])/) {|c| ESCAPE_JSON[c] }
+      Oj.dump(doc, :mode => :compat).gsub(/([<>])/) {|c| ESCAPE_JSON[c] }
     end
 
     def encode_to_hash(resource, *args)
