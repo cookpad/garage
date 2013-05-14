@@ -2,7 +2,7 @@
 %html{:lang => "en"}
   %head
     %meta{:charset => "utf-8"}/
-    %title= content_for?(:title) ? "#{yield(:title)}: COOKPAD" : "COOKPAD"
+    %title= content_for?(:title) ? "#{yield(:title)}: Garage" : "Garage"
     = csrf_meta_tags
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
@@ -18,7 +18,7 @@
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
-          .brand COOKPAD
+          .brand Garage
           - if _current_user
             %ul.nav.pull-right
               %li.dropdown
@@ -41,7 +41,7 @@
           = yield
 
       %footer
-        %p &copy; COOKPAD Inc. 2012
+        %p &copy; Garage 2013
     /
       Le javascript
       \==================================================
