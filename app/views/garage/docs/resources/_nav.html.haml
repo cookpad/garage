@@ -2,4 +2,4 @@
   %ul.nav.nav-list
     %li.nav-header Resources
     - @application.resources.each do |resource|
-      %li= link_to resource, garage_docs.resource_path(resource.to_s)
+      %li= link_to resource.name, garage_docs.resource_path(resource.to_s)
