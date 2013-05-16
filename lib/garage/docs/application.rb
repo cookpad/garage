@@ -113,7 +113,7 @@ module Garage
       end
 
       def markup
-        Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@content).html_safe
+        Redcarpet::Markdown.new(Redcarpet::Render::HTML, with_toc_data: true, fenced_code_blocks: true).render(@content).html_safe
       end
     end
 
