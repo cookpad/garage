@@ -28,7 +28,6 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
 
   def show
     @doc = @@application.doc_for(params[:id].sub(/^Garage::/, ''))
-    @routes = @@application.routes_with_docs.select {|route| route.resource == params[:id] }
     @examples = Garage.configuration.docs.exampler.call(self, params[:id]).compact.map do |e|
       Garage::Docs::LinkableExample.new(e, self)
     end

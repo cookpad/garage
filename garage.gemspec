@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
   s.add_dependency "http_status_exceptions"
   s.add_dependency "oj"
 
-  s.add_dependency "tomdoc"
   s.add_dependency "oauth2"
   s.add_dependency "redcarpet"
   s.add_dependency "haml"
