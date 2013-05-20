@@ -10,5 +10,8 @@ Garage.configure do
   end
   docs.current_user_method { current_user }
   docs.console_app_uid = ENV['GARAGE_CONSOLE_APP_UID']
-  docs.remote_server = 'http://127.0.0.1:3001/'
+
+  if ENV['GARAGE_REMOTE_SERVER']
+    docs.remote_server = ENV['GARAGE_REMOTE_SERVER']
+  end
 end
