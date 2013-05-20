@@ -10,7 +10,7 @@ module Garage
 
       if defined?(CanCan)
         rescue_from CanCan::AccessDenied do |exception|
-          render :json => { :error => exception.message }, :status => :forbidden
+          render :json => { :code => 403, :error => exception.message }, :status => 403
         end
       end
 
