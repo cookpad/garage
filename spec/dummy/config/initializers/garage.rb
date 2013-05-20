@@ -1,4 +1,5 @@
 require 'exampler'
+include CurrentUserHelper
 
 Garage.configure do
   cast_resource do |res|
@@ -8,4 +9,6 @@ Garage.configure do
     Exampler.new(controller).examples_for(klass)
   end
   docs.current_user_method { current_user }
+  docs.console_app_uid = ENV['GARAGE_CONSOLE_APP_UID']
+  docs.remote_server = 'http://127.0.0.1:3001/'
 end

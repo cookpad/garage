@@ -1,11 +1,8 @@
 module Garage
   module Docs
     class Config
-      attr_accessor :exampler
-      attr_accessor :document_root
-      attr_accessor :current_user_method
-      attr_accessor :authenticate
-      attr_accessor :console_app_uid
+      attr_accessor :exampler, :document_root, :current_user_method, :authenticate,
+        :console_app_uid, :remote_server
 
       def initialize
         reset
@@ -17,6 +14,7 @@ module Garage
         @current_user_method = Proc.new { current_user }
         @authenticate = Proc.new {}
         @console_app_uid = ''
+        @remote_server = Proc.new {|request| "#{request.protocol}#{request.host_with_port}" }
       end
 
       class Builder
@@ -42,6 +40,10 @@ module Garage
 
         def console_app_uid=(value)
           @config.console_app_uid = value
+        end
+
+        def remote_server=(value)
+          @config.remote_server = value
         end
       end
     end
