@@ -50,6 +50,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
     if params[:code]
       client = oauth2_client(@app)
 
+      # This will block if your API server runs on the same process (e.g. Webrick)
       token = client.auth_code.get_token(params[:code], redirect_uri: garage_docs.callback_resources_url)
       session[:access_token] = token.token
 
