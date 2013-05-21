@@ -60,7 +60,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   end
 
   def _current_user
-    instance_eval(&Garage.configuration.docs.current_user_method)
+    @current_user ||= instance_eval(&Garage.configuration.docs.current_user_method)
   end
 
   private
