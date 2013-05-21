@@ -27,3 +27,5 @@ load 'rails/tasks/engine.rake'
 
 Bundler::GemHelper.install_tasks
 
+require File.expand_path('../spec/dummy/config/application', __FILE__)
+Dummy::Application.load_tasks

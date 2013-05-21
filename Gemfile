@@ -12,6 +12,10 @@ group :test do
   gem "database_cleaner"
 end
 
+group :development, :test do
+  gem "mysql2"
+end
+
 # Declare your gem's dependencies in garage.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
