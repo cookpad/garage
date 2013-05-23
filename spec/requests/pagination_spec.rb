@@ -99,6 +99,11 @@ describe 'Request to /posts' do
       response_header('X-List-TotalCount').should be_nil
     end
 
+    it 'hides total count on /capped' do
+      get '/posts/capped'
+      response_header('X-List-TotalCount').should be_nil
+    end
+
     it 'does not have access_token header in the Link header' do
       get "/posts?access_token=#{token}"
       link = LinkHeader.parse(response_header('Link')).find_link(['rel', 'next'])
@@ -111,6 +116,29 @@ describe 'Request to /posts' do
       200.times do
         create(:post, user: user)
       end
+    end
+
+    it "cap the pagination at 100" do
+      get '/posts/capped'
+      body.should have(20).items
+      page_for('next').should == 2
+      page_for('last').should be_nil
+      page_for('first').should be_nil
+      page_for('prev').should be_nil
+    end
+
+    it "cap the pagination at 100" do
+      get '/posts/capped?page=5'
+      body.should have(20).items
+      page_for('next').should be_nil
+      page_for('last').should be_nil
+      page_for('first').should == 1
+      page_for('prev').should == 4
+    end
+
+    it "cap the pagination at 100" do
+      get '/posts/capped?page=6'
+      body.should be_empty
     end
 
     it 'does not allow per_page > 100' do

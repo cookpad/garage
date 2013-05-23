@@ -14,6 +14,11 @@ class PostsController < ApiController
     respond_with Post.scoped, paginate: true, hide_total: true
   end
 
+  def capped
+    authorize! :show, Post
+    respond_with Post.scoped, paginate: true, hard_limit: 100
+  end
+
   def show
     @post = Post.find(params[:id])
     authorize! :show, @post

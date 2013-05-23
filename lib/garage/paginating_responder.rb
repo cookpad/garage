@@ -2,7 +2,7 @@ module Garage
   module PaginatingResponder
     def display(resource, *args)
       if @options[:paginate]
-        resource = paginate resource, @options
+        resource = paginate resource
       end
       super(resource, *args)
     end
@@ -12,34 +12,43 @@ module Garage
     end
 
     def reveal_total!
-      @options[:hide_total] = false
+      @options.delete(:hard_limit)
     end
 
     private
 
-    def hide?
-      @options[:hide_total]
+    def hide_total?
+      !!@options[:hard_limit]
+    end
+
+    def hard_limit
+      @options[:hard_limit]
     end
 
     def max_per_page
-      @max_per_page || 100
+      @options[:max_per_page] || @max_per_page || 100
     end
 
-    def set_total_count(rs, base)
-      delegate = CacheableListDelegate.new(rs, base)
-      total = Rails.cache.fetch(delegate.cache_key_count) { rs.total_count }
-      rs.instance_variable_set(:@total_count, total) # OMG
+    def set_total_count(rs, per_page)
+      if hard_limit
+        limit = hard_limit
+        rs.instance_variable_set(:@total_count, limit)
+      elsif @options[:cacheable_with]
+        delegate = CacheableListDelegate.new(rs, base)
+        total = Rails.cache.fetch(delegate.cache_key_count) { rs.total_count }
+        rs.instance_variable_set(:@total_count, total) # OMG
+      end
     end
 
-    def paginate(rs, options={})
-      per_page = [ options[:max_per_page] || max_per_page, (controller.params[:per_page] || options[:per_page] || 20).to_i ].min
+    def paginate(rs)
+      @options[:hard_limit] ||= 1000 if @options[:hide_total] # backward compat for hide_total
+
+      per_page = [ max_per_page, (controller.params[:per_page] || @options[:per_page] || 20).to_i ].min
 
       rs.page(controller.params[:page] || 1).per(per_page).tap do |rs|
-        set_total_count(rs, @options[:cacheable_with]) if @options[:cacheable_with]
+        set_total_count(rs, per_page)
         construct_links(rs, per_page)
-
-        # Get total count *after* pagination so that `total_count` can be fetched from caches
-        unless hide?
+        unless hide_total?
           controller.response.headers['X-List-TotalCount'] = rs.total_count.to_s
         end
       end
@@ -60,7 +69,7 @@ module Garage
         links[:next] = rs.current_page + 1
       end
 
-      unless rs.last_page? || hide?
+      unless rs.last_page? || hide_total?
         links[:last] = rs.total_pages
       end
     end
