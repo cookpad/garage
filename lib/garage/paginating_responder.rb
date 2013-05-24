@@ -50,12 +50,16 @@ module Garage
       set_total_count(rs, per_page)
       construct_links(rs, per_page)
 
+      unless hide_total?
+        controller.response.headers['X-List-TotalCount'] = rs.total_count.to_s
+      end
+
       if hide_total?
-        if rs.offset_value + per_page > hard_limit
+        if rs.offset_value > hard_limit
+          rs = []
+        elsif rs.offset_value + per_page > hard_limit
           rs = rs.slice 0, (hard_limit - rs.offset_value) # becomes Array here, and hope it's ok
         end
-      else
-        controller.response.headers['X-List-TotalCount'] = rs.total_count.to_s
       end
 
       rs
