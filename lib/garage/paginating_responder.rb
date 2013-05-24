@@ -34,7 +34,7 @@ module Garage
         limit = hard_limit
         rs.instance_variable_set(:@total_count, limit)
       elsif @options[:cacheable_with]
-        delegate = CacheableListDelegate.new(rs, base)
+        delegate = CacheableListDelegate.new(rs, @options[:cacheable_with])
         total = Rails.cache.fetch(delegate.cache_key_count) { rs.total_count }
         rs.instance_variable_set(:@total_count, total) # OMG
       end
