@@ -139,6 +139,13 @@ describe 'Request to /posts' do
     it "cap the pagination at 100" do
       get '/posts/capped?page=6'
       body.should be_empty
+      page_for('next').should be_nil
+    end
+
+    it "cap the pagination at 100" do
+      get '/posts/capped?page=15&per_page=7'
+      body.should have(10).items
+      page_for('next').should be_nil
     end
 
     it 'does not allow per_page > 100' do
