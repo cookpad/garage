@@ -143,7 +143,7 @@ describe 'Request to /posts' do
     end
 
     it "cap the pagination at 100" do
-      get '/posts/capped?page=15&per_page=7'
+      get '/posts/capped?page=7&per_page=15'
       body.should have(10).items
       page_for('next').should be_nil
     end

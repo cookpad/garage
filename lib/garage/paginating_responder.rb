@@ -45,13 +45,20 @@ module Garage
 
       per_page = [ max_per_page, (controller.params[:per_page] || @options[:per_page] || 20).to_i ].min
 
-      rs.page(controller.params[:page] || 1).per(per_page).tap do |rs|
-        set_total_count(rs, per_page)
-        construct_links(rs, per_page)
-        unless hide_total?
-          controller.response.headers['X-List-TotalCount'] = rs.total_count.to_s
+      rs = rs.page(controller.params[:page] || 1).per(per_page)
+
+      set_total_count(rs, per_page)
+      construct_links(rs, per_page)
+
+      if hide_total?
+        if rs.offset_value + per_page > hard_limit
+          rs = rs.slice 0, (hard_limit - rs.offset_value) # becomes Array here, and hope it's ok
         end
+      else
+        controller.response.headers['X-List-TotalCount'] = rs.total_count.to_s
       end
+
+      rs
     end
 
     def construct_links(rs, per_page)
