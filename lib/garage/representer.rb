@@ -112,7 +112,7 @@ module Garage::Representer
     end
 
     def primitive?(klass)
-      [ ActiveSupport::TimeWithZone, Bignum, Fixnum, Hash, Array, String, NilClass, TrueClass, FalseClass ].include? klass
+      [ ActiveSupport::TimeWithZone, Bignum, Fixnum, Float, Hash, Array, String, NilClass, TrueClass, FalseClass ].include? klass
     end
   end
 
