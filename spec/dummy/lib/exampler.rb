@@ -18,6 +18,6 @@ class Exampler
 
   private
   def current_user
-    controller.current_user
+    controller._current_user
   end
 end
