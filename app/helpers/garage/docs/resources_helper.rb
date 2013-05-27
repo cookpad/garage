@@ -10,4 +10,8 @@ module Garage::Docs::ResourcesHelper
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, with_toc_data: true, fenced_code_blocks: true)
     markdown.render(text).html_safe
   end
+
+  def doc_name(resource)
+    resource.respond_to?(:doc_name) ? resource.doc_name : resource.name
+  end
 end
