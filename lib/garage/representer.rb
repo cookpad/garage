@@ -44,7 +44,13 @@ module Garage::Representer
     self.representer_attrs += self.class.representer_attrs
   end
 
+  def self.representers
+    @representers ||= []
+  end
+
   def self.included(base)
+    self.representers << base
+
     base.class_eval do
       include Rails.application.routes.url_helpers
       extend ClassMethods
@@ -73,6 +79,13 @@ module Garage::Representer
         # FIXME: this only works with User resource for now
         # partial representation will not render request scope-specific fields for better caching
         !resource.partial? && responder.controller.request_by?(resource) && responder.controller.has_scope?(scope)
+      }
+    end
+
+    # represents the representer's schema in JSON format
+    def metadata
+      {:definitions => representer_attrs.grep(Definition).map {|definition| definition.name},
+       :links => representer_attrs.grep(Link).map {|link| link.options[:as] ? {link.rel => {'as' => link.options[:as]}} : link.rel}
       }
     end
   end
