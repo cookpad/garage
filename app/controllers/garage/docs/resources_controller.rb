@@ -1,4 +1,5 @@
 require 'oauth2'
+require 'http_accept_language'
 
 class Garage::Docs::ResourcesController < Garage::ApplicationController
   layout 'garage/application'
@@ -21,6 +22,12 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
     if URI.parse(@app.redirect_uri).host != request.host
       render text: "Request URI do not match with OAuth app host: #{@app.redirect_uri}", status: :forbidden
     end
+  end
+
+  before_filter :set_locale
+  def set_locale
+    @locale = params[:lang] || cookies[:garage_locale] || request.preferred_language_from(%w[en ja])
+    cookies[:garage_locale] = @locale
   end
 
   def index
