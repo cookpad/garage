@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "haml"
   s.add_dependency "sass-rails"
   s.add_dependency "coffee-rails"
+  s.add_dependency "http_accept_language"
 
   s.add_development_dependency "rspec-rails", "~> 2.12"
   s.add_development_dependency "mysql2"

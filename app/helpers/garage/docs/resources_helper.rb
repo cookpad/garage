@@ -3,7 +3,9 @@ require 'redcarpet'
 # coding: utf-8
 module Garage::Docs::ResourcesHelper
   def markdown_file(file)
-    markdown(File.open(Rails.root + file).read)
+    search_paths = ["#{file}.#{@locale}.md", "#{file}.md"].map {|base| Rails.root + base }
+    md_file = search_paths.find {|path| File.exist?(path) }
+    markdown(File.open(md_file).read)
   end
 
   def markdown(text)
