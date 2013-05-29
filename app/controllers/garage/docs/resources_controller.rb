@@ -19,9 +19,6 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
       render text: "OAuth app does not exist", status: :forbidden
       return
     end
-    if URI.parse(@app.redirect_uri).host != request.host
-      render text: "Request URI do not match with OAuth app host: #{@app.redirect_uri}", status: :forbidden
-    end
   end
 
   before_filter :set_locale
