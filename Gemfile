@@ -4,7 +4,6 @@ gem "cancan"
 gem "kaminari"
 
 group :test do
-  gem "rspec-rails", "2.12"
   gem "factory_girl"
   gem "factory_girl_rails"
   gem "forgery"
@@ -14,6 +13,7 @@ end
 
 group :development, :test do
   gem "mysql2"
+  gem "rspec-rails"
 end
 
 # Declare your gem's dependencies in garage.gemspec.
