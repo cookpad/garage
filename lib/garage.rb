@@ -9,6 +9,7 @@ require "garage/cacheable_list_delegate"
 require "garage/app_responder"
 require "garage/controller_helper"
 require "garage/representer"
+require "garage/restful_actions"
 
 module Garage
 end
