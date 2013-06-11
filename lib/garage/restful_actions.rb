@@ -108,7 +108,7 @@ module Garage
 
     # Override this if you want to pass options to respond_with in index action
     def respond_with_resources_options
-      { paginate: true }
+      {}
     end
 
     # Override this if you want to pass options to respond_with in show action
