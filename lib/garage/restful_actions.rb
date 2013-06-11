@@ -26,7 +26,7 @@ module Garage
     # Public: Create a new resource
     def create
       resource = create_resource
-      respond_with resource, :location => { :action => :show, :id => resource.id }
+      respond_with resource, :location => location
     end
 
     # Public: Update the resource
@@ -114,6 +114,10 @@ module Garage
     # Override this if you want to pass options to respond_with in show action
     def respond_with_resource_options
       {}
+    end
+
+    def location
+      { action: :show, id: resource.id }
     end
   end
 end
