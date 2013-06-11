@@ -25,8 +25,8 @@ module Garage
 
     # Public: Create a new resource
     def create
-      resource = create_resource
-      respond_with resource, :location => location
+      @resource = create_resource
+      respond_with @resource, :location => location
     end
 
     # Public: Update the resource
@@ -117,7 +117,7 @@ module Garage
     end
 
     def location
-      { action: :show, id: resource.id }
+      { action: :show, id: @resource.id }
     end
   end
 end
