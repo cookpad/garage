@@ -3,9 +3,9 @@
 header {
   border-bottom: solid 1px #ddd;
   color: white;
-  background: #eee;
+  background: #f8f8f8;
 
-  a {
+  h1 a {
     color: #333;
   }
 
@@ -13,8 +13,25 @@ header {
     overflow: hidden;
   }
 
+  h1 {
+    float: left;
+  }
+
   .right {
     float: right;
+  }
+
+  ul {
+    line-height: 2;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+  }
+
+  li {
+    float: left;
+    margin-left: 1em;
   }
 }
 

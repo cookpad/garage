@@ -1,16 +1,62 @@
+.section.console,
+.section.examples {
+  h1:before {
+    content: "\F120";
+  }
+}
+.section.console {
+  h2:before {
+    content: "\F054";
+  }
+}
+
 .section.navigation {
   h1:before {
-    content: "\F03A";
+    content: "\F06B";
+  }
+}
+
+.section.toc {
+  h1:before {
+    content: "\F0CB";
+  }
+
+  ul ul {
+    display: none;
   }
 }
 
 .section.document {
   h1:before {
+    content: "\F124";
+  }
+
+  h2:before {
     content: "\F054";
   }
 
   h1,
-  h3 {
-    margin-bottom: .2em;
+  h2,
+  h3,
+  h4 {
+    margin-top: 3em;
+    margin-bottom: .4em;
   }
+
+  h1:first-child,
+  h2:first-child,
+  h3:first-child,
+  h4:first-child {
+    margin-top: 0;
+  }
+}
+
+.section.console {
+  .field {
+    padding: 1em 0;
+  }
+}
+
+.main #oauth-dialog {
+  display: none;
 }

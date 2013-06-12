@@ -13,10 +13,11 @@
       .section
         %h1
           = link_to "Garage", garage_docs.resources_path
-        .right
+        %ul.right
+          %li= link_to "Docs", garage_docs.resources_path
+          %li= link_to "Console", garage_docs.console_resources_path
           - if _current_user
-            = _current_user.name
-            = link_to "signout", "/signout", method: :post
+            %li= link_to "signout(#{current_user.name})", "/signout", method: :post
 
     .main
       = yield

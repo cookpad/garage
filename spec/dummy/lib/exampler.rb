@@ -6,14 +6,14 @@ class Exampler
   end
 
   def examples_for(klass)
-    examples = []
     case klass
-    when "User"
-    when "Post"
-      examples << controller.main_app.posts_path
-      examples << current_user.posts.first
+    when "user"
+      [controller.main_app.users_path]
+    when "post"
+      [controller.main_app.posts_path]
+    else
+      []
     end
-    examples
   end
 
   private

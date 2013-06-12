@@ -35,6 +35,7 @@ code {
   border: solid 1px #ddd;
   border-radius: 2px;
   background: #f8f8f8;
+  font-family: "Menlo","Consolas",monospace;
 }
 
 pre {
@@ -54,11 +55,11 @@ pre > code {
   background: inherit;
 }
 
-h1 {
+h1,
+h2 {
   font-size: 1.2em;
 }
 
-h2,
 h3,
 h4,
 h5,
@@ -68,4 +69,13 @@ h6 {
 
 ul {
   padding-top: .5em;
+}
+
+input[type="text"] {
+  width: 30em;
+  border-radius: .4em;
+  border: solid 1px #999;
+  padding: .5em;
+  margin-bottom: .5em;
+  font-size: 1em;
 }

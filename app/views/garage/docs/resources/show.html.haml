@@ -1,13 +1,15 @@
 = render "navigation"
 
 - if @examples.any?
-  .section
-    %h2 Examples
+  .section.examples
+    %h1 Examples
     %ul
       - @examples.each do |example|
         %li= link_to example.url, console_resources_path(:location => example.url, :method => "GET")
 
-- @doc.sections.each do |section|
-  .section.document
-    %h1= section.title
-    .description= section.markup
+.section.toc
+  %h1 Contents
+  = @document.toc
+
+.section.document
+  = preserve @document.render

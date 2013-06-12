@@ -4,8 +4,6 @@ require 'http_accept_language'
 class Garage::Docs::ResourcesController < Garage::ApplicationController
   layout 'garage/application'
 
-  @@application = Garage::Docs::Application.new(Rails.application)
-
   before_filter :require_authentication
   before_filter :require_docs_application
   before_filter :require_console_application
@@ -15,7 +13,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   end
 
   def show
-    @doc = @@application.doc_for(params[:id].sub(/^Garage::/, ''))
+    @document = @application.find_document(params[:id])
     @examples = Garage.configuration.docs.exampler.call(self, params[:id]).compact.map do |e|
       Garage::Docs::LinkableExample.new(e, self)
     end
@@ -48,12 +46,13 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
     end
   end
 
-  private
-
   def _current_user
     @current_user ||= instance_eval(&Garage.configuration.docs.current_user_method)
   end
+  hide_action :_current_user
   helper_method :_current_user
+
+  private
 
   def console_application
     Doorkeeper::Application.by_uid(Garage.configuration.docs.console_app_uid)
@@ -79,7 +78,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   end
 
   def require_docs_application
-    @application = @@application
+    @application = Garage::Docs.application
   end
 
   def require_console_application
