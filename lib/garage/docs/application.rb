@@ -26,11 +26,15 @@ module Garage
       attr_reader :pathname
 
       def self.renderer
-        @renderer ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(with_toc_data: true), fenced_code_blocks: true)
+        @renderer ||= Redcarpet::Markdown.new(
+          Redcarpet::Render::HTML.new(with_toc_data: true),
+          fenced_code_blocks: true,
+          no_intra_emphasis: true
+        )
       end
 
       def self.toc_renderer
-        @toc_renderer ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML_TOC)
+        @toc_renderer ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML_TOC, no_intra_emphasis: true)
       end
 
       def initialize(pathname)
