@@ -1,49 +1,22 @@
 !!! 5
-%html{:lang => "en"}
+%html
   %head
-    %meta{:charset => "utf-8"}/
-    %title= content_for?(:title) ? "#{yield(:title)}: Garage" : "Garage"
+    %meta{ charset: "utf-8" }
+    %title Garage
     = csrf_meta_tags
-    / Le HTML5 shim, for IE6-8 support of HTML elements
-    /[if lt IE 9]
-      = javascript_include_tag "//html5shim.googlecode.com/svn/trunk/html5.js"
-    / Le styles
     = stylesheet_link_tag "garage/application", :media => "all"
-    / Le fav and touch icons
-    %link{:href => image_path('favicon.ico'), :rel => "shortcut icon"}/
-    %link{:href => image_path('apple-touch-icon.png'), :rel => "apple-touch-icon"}/
-
+    = javascript_include_tag "garage/application"
+    = favicon_link_tag "favicon.ico"
 
   %body
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        .container
-          .brand Garage
+    %header
+      .section
+        %h1
+          = link_to "Garage", garage_docs.resources_path
+        .right
           - if _current_user
-            %ul.nav.pull-right
-              %li.dropdown
-                %a.dropdown-toggle{"data-toggle" => "dropdown", :href => '#'}
-                  %span.welcome= _current_user.name
-                  %b.caret
-                %ul.dropdown-menu
-                  %li= link_to t('application.signout'), '/signout', :method => :post
-          .container.nav-collapse
-            %ul.nav
-              / %li= link_to "Link 1", "/path1"
+            = _current_user.name
+            = link_to "signout", "/signout", method: :post
 
-    .container
-
-      .content
-        - if content_for?(:page_header)
-          .page-header
-            %h1= yield(:page_header)
-        .row
-          = yield
-
-      %footer
-        %p &copy; Garage 2013
-    /
-      Le javascript
-      \==================================================
-    / Placed at the end of the document so the pages load faster
-    = javascript_include_tag "garage/application"
+    .main
+      = yield

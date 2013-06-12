@@ -1,0 +1,71 @@
+// For each element.
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*:before {
+  margin-right: .3em;
+  font-family: FontAwesome;
+}
+
+body {
+  font-size: 13px;
+  color: #333;
+}
+
+a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+ol,
+ul {
+  padding-left: 1.4em;
+  margin-bottom: 1em;
+}
+
+p {
+  margin-bottom: .5em;
+}
+
+pre,
+code {
+  border: solid 1px #ddd;
+  border-radius: 2px;
+  background: #f8f8f8;
+}
+
+pre {
+  overflow-x: scroll;
+  margin-bottom: 1em;
+  padding: .5em 1em;
+}
+
+code {
+  padding: 2px;
+}
+
+pre > code {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: inherit;
+}
+
+h1 {
+  font-size: 1.2em;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 1em;
+}
+
+ul {
+  padding-top: .5em;
+}

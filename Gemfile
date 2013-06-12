@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 gem "cancan"
 gem "kaminari"
+gem "font-awesome-rails"
 
 group :test do
   gem "factory_girl"

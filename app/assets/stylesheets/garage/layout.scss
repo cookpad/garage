@@ -1,0 +1,23 @@
+// For app/views/layouts.
+
+header {
+  border-bottom: solid 1px #ddd;
+  color: white;
+  background: #eee;
+
+  a {
+    color: #333;
+  }
+
+  .section {
+    overflow: hidden;
+  }
+
+  .right {
+    float: right;
+  }
+}
+
+.main {
+  padding: 1em 0;
+}
