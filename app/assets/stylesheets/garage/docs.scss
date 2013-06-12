@@ -1,40 +1,10 @@
-.section.console,
-.section.examples {
-  h1:before {
-    content: "\F120";
-  }
-}
-.section.console {
-  h2:before {
-    content: "\F054";
-  }
-}
-
-.section.navigation {
-  h1:before {
-    content: "\F06B";
-  }
-}
-
 .section.toc {
-  h1:before {
-    content: "\F0CB";
-  }
-
   ul ul {
     display: none;
   }
 }
 
 .section.document {
-  h1:before {
-    content: "\F124";
-  }
-
-  h2:before {
-    content: "\F054";
-  }
-
   h1,
   h2,
   h3,
