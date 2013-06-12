@@ -3,29 +3,13 @@ require 'http_accept_language'
 
 class Garage::Docs::ResourcesController < Garage::ApplicationController
   layout 'garage/application'
-  helper_method :_current_user
 
   @@application = Garage::Docs::Application.new(Rails.application)
 
-  before_filter(&Garage.configuration.docs.authenticate)
-
-  before_filter do
-    @application = @@application
-  end
-
-  before_filter do
-    @app = console_application
-    unless @app
-      render text: "OAuth app does not exist", status: :forbidden
-      return
-    end
-  end
-
+  before_filter :require_authentication
+  before_filter :require_docs_application
+  before_filter :require_console_application
   before_filter :set_locale
-  def set_locale
-    @locale = params[:lang] || cookies[:garage_locale] || request.preferred_language_from(%w[en ja])
-    cookies[:garage_locale] = @locale
-  end
 
   def index
   end
@@ -64,11 +48,12 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
     end
   end
 
+  private
+
   def _current_user
     @current_user ||= instance_eval(&Garage.configuration.docs.current_user_method)
   end
-
-  private
+  helper_method :_current_user
 
   def console_application
     Doorkeeper::Application.by_uid(Garage.configuration.docs.console_app_uid)
@@ -82,5 +67,22 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
 
   def oauth2_client(app)
     OAuth2::Client.new(app.uid, app.secret, :site => remote_server)
+  end
+
+  def set_locale
+    @locale = params[:lang] || cookies[:garage_locale] || request.preferred_language_from(%w[en ja])
+    cookies[:garage_locale] = @locale
+  end
+
+  def require_authentication
+    instance_eval(&Garage.configuration.docs.authenticate)
+  end
+
+  def require_docs_application
+    @application = @@application
+  end
+
+  def require_console_application
+    @app = console_application or render(text: "OAuth app does not exist", status: :forbidden)
   end
 end
