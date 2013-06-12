@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "oj"
 
   s.add_dependency "oauth2"
-  s.add_dependency "redcarpet"
+  s.add_dependency "redcarpet", ">= 2.3.0"
   s.add_dependency "haml"
   s.add_dependency "sass-rails"
   s.add_dependency "coffee-rails"
