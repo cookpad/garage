@@ -28,10 +28,19 @@ module Garage
       raise "Your ApplicationController needs to implement current_resource_owner!"
     end
 
-    # Hack: returns if the current resource is the same as the requester
-    def request_by?(resource)
-      true # FIXME
-      # resource.is_a?(User) && current_resource_owner.try(:id) == resource.id
+    # Check if the current resource is the same as the requester.
+    # The resource must respond to `resource.id` method.
+    def requested_by?(resource)
+      case
+      when current_resource_owner.nil?
+        false
+      when !resource.is_a?(current_resource_owner.class)
+        false
+      when current_resource_owner.id == resource.id
+        true
+      else
+        false
+      end
     end
 
     # Public: returns if the current request includes the given OAuth scope
