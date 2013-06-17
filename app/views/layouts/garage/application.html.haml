@@ -17,7 +17,7 @@
           %li= link_to "Docs", garage_docs.resources_path
           %li= link_to "Console", garage_docs.console_resources_path
           - if _current_user
-            %li= link_to "signout(#{_current_user.name})", "/signout", method: :post
+            %li= link_to "signout", "/signout", method: :post
 
     .main
       = yield
