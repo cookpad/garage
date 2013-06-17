@@ -4,16 +4,19 @@ describe Garage::ControllerHelper do
   let(:controller) do
     controller = Object.new
     controller.extend described_class
-    controller.stub(:params => params)
     controller
   end
 
   describe "#extract_datetime_query" do
-    context "without corresponding key" do
-      let(:params) do
-        {}
-      end
+    before do
+      controller.stub(:params => params)
+    end
 
+    let(:params) do
+      {}
+    end
+
+    context "without corresponding key" do
       it "returns nil" do
         controller.send(:extract_datetime_query, "created").should == nil
       end
@@ -34,6 +37,56 @@ describe Garage::ControllerHelper do
           :lte => Time.zone.at(0),
           :gte => Time.zone.at(0),
         }
+      end
+    end
+  end
+
+  describe "#requested_by?" do
+    before do
+      controller.stub(current_resource_owner: current_resource_owner)
+    end
+
+    let(:user) do
+      mock(id: 1)
+    end
+
+    let(:current_resource_owner) do
+      mock(id: 1)
+    end
+
+    context "without current resource owner" do
+      let(:current_resource_owner) do
+        nil
+      end
+
+      it "returns false" do
+        controller.should_not be_requested_by user
+      end
+    end
+
+    context "with different users" do
+      let(:current_resource_owner) do
+        mock(id: 2)
+      end
+
+      it "returns false" do
+        controller.should_not be_requested_by user
+      end
+    end
+
+    context "with different classes" do
+      before do
+        current_resource_owner.stub(class: Class.new)
+      end
+
+      it "returns false" do
+        controller.should_not be_requested_by user
+      end
+    end
+
+    context "with same user" do
+      it "returns true" do
+        controller.should be_requested_by user
       end
     end
   end
