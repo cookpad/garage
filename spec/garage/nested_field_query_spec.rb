@@ -11,7 +11,7 @@ module Garage::NestedFieldQuery
 
       context "with empty string" do
         it "returns DefaultSelector" do
-          expect { Selector.build("") }.to raise_error(InvalidQuery)
+          Selector.build("").should be_a DefaultSelector
         end
       end
     end

@@ -140,7 +140,7 @@ module Garage
       # includes eager loading
 
       def self.build(fields)
-        if fields
+        if fields.present?
           build_parsed(Parser.parse(fields))
         else
           NestedFieldQuery::DefaultSelector.new
