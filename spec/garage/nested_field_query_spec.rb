@@ -1,6 +1,22 @@
 require 'spec_helper'
 
 module Garage::NestedFieldQuery
+  describe Selector do
+    describe ".build" do
+      context "with nil fields" do
+        it "returns DefaultSelector" do
+          Selector.build(nil).should be_a DefaultSelector
+        end
+      end
+
+      context "with empty string" do
+        it "returns DefaultSelector" do
+          expect { Selector.build("") }.to raise_error(InvalidQuery)
+        end
+      end
+    end
+  end
+
   describe Parser do
     let(:parser) { Garage::NestedFieldQuery::Parser.new }
     let(:builder) { Garage::NestedFieldQuery::Builder.new }
