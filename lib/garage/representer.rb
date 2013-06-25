@@ -78,7 +78,7 @@ module Garage::Representer
       lambda { |resource, responder|
         # FIXME: this only works with User resource for now
         # partial representation will not render request scope-specific fields for better caching
-        !resource.partial? && responder.controller.request_by?(resource) && responder.controller.has_scope?(scope)
+        !resource.partial? && responder.controller.requested_by?(resource) && responder.controller.has_scope?(scope)
       }
     end
 
