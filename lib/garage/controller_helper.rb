@@ -15,6 +15,7 @@ module Garage
       end
 
       before_filter Garage::HypermediaResponder
+      after_filter :notify_request_stats
 
       respond_to :json # , :msgpack
       self.responder = Garage::AppResponder
@@ -83,6 +84,16 @@ module Garage
       end
     rescue ArgumentError
       nil
+    end
+
+    def notify_request_stats
+      payload = {
+        :controller => self,
+        :application => authorized_application,
+        :token => doorkeeper_token,
+        :resource_owner => current_resource_owner,
+      }
+      ActiveSupport::Notifications.instrument("garage.request", payload)
     end
   end
 end
