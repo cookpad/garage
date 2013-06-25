@@ -17,3 +17,9 @@ Garage.configure do
     docs.remote_server = ENV['GARAGE_REMOTE_SERVER']
   end
 end
+
+ActiveSupport::Notifications.subscribe "garage.request" do |name, start, finish, id, payload|
+  if payload[:application]
+    payload[:controller].response.headers['Application-Id'] = payload[:application].uid
+  end
+end
