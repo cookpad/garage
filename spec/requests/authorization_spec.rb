@@ -55,4 +55,13 @@ describe Garage do
       end
     end
   end
+
+  describe 'Log notifications' do
+    let(:requester) { alice }
+
+    it 'should add application ID' do
+      get "/posts/#{post.id}"
+      last_response.headers['Application-Id'].should == application.uid
+    end
+  end
 end
