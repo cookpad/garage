@@ -8,7 +8,7 @@ class Post < ActiveRecord::Base
 
   property :id
   property :title
-  property :body
+  property :body, if: scope(:read_post_body)
   property :user, selectable: true
 
   collection :comments, selectable: true
