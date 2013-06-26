@@ -14,4 +14,8 @@ class Post < ActiveRecord::Base
   collection :comments, selectable: true
 
   link(:self) { post_path(self) }
+
+  def owner
+    user
+  end
 end

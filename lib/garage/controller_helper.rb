@@ -32,7 +32,7 @@ module Garage
     # Check if the current resource is the same as the requester.
     # The resource must respond to `resource.id` method.
     def requested_by?(resource)
-      user = resource.respond_to?(:user) ? resource.user : resource
+      user = resource.respond_to?(:owner) ? resource.owner : resource
       case
       when current_resource_owner.nil?
         false
