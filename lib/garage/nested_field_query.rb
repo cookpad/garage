@@ -176,7 +176,7 @@ module Garage
       end
 
       def excludes?(field)
-        !@fields.has_key?(field)
+        !@fields.has_key?('__default__') && !@fields.has_key?(field)
       end
     end
   end
