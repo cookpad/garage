@@ -30,6 +30,16 @@ describe 'Field loading API' do
       end
     end
 
+    context 'with __default__ query' do
+      let(:query) { 'fields=__default__' }
+      it 'has basic fields' do
+        subject.should have_key 'id'
+        subject.should have_key 'title'
+        subject.should_not have_key 'user'
+        subject.should_not have_key 'comments'
+      end
+    end
+
     context 'with * query' do
       let(:query) { 'fields=*' }
       it 'has all fields' do
@@ -45,6 +55,16 @@ describe 'Field loading API' do
       it 'has only id field' do
         subject.should have_key 'id'
         subject.should_not have_key 'title'
+      end
+    end
+
+    context 'with fields=__default__,id query' do
+      let(:query) { 'fields=__default__,id' }
+      it 'has id field plus default fields' do
+        subject.should have_key 'id'
+        subject.should have_key 'title'
+        subject.should_not have_key 'user'
+        subject.should_not have_key 'comments'
       end
     end
 
@@ -77,6 +97,17 @@ describe 'Field loading API' do
 
     context 'with fields=comments query' do
       let(:query) { 'fields=comments' }
+      it 'has everything for comments' do
+        subject.should have_key 'comments'
+        subject['comments'].should be_an Array
+        subject['comments'].first.should have_key 'id'
+        subject['comments'].first.should have_key 'commenter'
+        subject['comments'].first.should_not have_key 'post_owner'
+      end
+    end
+
+    context 'with fields=comments[__default__,id] query' do
+      let(:query) { 'fields=comments[__default__,id]' }
       it 'has everything for comments' do
         subject.should have_key 'comments'
         subject['comments'].should be_an Array
