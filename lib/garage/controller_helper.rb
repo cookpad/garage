@@ -21,6 +21,10 @@ module Garage
       self.responder = Garage::AppResponder
     end
 
+    def doorkeeper_unauthorized_render_options
+      { json: { code: 401, error: "Unauthorized (invalid token)" } }
+    end
+
     def authorized_application
       doorkeeper_token.application if doorkeeper_token
     end
