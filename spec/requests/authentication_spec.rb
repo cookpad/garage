@@ -16,6 +16,10 @@ describe 'Request to echo resource' do
     it 'returns 401' do
       subject.should == 401
     end
+
+    it 'returns JSON' do
+      last_response.content_type.should match %r[application/json]
+    end
   end
 
   context 'with a bad token' do
