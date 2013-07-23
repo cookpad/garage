@@ -4,15 +4,8 @@ module Garage
   module HypermediaResponder
     ESCAPE_JSON = { '<' => '\u003C', '>' => '\u003E' }.freeze
 
-    def mime_with(representation)
-      mime, sub = controller.request.format.to_s.split('/', 2)
-      "#{mime}/vnd.cookpad.#{representation.to_s}+#{sub}"
-    end
-
     def display(resource, given_options={})
-      if controller.representation == :dictionary
-        given_options.merge!(:content_type => mime_with(controller.representation))
-      end
+      given_options[:content_type] = representation.content_type if representation.dictionary?
       if @options[:cacheable_with]
         delegate = Garage::CacheableListDelegate.new(resource, @options[:cacheable_with])
         representation = maybe_cache(delegate, controller.field_selector) {
@@ -25,12 +18,11 @@ module Garage
     end
 
     def render(data)
-      if controller.representation == :dictionary
+      if representation.dictionary?
         data = render_dict(data)
       end
 
-      case controller.request.format.to_sym
-      when :msgpack
+      if representation.msgpack?
         data.to_msgpack
       else
         # default to JSON
@@ -105,6 +97,31 @@ module Garage
 
     def cache
       @cache ||= {}
+    end
+
+    def representation
+      @representation ||= Representation.new(controller)
+    end
+
+    class Representation
+      attr_reader :controller
+
+      def initialize(controller)
+        @controller = controller
+      end
+
+      def dictionary?
+        controller.representation == :dictionary
+      end
+
+      def msgpack?
+        controller.request.format.to_sym == :msgpack
+      end
+
+      def content_type
+        mime, payload = controller.request.format.to_s.split("/", 2)
+        "#{mime}/vnd.cookpad.dictionary+#{payload}"
+      end
     end
   end
 end
