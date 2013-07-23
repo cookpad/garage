@@ -16,14 +16,14 @@ module Garage
     end
 
     def render(data)
-      DataRenderer.render(data, msgpack: representation.msgpack?, dictionary: representation.dictionary?)
+      DataRenderer.render(data, dictionary: representation.dictionary?)
     end
 
-    def transform(resource)
-      if resource.respond_to?(:map)
-        resource.map {|r| encode_to_hash(r, partial: true, selector: controller.field_selector) }
+    def transform(resources)
+      if resources.respond_to?(:map)
+        resources.map {|resource| encode_to_hash(resource, partial: true) }
       else
-        encode_to_hash(resource, selector: controller.field_selector)
+        encode_to_hash(resources)
       end
     end
 
@@ -42,7 +42,7 @@ module Garage
       resource.represent!
       resource.default_url_options = {}
       resource.partial = options[:partial]
-      resource.selector = options[:selector]
+      resource.selector = options[:selector] || controller.field_selector
       maybe_cache(resource, options[:selector]) { resource.to_hash(:responder => self) }
     end
 
@@ -90,10 +90,6 @@ module Garage
         controller.representation == :dictionary
       end
 
-      def msgpack?
-        controller.request.format.to_sym == :msgpack
-      end
-
       def content_type
         mime, payload = controller.request.format.to_s.split("/", 2)
         "#{mime}/vnd.cookpad.dictionary+#{payload}"
@@ -109,26 +105,18 @@ module Garage
 
       attr_reader :data, :options
 
-      def initialize(data, options)
+      def initialize(data, options = {})
         @data, @options = data, options
       end
 
       def render
-        if msgpack?
-          to_msgpack
-        else
-          to_json
-        end
+        Oj.dump(converted_data, mode: :compat).gsub(/([<>])/, JSON_ESCAPE_TABLE)
       end
 
       private
 
       def dictionary?
         !!options[:dictionary]
-      end
-
-      def msgpack?
-        !!options[:msgpack]
       end
 
       def convertible_to_dictionary?
@@ -145,14 +133,6 @@ module Garage
         else
           data
         end
-      end
-
-      def to_msgpack
-        converted_data.to_msgpack
-      end
-
-      def to_json
-        Oj.dump(converted_data, mode: :compat).gsub(/([<>])/, JSON_ESCAPE_TABLE)
       end
     end
   end
