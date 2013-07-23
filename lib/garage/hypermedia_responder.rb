@@ -2,8 +2,6 @@ require 'oj'
 
 module Garage
   module HypermediaResponder
-    ESCAPE_JSON = { '<' => '\u003C', '>' => '\u003E' }.freeze
-
     def display(resource, given_options={})
       given_options[:content_type] = representation.content_type if representation.dictionary?
       if @options[:cacheable_with]
@@ -18,25 +16,7 @@ module Garage
     end
 
     def render(data)
-      if representation.dictionary?
-        data = render_dict(data)
-      end
-
-      if representation.msgpack?
-        data.to_msgpack
-      else
-        # default to JSON
-        encode_json_safe(data)
-      end
-    end
-
-    def render_dict(data)
-      # might be prettier to check respond_to? etc. but at this point the data is
-      # serialized down to the lowest level structure (Array/Hash)
-      if data.is_a?(Array) && (data.empty? || data.first.respond_to?(:[]))
-        data.index_by {|entry| entry['id'] }
-      end
-      # TODO else 400?
+      DataRenderer.render(data, msgpack: representation.msgpack?, dictionary: representation.dictionary?)
     end
 
     def transform(resource)
@@ -45,10 +25,6 @@ module Garage
       else
         encode_to_hash(resource, selector: controller.field_selector)
       end
-    end
-
-    def encode_json_safe(doc)
-      Oj.dump(doc, :mode => :compat).gsub(/([<>])/) {|c| ESCAPE_JSON[c] }
     end
 
     def encode_to_hash(resource, *args)
@@ -121,6 +97,62 @@ module Garage
       def content_type
         mime, payload = controller.request.format.to_s.split("/", 2)
         "#{mime}/vnd.cookpad.dictionary+#{payload}"
+      end
+    end
+
+    class DataRenderer
+      JSON_ESCAPE_TABLE = { "<" => "\u003C", ">" => "\u003E" }.freeze
+
+      def self.render(*args)
+        new(*args).render
+      end
+
+      attr_reader :data, :options
+
+      def initialize(data, options)
+        @data, @options = data, options
+      end
+
+      def render
+        if msgpack?
+          to_msgpack
+        else
+          to_json
+        end
+      end
+
+      private
+
+      def dictionary?
+        !!options[:dictionary]
+      end
+
+      def msgpack?
+        !!options[:msgpack]
+      end
+
+      def convertible_to_dictionary?
+        dictionary? && data.is_a?(Array) && data.all? {|datum| datum.respond_to?(:[]) }
+      end
+
+      def indexed_data
+        data.index_by {|datum| datum["id"] }
+      end
+
+      def converted_data
+        if convertible_to_dictionary?
+          indexed_data
+        else
+          data
+        end
+      end
+
+      def to_msgpack
+        converted_data.to_msgpack
+      end
+
+      def to_json
+        Oj.dump(converted_data, mode: :compat).gsub(/([<>])/, JSON_ESCAPE_TABLE)
       end
     end
   end
