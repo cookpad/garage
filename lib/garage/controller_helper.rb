@@ -14,7 +14,7 @@ module Garage
         end
       end
 
-      before_filter Garage::HypermediaResponder
+      before_filter Garage::HypermediaFilter
       after_filter :notify_request_stats
 
       respond_to :json # , :msgpack

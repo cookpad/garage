@@ -4,26 +4,6 @@ module Garage
   module HypermediaResponder
     ESCAPE_JSON = { '<' => '\u003C', '>' => '\u003E' }.freeze
 
-    MIME_DICT = %r[application/vnd\.cookpad\.dictionary\+(json|x-msgpack)]
-
-    def self.symbolify(subtype)
-      subtype.sub(/^x-/, '').to_sym
-    end
-
-    def self.filter(controller)
-      if MIME_DICT =~ controller.request.format
-        controller.representation = :dictionary
-        controller.request.format = symbolify($1)
-      end
-
-      begin
-        fields = controller.params[:fields]
-        controller.field_selector = Garage::NestedFieldQuery::Selector.build(fields)
-      rescue Garage::NestedFieldQuery::InvalidQuery
-        raise HTTPStatus::BadRequest, "Invalid query in ?fields="
-      end
-    end
-
     def initialize(*args)
       super
       @cache = {}

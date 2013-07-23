@@ -10,6 +10,7 @@ require "garage/app_responder"
 require "garage/controller_helper"
 require "garage/representer"
 require "garage/restful_actions"
+require "garage/hypermedia_filter"
 
 module Garage
 end
