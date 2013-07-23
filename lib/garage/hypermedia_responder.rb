@@ -4,11 +4,6 @@ module Garage
   module HypermediaResponder
     ESCAPE_JSON = { '<' => '\u003C', '>' => '\u003E' }.freeze
 
-    def initialize(*args)
-      super
-      @cache = {}
-    end
-
     def mime_with(representation)
       mime, sub = controller.request.format.to_s.split('/', 2)
       "#{mime}/vnd.cookpad.#{representation.to_s}+#{sub}"
@@ -67,7 +62,7 @@ module Garage
     def encode_to_hash(resource, *args)
       if resource.respond_to?(:id)
         cache_key = "#{resource.class.name}:#{resource.id}"
-        @cache[cache_key] ||= _encode_to_hash(resource, *args)
+        cache[cache_key] ||= _encode_to_hash(resource, *args)
       else
         _encode_to_hash(resource, *args)
       end
@@ -106,6 +101,10 @@ module Garage
       hash = controller.cache_context.merge(r: resource.cache_key)
       hash[:s] = selector.canonical if selector
       hash
+    end
+
+    def cache
+      @cache ||= {}
     end
   end
 end
