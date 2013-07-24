@@ -2,42 +2,8 @@ require 'oj'
 
 module Garage
   module HypermediaResponder
-    ESCAPE_JSON = { '<' => '\u003C', '>' => '\u003E' }.freeze
-
-    MIME_DICT = %r[application/vnd\.cookpad\.dictionary\+(json|x-msgpack)]
-
-    def self.symbolify(subtype)
-      subtype.sub(/^x-/, '').to_sym
-    end
-
-    def self.filter(controller)
-      if MIME_DICT =~ controller.request.format
-        controller.representation = :dictionary
-        controller.request.format = symbolify($1)
-      end
-
-      begin
-        fields = controller.params[:fields]
-        controller.field_selector = Garage::NestedFieldQuery::Selector.build(fields)
-      rescue Garage::NestedFieldQuery::InvalidQuery
-        raise HTTPStatus::BadRequest, "Invalid query in ?fields="
-      end
-    end
-
-    def initialize(*args)
-      super
-      @cache = {}
-    end
-
-    def mime_with(representation)
-      mime, sub = controller.request.format.to_s.split('/', 2)
-      "#{mime}/vnd.cookpad.#{representation.to_s}+#{sub}"
-    end
-
     def display(resource, given_options={})
-      if controller.representation == :dictionary
-        given_options.merge!(:content_type => mime_with(controller.representation))
-      end
+      given_options[:content_type] = representation.content_type if representation.dictionary?
       if @options[:cacheable_with]
         delegate = Garage::CacheableListDelegate.new(resource, @options[:cacheable_with])
         representation = maybe_cache(delegate, controller.field_selector) {
@@ -50,44 +16,21 @@ module Garage
     end
 
     def render(data)
-      if controller.representation == :dictionary
-        data = render_dict(data)
-      end
+      DataRenderer.render(data, dictionary: representation.dictionary?)
+    end
 
-      case controller.request.format.to_sym
-      when :msgpack
-        data.to_msgpack
+    def transform(resources)
+      if resources.respond_to?(:map)
+        resources.map {|resource| encode_to_hash(resource, partial: true) }
       else
-        # default to JSON
-        encode_json_safe(data)
+        encode_to_hash(resources)
       end
-    end
-
-    def render_dict(data)
-      # might be prettier to check respond_to? etc. but at this point the data is
-      # serialized down to the lowest level structure (Array/Hash)
-      if data.is_a?(Array) && (data.empty? || data.first.respond_to?(:[]))
-        data.index_by {|entry| entry['id'] }
-      end
-      # TODO else 400?
-    end
-
-    def transform(resource)
-      if resource.respond_to?(:map)
-        resource.map {|r| encode_to_hash(r, partial: true, selector: controller.field_selector) }
-      else
-        encode_to_hash(resource, selector: controller.field_selector)
-      end
-    end
-
-    def encode_json_safe(doc)
-      Oj.dump(doc, :mode => :compat).gsub(/([<>])/) {|c| ESCAPE_JSON[c] }
     end
 
     def encode_to_hash(resource, *args)
       if resource.respond_to?(:id)
         cache_key = "#{resource.class.name}:#{resource.id}"
-        @cache[cache_key] ||= _encode_to_hash(resource, *args)
+        cache[cache_key] ||= _encode_to_hash(resource, *args)
       else
         _encode_to_hash(resource, *args)
       end
@@ -99,7 +42,7 @@ module Garage
       resource.represent!
       resource.default_url_options = {}
       resource.partial = options[:partial]
-      resource.selector = options[:selector]
+      resource.selector = options[:selector] || controller.field_selector
       maybe_cache(resource, options[:selector]) { resource.to_hash(:responder => self) }
     end
 
@@ -126,6 +69,71 @@ module Garage
       hash = controller.cache_context.merge(r: resource.cache_key)
       hash[:s] = selector.canonical if selector
       hash
+    end
+
+    def cache
+      @cache ||= {}
+    end
+
+    def representation
+      @representation ||= Representation.new(controller)
+    end
+
+    class Representation
+      attr_reader :controller
+
+      def initialize(controller)
+        @controller = controller
+      end
+
+      def dictionary?
+        controller.representation == :dictionary
+      end
+
+      def content_type
+        mime, payload = controller.request.format.to_s.split("/", 2)
+        "#{mime}/vnd.cookpad.dictionary+#{payload}"
+      end
+    end
+
+    class DataRenderer
+      JSON_ESCAPE_TABLE = { "<" => "\u003C", ">" => "\u003E" }.freeze
+
+      def self.render(*args)
+        new(*args).render
+      end
+
+      attr_reader :data, :options
+
+      def initialize(data, options = {})
+        @data, @options = data, options
+      end
+
+      def render
+        Oj.dump(converted_data, mode: :compat).gsub(/([<>])/, JSON_ESCAPE_TABLE)
+      end
+
+      private
+
+      def dictionary?
+        !!options[:dictionary]
+      end
+
+      def convertible_to_dictionary?
+        dictionary? && data.is_a?(Array) && data.all? {|datum| datum.respond_to?(:[]) }
+      end
+
+      def indexed_data
+        data.index_by {|datum| datum["id"] }
+      end
+
+      def converted_data
+        if convertible_to_dictionary?
+          indexed_data
+        else
+          data
+        end
+      end
     end
   end
 end
