@@ -1,5 +1,95 @@
 require "spec_helper"
 
+describe Garage::HypermediaResponder do
+  before do
+    controller.responder = responder
+    controller.resource = resource
+  end
+
+  let(:responder) do
+    Class.new(ActionController::Responder) do
+      include Garage::HypermediaResponder
+    end
+  end
+
+  let(:controller) do
+    Class.new(ActionController::Base) do
+      respond_to :json
+
+      class << self
+        attr_accessor :resource
+
+        def name
+          "ExamplesController"
+        end
+      end
+
+      attr_accessor :field_selector, :representation
+
+      def show
+        respond_with self.class.resource
+      end
+    end
+  end
+
+  let(:resource_class) do
+    Class.new do
+      attr_accessor :controller, :default_url_options, :partial, :selector
+
+      def cacheable?
+        false
+      end
+
+      def represent!
+      end
+
+      def to_hash(options = {})
+        { name: "example" }
+      end
+    end
+  end
+
+  let(:resource) do
+    resource_class.new
+  end
+
+  let(:hash) do
+    { name: "example" }
+  end
+
+  let(:env) do
+    {
+      "HTTP_ACCEPT" => "application/json",
+      "PATH_INFO" => "/",
+      "REQUEST_METHOD" => "GET",
+      "rack.input" => "",
+    }
+  end
+
+  describe "#display" do
+    it "calls resource.represent! method" do
+      resource.should_receive(:represent!)
+      controller.action(:show).call(env)
+    end
+
+    context "with non-mappable resource" do
+      it "renders a given resource as a Hash" do
+        controller.action(:show).call(env)[2].body.should == { name: "example" }.to_json
+      end
+    end
+
+    context "with mappable resource" do
+      let(:resource) do
+        [super()]
+      end
+
+      it "renders a given resource as an Array of Hashes" do
+        controller.action(:show).call(env)[2].body.should == [{ name: "example" }].to_json
+      end
+    end
+  end
+end
+
 describe Garage::HypermediaResponder::DataRenderer do
   describe ".render" do
     subject do
