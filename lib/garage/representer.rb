@@ -1,5 +1,5 @@
 module Garage::Representer
-  attr_accessor :default_url_options, :representer_attrs, :partial, :selector
+  attr_accessor :controller, :default_url_options, :representer_attrs, :partial, :selector
 
   def partial?
     @partial
