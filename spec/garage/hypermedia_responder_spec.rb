@@ -72,6 +72,24 @@ describe Garage::HypermediaResponder do
       controller.action(:show).call(env)
     end
 
+    context "with resource which changes depending on controller" do
+      before do
+        env["QUERY_STRING"] = "name=foo"
+      end
+
+      let(:resource_class) do
+        Class.new(super()) do
+          def to_hash(options = {})
+            { name: controller.params[:name] }
+          end
+        end
+      end
+
+      it "allows resource to refer to controller" do
+        controller.action(:show).call(env)[2].body.should == { name: "foo" }.to_json
+      end
+    end
+
     context "with non-mappable resource" do
       it "renders a given resource as a Hash" do
         controller.action(:show).call(env)[2].body.should == { name: "example" }.to_json

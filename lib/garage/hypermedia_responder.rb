@@ -40,6 +40,7 @@ module Garage
 
     def _encode_to_hash(resource, options = {})
       resource.represent!
+      resource.controller = controller
       resource.default_url_options = {}
       resource.partial = options[:partial]
       resource.selector = options[:selector] || controller.field_selector
