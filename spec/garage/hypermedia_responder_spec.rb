@@ -34,11 +34,7 @@ describe Garage::HypermediaResponder do
 
   let(:resource_class) do
     Class.new do
-      attr_accessor :params, :default_url_options, :partial, :selector
-
-      def self.params
-        [:key1]
-      end
+      include Garage::Representer
 
       def cacheable?
         false
@@ -83,6 +79,8 @@ describe Garage::HypermediaResponder do
 
       let(:resource_class) do
         Class.new(super()) do
+          param :key1
+
           def to_hash(options = {})
             params
           end
