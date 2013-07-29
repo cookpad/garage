@@ -1,5 +1,5 @@
 module Garage::Representer
-  attr_accessor :controller, :default_url_options, :representer_attrs, :partial, :selector
+  attr_accessor :params, :default_url_options, :representer_attrs, :partial, :selector
 
   def partial?
     @partial
@@ -87,6 +87,14 @@ module Garage::Representer
       {:definitions => representer_attrs.grep(Definition).map {|definition| definition.name},
        :links => representer_attrs.grep(Link).map {|link| link.options[:as] ? {link.rel => {'as' => link.options[:as]}} : link.rel}
       }
+    end
+
+    def param(*keys)
+      keys.each {|key| params << key }
+    end
+
+    def params
+      @params ||= []
     end
   end
 

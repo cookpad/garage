@@ -34,7 +34,7 @@ describe Garage::HypermediaResponder do
 
   let(:resource_class) do
     Class.new do
-      attr_accessor :controller, :default_url_options, :partial, :selector
+      include Garage::Representer
 
       def cacheable?
         false
@@ -72,21 +72,23 @@ describe Garage::HypermediaResponder do
       controller.action(:show).call(env)
     end
 
-    context "with resource which changes depending on controller" do
+    context "with resource which changes depending on controller.params" do
       before do
-        env["QUERY_STRING"] = "name=foo"
+        env["QUERY_STRING"] = "key1=value1&key2=value2"
       end
 
       let(:resource_class) do
         Class.new(super()) do
+          param :key1
+
           def to_hash(options = {})
-            { name: controller.params[:name] }
+            params
           end
         end
       end
 
-      it "allows resource to refer to controller" do
-        controller.action(:show).call(env)[2].body.should == { name: "foo" }.to_json
+      it "allows resource to refer to specified params" do
+        controller.action(:show).call(env)[2].body.should == { key1: "value1" }.to_json
       end
     end
 
