@@ -17,6 +17,10 @@ module Garage
 
     private
 
+    def distinct?
+      !!@options[:distinct_by]
+    end
+
     def hide_total?
       !!@options[:hard_limit]
     end
@@ -35,8 +39,16 @@ module Garage
         rs.instance_variable_set(:@total_count, limit)
       elsif @options[:cacheable_with]
         delegate = CacheableListDelegate.new(rs, @options[:cacheable_with])
-        total = Rails.cache.fetch(delegate.cache_key_count) { rs.total_count }
+        total = Rails.cache.fetch(delegate.cache_key_count) { total_count(rs) }
         rs.instance_variable_set(:@total_count, total) # OMG
+      end
+    end
+
+    def total_count(rs)
+      if distinct?
+        rs.total_count(@options[:distinct_by], distinct: true)
+      else
+        rs.total_count
       end
     end
 
@@ -48,11 +60,12 @@ module Garage
       rs = rs.page(controller.params[:page] || 1).per(per_page)
 
       set_total_count(rs, per_page)
-      construct_links(rs, per_page)
 
       unless hide_total?
-        controller.response.headers['X-List-TotalCount'] = rs.total_count.to_s
+        controller.response.headers['X-List-TotalCount'] = total_count(rs).to_s
       end
+
+      construct_links(rs, per_page)
 
       if hide_total?
         if rs.offset_value > hard_limit
