@@ -65,6 +65,7 @@ module Garage
         controller.response.headers['X-List-TotalCount'] = total_count(rs).to_s
       end
 
+      # construct_links must be called after calling rs.total_count to avoid invalid count cache
       construct_links(rs, per_page)
 
       if hide_total?
