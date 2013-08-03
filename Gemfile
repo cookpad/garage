@@ -13,7 +13,7 @@ end
 
 group :development, :test do
   gem "mysql2"
-  gem "rspec-rails"
+  gem "rspec-rails", "~> 2.14"
 end
 
 # Declare your gem's dependencies in garage.gemspec.

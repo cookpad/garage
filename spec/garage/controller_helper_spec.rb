@@ -47,11 +47,11 @@ describe Garage::ControllerHelper do
     end
 
     let(:user) do
-      mock(id: 1)
+      double(id: 1)
     end
 
     let(:current_resource_owner) do
-      mock(id: 1)
+      double(id: 1)
     end
 
     context "without current resource owner" do
@@ -66,7 +66,7 @@ describe Garage::ControllerHelper do
 
     context "with different users" do
       let(:current_resource_owner) do
-        mock(id: 2)
+        double(id: 2)
       end
 
       it "returns false" do
