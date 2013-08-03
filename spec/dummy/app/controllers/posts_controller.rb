@@ -14,6 +14,12 @@ class PostsController < ApiController
 
   private
 
+  def require_new_resource
+    @resource = Post.new
+    @resource.user = current_resource_owner
+    @resource
+  end
+
   def require_resource
     @resource = Post.find(params[:id])
   end
@@ -27,9 +33,18 @@ class PostsController < ApiController
       end
   end
 
+  def create_resource
+    @resource.update_attributes!(params.slice(:title, :body))
+    @resource
+  end
+
   def update_resource
     @resource.update_attributes!(params.slice(:title, :body))
     @resource
+  end
+
+  def destroy_resource
+    @resource.destroy
   end
 
   def require_index_resource_authorization
