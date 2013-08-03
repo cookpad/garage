@@ -11,6 +11,10 @@ require "garage/controller_helper"
 require "garage/representer"
 require "garage/restful_actions"
 require "garage/hypermedia_filter"
+require "garage/ability_helper"
+
+require "garage/ability"
+require "garage/exceptions"
 
 module Garage
 end
