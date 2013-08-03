@@ -1,34 +1,60 @@
 class PostsController < ApiController
-  def index
-    authorize! :index_post, Post
-    if params[:user_id]
-      user = User.find(params[:user_id])
-      respond_with user.posts, cacheable_with: user, paginate: true
-    else
-      respond_with Post.scoped, paginate: true
-    end
-  end
+  include Garage::RestfulActions
+
+  before_filter :require_hide_resource_authorization, only: :hide
+  before_filter :require_capped_resource_authorization, only: :capped
 
   def hide
-    authorize! :index_post, Post
     respond_with Post.scoped, paginate: true, hide_total: true
   end
 
   def capped
-    authorize! :index_post, Post
     respond_with Post.scoped, paginate: true, hard_limit: 100
   end
 
-  def show
-    @post = Post.find(params[:id])
-    authorize! :show_post, @post
-    respond_with @post
+  private
+
+  def require_resource
+    @resource = Post.find(params[:id])
   end
 
-  def update
-    @post = Post.find(params[:id])
-    authorize! :edit_post, @post
-    @post.update_attributes!(params.slice(:title, :body))
-    respond_with @post
+  def require_resources
+    @resources =
+      if has_user?
+        user.posts
+      else
+        Post.scoped
+      end
+  end
+
+  def update_resource
+    @resource.update_attributes!(params.slice(:title, :body))
+    @resource
+  end
+
+  def require_index_resource_authorization
+    authorize! :index_post
+  end
+
+  def require_hide_resource_authorization
+    authorize! :index_post
+  end
+
+  def require_capped_resource_authorization
+    authorize! :index_post
+  end
+
+  def respond_with_resources_options
+    options = { paginate: true }
+    options[:cacheable_with] = user if has_user?
+    options
+  end
+
+  def has_user?
+    params[:user_id]
+  end
+
+  def user
+    User.find(params[:user_id])
   end
 end

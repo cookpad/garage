@@ -8,7 +8,7 @@ class Ability
 
     can :index_post
     can :show_post
-    can :edit_post do |post|
+    can :update_post do |post|
       post.user_id == user.id
     end
   end

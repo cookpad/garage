@@ -14,7 +14,7 @@ module Garage
       rules[action] && rules[action].match?(subject)
     end
 
-    def authorize!(action, subject)
+    def authorize!(action, subject = nil)
       can?(action, subject) or raise Unauthorized, "Not allowed to process the request operation"
     end
   end
