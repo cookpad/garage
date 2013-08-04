@@ -5,7 +5,8 @@ describe Garage do
   let(:alice) { create(:user) }
   let(:bob) { create(:user )}
   let(:the_post) { create(:post, user: alice, title: "Foo") }
-  let(:token) { client_is_authorized(application, requester).token }
+  let(:token) { client_is_authorized(application, requester, scopes: scopes).token }
+  let(:scopes) { 'public write_post' }
 
   before do
     with_access_token_header token
@@ -37,6 +38,14 @@ describe Garage do
       put "/posts/#{the_post.id}", title: "Bar"
       status
     }
+
+    context 'without a valid scope' do
+      let(:scopes) { 'public' }
+      let(:requester) { alice }
+      it 'returns 403' do
+        subject.should == 403
+      end
+    end
 
     context 'with alice as a requester' do
       let(:requester) { alice }

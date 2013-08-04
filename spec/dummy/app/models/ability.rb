@@ -8,14 +8,17 @@ class Ability
 
     can :index_post
     can :show_post
-    can :create_post do |post|
-      post.user_id = user.id
-    end
-    can :update_post do |post|
-      post.user_id == user.id
-    end
-    can :destroy_post do |post|
-      post.user_id == user.id
+
+    if scopes.include?(:write_post)
+      can :create_post do |post|
+        post.user_id = user.id
+      end
+      can :update_post do |post|
+        post.user_id == user.id
+      end
+      can :destroy_post do |post|
+        post.user_id == user.id
+      end
     end
   end
 end
