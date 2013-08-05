@@ -11,7 +11,7 @@ class Ability
 
     if scopes.include?(:write_post)
       can :create_post do |post|
-        post.user_id = user.id
+        post.user_id == user.id
       end
       can :update_post do |post|
         post.user_id == user.id
