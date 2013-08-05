@@ -4,8 +4,7 @@ module Garage
 
     included do
       before_filter :require_resource, :only => [:show, :update, :destroy]
-      before_filter :require_resources, :only => :index
-      before_filter :require_new_resource, :only => :create
+      before_filter :require_resource_container, :only => [:index, :create]
       before_filter :require_index_resource_authorization, :only => :index
       before_filter :require_show_resource_authorization, :only => :show
       before_filter :require_create_resource_authorization, :only => :create
@@ -15,7 +14,7 @@ module Garage
 
     # Public: List resources
     def index
-      respond_with @resources, respond_with_resources_options
+      respond_with @resource, respond_with_resources_options
     end
 
     # Public: Get the resource
@@ -42,7 +41,7 @@ module Garage
     private
 
     def require_index_resource_authorization
-      authorize! authorization_key, current_resource_owner
+      authorize! authorization_key, @resource
     end
 
     def require_show_resource_authorization
@@ -67,13 +66,8 @@ module Garage
     end
 
     # Override to set @resources
-    def require_resources
-      raise NotImplementedError, "#{self.class}#require_resources is not implemented"
-    end
-
-    # Override to set @resource
-    def require_new_resource
-      raise NotImplementedError, "#{self.class}#require_new_resource is not implemented"
+    def require_resource_container
+      raise NotImplementedError, "#{self.class}#require_resource_container is not implemented"
     end
 
     # Override to create a new resource
