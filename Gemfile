@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 3.2.11"
-gem "cancan"
 gem "kaminari"
 
 group :test do
@@ -14,7 +13,7 @@ end
 
 group :development, :test do
   gem "mysql2"
-  gem "rspec-rails"
+  gem "rspec-rails", "~> 2.14"
 end
 
 # Declare your gem's dependencies in garage.gemspec.

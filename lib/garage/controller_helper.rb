@@ -8,11 +8,11 @@ module Garage
 
       # TODO current_user
 
-      if defined?(CanCan)
-        rescue_from CanCan::AccessDenied do |exception|
-          render :json => { :code => 403, :error => exception.message }, :status => 403
-        end
+      rescue_from Garage::Unauthorized do |exception|
+        render json: { code: 403, error: exception.message }, status: 403
       end
+
+      include Garage::AbilityHelper
 
       before_filter Garage::HypermediaFilter
       after_filter :notify_request_stats
