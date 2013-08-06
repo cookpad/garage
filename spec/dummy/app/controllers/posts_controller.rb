@@ -9,7 +9,7 @@ class PostsController < ApiController
   before_filter :require_capped_resource_authorization, only: :capped
 
   def private
-    respond_with @resource
+    respond_with @resource.to_resource # FIXME
   end
 
   def hide
@@ -32,13 +32,9 @@ class PostsController < ApiController
 
   def require_resource_container
     if has_user?
-      @resource = user.posts
-      @resource.extend(Garage::OwnableResource)
-      @resource.owned_by!(user)
-      @resource
+      @resource = Garage::ResourceMeta.new(user.posts, Post, user: user)
     else
-      @resource = Post.scoped
-      @resource
+      @resource = Garage::ResourceMeta.new(Post.scoped, Post)
     end
   end
 
@@ -68,10 +64,7 @@ class PostsController < ApiController
   end
 
   def require_private_resource
-    @resource = @user.posts
-    @resource.extend(Garage::OwnableResource)
-    @resource.owned_by!(@user)
-    @resource
+    @resource = Garage::ResourceMeta.new(@user.posts, Post, user: @user)
   end
 
   def require_private_resource_authorization

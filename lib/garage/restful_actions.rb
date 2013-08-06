@@ -10,31 +10,38 @@ module Garage
 
     # Public: List resources
     def index
-      respond_with @resource, respond_with_resources_options
+      respond_with finalize_resource, respond_with_resources_options
     end
 
     # Public: Get the resource
     def show
-      respond_with @resource, respond_with_resource_options
+      respond_with finalize_resource, respond_with_resource_options
     end
 
     # Public: Create a new resource
     def create
       @resource = create_resource
-      respond_with @resource, :location => location
+      respond_with finalize_resource, :location => location
     end
 
     # Public: Update the resource
     def update
-      respond_with update_resource
+      @resource = update_resource
+      respond_with finalize_resource
     end
 
     # Public: Delete the resource
     def destroy
-      respond_with destroy_resource
+      @resource = destroy_resource
+      respond_with finalize_resource
     end
 
     private
+
+    def finalize_resource
+      @resource = @resource.to_resource if @resource.respond_to?(:to_resource)
+      @resource
+    end
 
     def require_action_permission
       authorize! authorization_key, @resource
