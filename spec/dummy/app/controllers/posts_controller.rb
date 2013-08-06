@@ -33,8 +33,12 @@ class PostsController < ApiController
   def require_resource_container
     if has_user?
       @resource = user.posts
+      @resource.extend(Garage::OwnableResource)
+      @resource.owned_by!(user)
+      @resource
     else
       @resource = Post.scoped
+      @resource
     end
   end
 
@@ -68,7 +72,8 @@ class PostsController < ApiController
   end
 
   def require_private_resource
-    @resource = @user.posts.extend(Garage::OwnableResource)
+    @resource = @user.posts
+    @resource.extend(Garage::OwnableResource)
     @resource.owned_by!(@user)
     @resource
   end
