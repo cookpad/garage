@@ -59,10 +59,6 @@ class PostsController < ApiController
     @resource
   end
 
-  def require_index_resource_authorization
-    authorize! :index_post, @resource
-  end
-
   def require_hide_resource_authorization
     authorize! :index_post, @resource
   end

@@ -5,11 +5,7 @@ module Garage
     included do
       before_filter :require_resource, :only => [:show, :update, :destroy]
       before_filter :require_resource_container, :only => [:index, :create]
-      before_filter :require_index_resource_authorization, :only => :index
-      before_filter :require_show_resource_authorization, :only => :show
-      before_filter :require_create_resource_authorization, :only => :create
-      before_filter :require_update_resource_authorization, :only => :update
-      before_filter :require_destroy_resource_authorization, :only => :destroy
+      before_filter :require_action_permission, :only => [:index, :create, :show, :update, :destroy]
     end
 
     # Public: List resources
@@ -40,23 +36,7 @@ module Garage
 
     private
 
-    def require_index_resource_authorization
-      authorize! authorization_key, @resource
-    end
-
-    def require_show_resource_authorization
-      authorize! authorization_key, @resource
-    end
-
-    def require_create_resource_authorization
-      authorize! authorization_key, @resource
-    end
-
-    def require_update_resource_authorization
-      authorize! authorization_key, @resource
-    end
-
-    def require_destroy_resource_authorization
+    def require_action_permission
       authorize! authorization_key, @resource
     end
 
