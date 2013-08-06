@@ -64,7 +64,7 @@ class PostsController < ApiController
   end
 
   def require_private_resource
-    @resource = Garage::ResourceMeta.new(@user.posts, Post, user: @user)
+    @resource = Garage::ResourceMeta.new(@user.posts, Post, user: @user, private: true)
   end
 
   def require_private_resource_authorization

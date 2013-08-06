@@ -19,7 +19,23 @@ class Post < ActiveRecord::Base
     user
   end
 
-  def owned_by?(other_user)
-    user.id == other_user.id
+  def effective_permissions(other)
+    Garage::Permissions.new(other) do |perms|
+      perms.permits! :read
+      perms.permits! :write if owner == other
+    end
+  end
+
+  def self.effective_permissions(other, target)
+    Garage::Permissions.new(other) do |perms|
+      if !target[:user]
+        # public resource i.e. /posts
+        perms.permits! :read, :write
+      elsif target[:private]
+        perms.permits! :read, :write if target[:user] == other
+      else
+        perms.permits! :read, :write
+      end
+    end
   end
 end

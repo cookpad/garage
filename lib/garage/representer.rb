@@ -44,6 +44,10 @@ module Garage::Representer
     self.representer_attrs += self.class.representer_attrs
   end
 
+  def effective_permissions(user)
+    raise NotImplementedError, "#{self.class}#effective_permissions must be implemented"
+  end
+
   def self.representers
     @representers ||= []
   end

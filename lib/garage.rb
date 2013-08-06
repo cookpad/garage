@@ -16,6 +16,7 @@ require "garage/ability_helper"
 require "garage/ability"
 require "garage/exceptions"
 require "garage/resource_meta"
+require "garage/permissions"
 
 module Garage
 end
