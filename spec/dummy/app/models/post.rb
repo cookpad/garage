@@ -5,7 +5,6 @@ class Post < ActiveRecord::Base
   has_many :comments
 
   include Garage::Representer
-  extend Garage::OwnableResource
 
   property :id
   property :title

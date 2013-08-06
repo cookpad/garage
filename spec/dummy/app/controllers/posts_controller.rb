@@ -68,7 +68,7 @@ class PostsController < ApiController
   end
 
   def require_private_resource
-    @resource = @user.posts
+    @resource = @user.posts.extend(Garage::OwnableResource)
     @resource.owned_by!(@user)
     @resource
   end
