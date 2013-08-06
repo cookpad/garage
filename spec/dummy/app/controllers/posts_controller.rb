@@ -69,8 +69,7 @@ class PostsController < ApiController
 
   def require_private_resource
     @resource = @user.posts
-    user = @user
-    @resource.define_singleton_method(:user) { user }
+    @resource.owned_by!(@user)
     @resource
   end
 

@@ -11,17 +11,17 @@ class Ability
 
     if scopes.include?(:read_private_post)
       can :index_private_post do |resource|
-        resource.user.id == user.id
+        resource.owned_by? user
       end
     end
 
     if scopes.include?(:write_post)
       can :create_post
       can :update_post do |resource|
-        resource.user.id == user.id
+        resource.owned_by? user
       end
       can :destroy_post do |resource|
-        resource.user.id == user.id
+        resource.owned_by? user
       end
     end
   end

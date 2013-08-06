@@ -5,6 +5,7 @@ class Post < ActiveRecord::Base
   has_many :comments
 
   include Garage::Representer
+  extend Garage::OwnableResource
 
   property :id
   property :title
@@ -17,5 +18,9 @@ class Post < ActiveRecord::Base
 
   def owner
     user
+  end
+
+  def owned_by?(other_user)
+    user.id == other_user.id
   end
 end

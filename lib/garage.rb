@@ -13,6 +13,7 @@ require "garage/restful_actions"
 require "garage/hypermedia_filter"
 require "garage/ability_helper"
 
+require "garage/ownable_resource"
 require "garage/ability"
 require "garage/exceptions"
 
