@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Cache-Control headers' do
   let(:application) { create(:application) }
   let(:user) { create(:user) }
-  let(:token) { client_is_authorized(application, user, :scopes => "read_collection").token }
+  let(:token) { client_is_authorized(application, user, :scopes => "public").token }
   let(:path) { "/users/#{user.id}/posts" }
 
   before do

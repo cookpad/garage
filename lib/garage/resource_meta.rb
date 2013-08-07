@@ -1,13 +1,17 @@
 module Garage
   class ResourceMeta
-    def initialize(resource, klass, args = {})
+    include Garage::Authorizable
+
+    attr_reader :resource_class
+
+    def initialize(resource, resource_class, args = {})
       @resource = resource
-      @klass = klass
+      @resource_class = resource_class
       @args  = args
     end
 
     def effective_permissions(user)
-      klass.effective_permissions(user, @args)
+      resource_class.effective_permissions(user, @args)
     end
 
     def to_resource

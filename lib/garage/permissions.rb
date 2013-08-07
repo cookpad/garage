@@ -10,6 +10,11 @@ module Garage
       yield self if block_given?
     end
 
+    def authorize!(action)
+      exists?          or raise Unauthorized.new(user, action, :not_found)
+      permits?(action) or raise Unauthorized.new(user, action, :forbidden)
+    end
+
     def for(action)
       Permission.new(@user, action, @perms[action])
     end

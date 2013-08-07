@@ -5,6 +5,7 @@ class Post < ActiveRecord::Base
   has_many :comments
 
   include Garage::Representer
+  include Garage::Authorizable
 
   property :id
   property :title
@@ -28,12 +29,10 @@ class Post < ActiveRecord::Base
 
   def self.effective_permissions(other, target)
     Garage::Permissions.new(other) do |perms|
-      if !target[:user]
-        # public resource i.e. /posts
-        perms.permits! :read, :write
-      elsif target[:private]
+      if target[:user]
         perms.permits! :read, :write if target[:user] == other
       else
+        # public resource i.e. /posts
         perms.permits! :read, :write
       end
     end

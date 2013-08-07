@@ -12,8 +12,6 @@ module Garage
         render json: { code: 403, error: exception.message }, status: 403
       end
 
-      include Garage::AbilityHelper
-
       before_filter Garage::HypermediaFilter
       after_filter :notify_request_stats
 

@@ -5,7 +5,7 @@ module Garage
     included do
       before_filter :require_resource, :only => [:show, :update, :destroy]
       before_filter :require_resource_container, :only => [:index, :create]
-      before_filter :require_action_permission, :only => [:index, :create, :show, :update, :destroy]
+      before_filter :require_action_permission_crud, :only => [:index, :create, :show, :update, :destroy]
     end
 
     # Public: List resources
@@ -43,9 +43,25 @@ module Garage
       @resource
     end
 
-    def require_action_permission
-      authorize! authorization_key, @resource
+    def current_operation
+      if %w[create update destroy].include?(action_name)
+        :write
+      else
+        :read
+      end
     end
+
+    def ability_from_token
+      Garage::TokenScope.ability(current_resource_owner, doorkeeper_token.scopes)
+    end
+
+    def require_action_permission
+      ability_from_token.access!(@resource.resource_class, current_operation)
+      @resource.authorize!(current_resource_owner, current_operation)
+    end
+
+    # alias so that controllers can use without breaking built-in CRUD filter
+    alias :require_action_permission_crud :require_action_permission
 
     # Override to set @resource
     def require_resource
@@ -72,19 +88,9 @@ module Garage
       raise NotImplementedError, "#{self.class}#destroy_resource is not implemented"
     end
 
-    # Pantry::BookmarkTagsController -> "bookmark_tag"
-    def resource_name
-      @resource_name ||= self.class.name.split("::").last.sub(/Controller$/, "").singularize.underscore
-    end
-
     # Pantry::BookmarkTagsController -> params["bookmark_tag"]
     def resource_params
       params[resource_name]
-    end
-
-    # Pantry::BookmarkTagsController#index -> "index_bookmark_tag"
-    def authorization_key
-      :"#{action_name}_#{resource_name}"
     end
 
     # Override this if you want to pass options to respond_with in index action

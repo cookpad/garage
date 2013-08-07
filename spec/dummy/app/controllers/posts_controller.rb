@@ -3,21 +3,19 @@ class PostsController < ApiController
 
   before_filter :require_user, only: :private
   before_filter :require_private_resource, only: :private
-  before_filter :require_private_resource_authorization, only: :private
-
-  before_filter :require_hide_resource_authorization, only: :hide
-  before_filter :require_capped_resource_authorization, only: :capped
+  before_filter :require_index_resource, only: [:hide, :capped]
+  before_filter :require_action_permission, only: [:private, :hide, :capped]
 
   def private
     respond_with @resource.to_resource # FIXME
   end
 
   def hide
-    respond_with Post.scoped, paginate: true, hide_total: true
+    respond_with @resource.to_resource, paginate: true, hide_total: true
   end
 
   def capped
-    respond_with Post.scoped, paginate: true, hard_limit: 100
+    respond_with @resource.to_resource, paginate: true, hard_limit: 100
   end
 
   private
@@ -55,20 +53,12 @@ class PostsController < ApiController
     @resource
   end
 
-  def require_hide_resource_authorization
-    authorize! :index_post, @resource
-  end
-
-  def require_capped_resource_authorization
-    authorize! :index_post, @resource
-  end
-
   def require_private_resource
-    @resource = Garage::ResourceMeta.new(@user.posts, Post, user: @user, private: true)
+    @resource = Garage::ResourceMeta.new(@user.posts, PrivatePost, user: @user)
   end
 
-  def require_private_resource_authorization
-    authorize! :index_private_post, @resource
+  def require_index_resource
+    @resource = Garage::ResourceMeta.new(Post.scoped, Post)
   end
 
   def respond_with_resources_options

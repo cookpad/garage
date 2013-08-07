@@ -9,9 +9,5 @@ module Garage
     def allowed?
       @perm == :ok
     end
-
-    def to_status
-      @perm # :forbidden, :not_found
-    end
   end
 end
