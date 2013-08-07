@@ -10,8 +10,8 @@ module Garage
       @args  = args
     end
 
-    def effective_permissions(user)
-      resource_class.effective_permissions(user, @args)
+    def build_permissions(perms, user)
+      resource_class.build_permissions(perms, user, @args)
     end
 
     def to_resource

@@ -26,7 +26,7 @@ module Garage
       end
 
       def access!(klass, action)
-        allow?(klass, action) or raise Garage::Unauthorized.new(@user, action, :forbidden)
+        allow?(klass, action) or raise Garage::Unauthorized.new(@user, action, klass, :forbidden)
       end
 
       def allow?(klass, action)

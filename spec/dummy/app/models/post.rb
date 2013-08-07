@@ -20,21 +20,17 @@ class Post < ActiveRecord::Base
     user
   end
 
-  def effective_permissions(other)
-    Garage::Permissions.new(other) do |perms|
-      perms.permits! :read
-      perms.permits! :write if owner == other
-    end
+  def build_permissions(perms, other)
+    perms.permits! :read
+    perms.permits! :write if owner == other
   end
 
-  def self.effective_permissions(other, target)
-    Garage::Permissions.new(other) do |perms|
-      if target[:user]
-        perms.permits! :read, :write if target[:user] == other
-      else
-        # public resource i.e. /posts
-        perms.permits! :read, :write
-      end
+  def self.build_permissions(perms, other, target)
+    if target[:user]
+      perms.permits! :read, :write if target[:user] == other
+    else
+      # public resource i.e. /posts
+      perms.permits! :read, :write
     end
   end
 end

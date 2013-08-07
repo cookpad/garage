@@ -2,17 +2,17 @@ require "garage/permission"
 
 module Garage
   class Permissions
-    attr_accessor :user
+    attr_accessor :user, :resource_class
 
-    def initialize(user, permissions = { read: :forbidden, write: :forbidden })
+    def initialize(user, resource_class, permissions = { read: :forbidden, write: :forbidden })
       @user = user
+      @resource_class = resource_class
       @perms = permissions
-      yield self if block_given?
     end
 
     def authorize!(action)
-      exists?          or raise Unauthorized.new(user, action, :not_found)
-      permits?(action) or raise Unauthorized.new(user, action, :forbidden)
+      exists?          or raise Unauthorized.new(user, action, resource_class, :not_found)
+      permits?(action) or raise Unauthorized.new(user, action, resource_class, :forbidden)
     end
 
     def for(action)
