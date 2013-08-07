@@ -25,8 +25,12 @@ module Garage
         @access = access
       end
 
+      def missing_scopes(klass, action)
+        TokenScope.configuration.required_scopes(klass, action)
+      end
+
       def access!(klass, action)
-        allow?(klass, action) or raise Garage::Unauthorized.new(@user, action, klass, :forbidden)
+        allow?(klass, action) or raise Garage::Unauthorized.new(@user, action, klass, :forbidden, missing_scopes(klass, action))
       end
 
       def allow?(klass, action)

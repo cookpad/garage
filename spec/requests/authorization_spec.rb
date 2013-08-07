@@ -22,6 +22,7 @@ describe Garage do
       let(:requester) { alice }
       it 'returns 403' do
         subject.should == 403
+        last_response.should match /Missing scope.*read_private_post/
       end
     end
 
