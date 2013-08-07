@@ -18,8 +18,16 @@ module Garage
       @resource
     end
 
+    def respond_to?(method, *args)
+      super || @resource.respond_to?(method, *args)
+    end
+
     def method_missing(method, *args, &block)
-      @resource.send(method, *args, &block)
+      if @resource.respond_to?(method)
+        @resource.send(method, *args, &block)
+      else
+        super
+      end
     end
   end
 end
