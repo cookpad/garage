@@ -6,17 +6,17 @@ module Garage
     end
 
     def self.configuration
-      @config
+      @config or raise "Garage::TokenScope.configure must be called in initializer"
     end
 
     def self.all_scopes
-      @config.scopes.values
+      configuration.scopes.values
     end
 
     def self.ability(user, scopes)
       scopes = scopes.map(&:to_sym)
       scopes = [:public] if scopes.empty? # backward compatiblity for scopes without any scope, assuming public
-      ability = Ability.new(user, @config.scopes.slice(*scopes).values.map(&:accessible_resources).flatten(1))
+      ability = Ability.new(user, configuration.scopes.slice(*scopes).values.map(&:accessible_resources).flatten(1))
     end
 
     class Ability
