@@ -55,8 +55,12 @@ module Garage
       Garage::TokenScope.ability(current_resource_owner, doorkeeper_token.scopes)
     end
 
+    def restful_resource_class
+      @resource.resource_class
+    end
+
     def require_action_permission
-      ability_from_token.access!(@resource.resource_class, current_operation)
+      ability_from_token.access!(restful_resource_class, current_operation)
       @resource.authorize!(current_resource_owner, current_operation)
     end
 
