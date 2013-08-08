@@ -30,9 +30,9 @@ class PostsController < ApiController
 
   def require_resource_container
     if has_user?
-      @resource = Garage::ResourceMeta.new(user.posts, Post, user: user)
+      @resource = Garage::MetaResource.new(user.posts, Post, user: user)
     else
-      @resource = Garage::ResourceMeta.new(Post.scoped, Post)
+      @resource = Garage::MetaResource.new(Post.scoped, Post)
     end
   end
 
@@ -54,11 +54,11 @@ class PostsController < ApiController
   end
 
   def require_private_resource
-    @resource = Garage::ResourceMeta.new(@user.posts, PrivatePost, user: @user)
+    @resource = Garage::MetaResource.new(@user.posts, PrivatePost, user: @user)
   end
 
   def require_index_resource
-    @resource = Garage::ResourceMeta.new(Post.scoped, Post)
+    @resource = Garage::MetaResource.new(Post.scoped, Post)
   end
 
   def respond_with_resources_options

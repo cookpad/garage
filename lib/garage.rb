@@ -14,7 +14,7 @@ require "garage/hypermedia_filter"
 
 require "garage/exceptions"
 require "garage/authorizable"
-require "garage/resource_meta"
+require "garage/meta_resource"
 require "garage/permissions"
 require "garage/token_scope"
 

@@ -1,5 +1,5 @@
 module Garage
-  class ResourceMeta
+  class MetaResource
     include Garage::Authorizable
 
     attr_reader :resource_class
