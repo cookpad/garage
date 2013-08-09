@@ -64,8 +64,10 @@ module Garage
       @resource.authorize!(current_resource_owner, current_operation)
     end
 
-    # alias so that controllers can use without breaking built-in CRUD filter
-    alias :require_action_permission_crud :require_action_permission
+    # so that controllers can use without breaking built-in CRUD filter
+    def require_action_permission_crud
+      require_action_permission
+    end
 
     # Override to set @resource
     def require_resource
