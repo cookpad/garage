@@ -22,13 +22,6 @@ module Garage
       @resource ||= build_resource
     end
 
-    def ===(other)
-      if other.is_a?(Class)
-        return true if resource_class <= other
-      end
-      super
-    end
-
     def respond_to?(method, *args)
       super || to_resource.respond_to?(method, *args)
     end
