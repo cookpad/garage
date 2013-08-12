@@ -34,7 +34,14 @@ Garage::TokenScope.configure do
   register :read_post_body
 end
 
+
 Doorkeeper.configure do
+  orm :active_record
+
+  resource_owner_authenticator do
+    User.find_by_id(session[:user_id]) || redirect_to(new_session_url)
+  end
+  default_scopes  :public
   optional_scopes *Garage::TokenScope.all_scopes.reject { |s| s == :public }
 end
 
