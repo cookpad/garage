@@ -28,7 +28,7 @@ class PostsController < ApiController
     @resource = Post.find(params[:id])
   end
 
-  def require_container_resource
+  def require_collection_resource
     if has_user?
       @resource = Garage::MetaResource.new(Post, user: user) { user.posts }
     else

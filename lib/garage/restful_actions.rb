@@ -4,7 +4,7 @@ module Garage
 
     included do
       before_filter :require_resource, :only => [:show, :update, :destroy]
-      before_filter :require_container_resource, :only => [:index, :create]
+      before_filter :require_collection_resource, :only => [:index, :create]
       before_filter :require_action_permission_crud, :only => [:index, :create, :show, :update, :destroy]
     end
 
@@ -75,8 +75,8 @@ module Garage
     end
 
     # Override to set @resources
-    def require_container_resource
-      raise NotImplementedError, "#{self.class}#require_container_resource is not implemented"
+    def require_collection_resource
+      raise NotImplementedError, "#{self.class}#require_collection_resource is not implemented"
     end
 
     # Override to create a new resource
