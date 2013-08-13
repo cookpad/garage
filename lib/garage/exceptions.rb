@@ -2,7 +2,9 @@ module Garage
   class Error < ::StandardError; end
 
   class Unauthorized < Error
-    def initialize(user, action, resource_class, status, scopes = [])
+    attr_reader :status
+
+    def initialize(user, action, resource_class, status = :forbidden, scopes = [])
       @status = status
       if scopes.empty?
         super "Authorized user is not allowed to take the requested operation"
@@ -11,8 +13,8 @@ module Garage
       end
     end
 
-    def to_status
-      @status
+    def status_code
+      Rack::Utils.status_code(@status)
     end
   end
 end
