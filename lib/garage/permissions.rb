@@ -20,7 +20,7 @@ module Garage
     end
 
     def deleted!
-      @perms[:deleted] = false
+      @perms[:deleted] = true
     end
 
     def exists?
