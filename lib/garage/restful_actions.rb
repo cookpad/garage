@@ -60,13 +60,8 @@ module Garage
       representer.authorize!(current_resource_owner, operation)
     end
 
-    def restful_resource_class
-      @resource.resource_class
-    end
-
     def require_action_permission
-      ability_from_token.access!(restful_resource_class, current_operation)
-      @resource.authorize!(current_resource_owner, current_operation)
+      require_permission!(@resource, current_operation)
     end
 
     # so that controllers can use without breaking built-in CRUD filter
