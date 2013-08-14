@@ -5,7 +5,7 @@ module Garage
     included do
       before_filter :require_resource, :only => [:show, :update, :destroy]
       before_filter :require_collection_resource, :only => [:index, :create]
-      before_filter :require_action_permission_crud, :only => [:index, :create, :show, :update, :destroy]
+      before_filter :require_action_permission, :only => [:index, :create, :show, :update, :destroy]
     end
 
     # Public: List resources
@@ -55,26 +55,23 @@ module Garage
       Garage::TokenScope.ability(current_resource_owner, doorkeeper_token.scopes)
     end
 
-    def require_permission!(resource, operation = :read)
+    def require_permission!(resource, operation = nil)
+      operation ||= current_operation
       resource.authorize!(current_resource_owner, operation)
     end
 
-    def require_access!(resource, operation = :read)
+    def require_access!(resource, operation = nil)
+      operation ||= current_operation
       ability_from_token.access!(resource.resource_class, operation)
     end
 
-    def require_access_and_permission!(resource, operation = :read)
+    def require_access_and_permission!(resource, operation = nil)
       require_permission!(resource, operation)
       require_access!(resource, operation)
     end
 
     def require_action_permission
       require_access_and_permission!(@resource, current_operation)
-    end
-
-    # so that controllers can use without breaking built-in CRUD filter
-    def require_action_permission_crud
-      require_action_permission
     end
 
     # Override to set @resource
