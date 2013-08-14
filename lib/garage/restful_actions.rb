@@ -55,13 +55,21 @@ module Garage
       Garage::TokenScope.ability(current_resource_owner, doorkeeper_token.scopes)
     end
 
-    def require_permission!(representer, operation = :read)
-      ability_from_token.access!(representer.resource_class, operation)
-      representer.authorize!(current_resource_owner, operation)
+    def require_permission!(resource, operation = :read)
+      resource.authorize!(current_resource_owner, operation)
+    end
+
+    def require_access!(resource, operation = :read)
+      ability_from_token.access!(resource.resource_class, operation)
+    end
+
+    def require_access_and_permission!(resource, operation = :read)
+      require_permission!(resource, operation)
+      require_access!(resource, operation)
     end
 
     def require_action_permission
-      require_permission!(@resource, current_operation)
+      require_access_and_permission!(@resource, current_operation)
     end
 
     # so that controllers can use without breaking built-in CRUD filter
