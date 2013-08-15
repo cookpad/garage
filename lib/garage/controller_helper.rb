@@ -9,10 +9,8 @@ module Garage
       # TODO current_user
 
       rescue_from Garage::Unauthorized do |exception|
-        render json: { code: 403, error: exception.message }, status: 403
+        render json: { status_code: exception.status_code, error: exception.message }, status: exception.status
       end
-
-      include Garage::AbilityHelper
 
       before_filter Garage::HypermediaFilter
       after_filter :notify_request_stats

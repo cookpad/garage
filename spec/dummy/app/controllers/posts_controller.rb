@@ -1,23 +1,29 @@
 class PostsController < ApiController
   include Garage::RestfulActions
 
-  before_filter :require_hide_resource_authorization, only: :hide
-  before_filter :require_capped_resource_authorization, only: :capped
+  before_filter :require_user, only: :private
+  before_filter :require_private_resource, only: :private
+  before_filter :require_index_resource, only: [:hide, :capped]
+  before_filter :require_action_permission, only: [:private, :hide, :capped]
+
+  self.resource_class = Post
+
+  def private
+    respond_with @resources
+  end
 
   def hide
-    respond_with Post.scoped, paginate: true, hide_total: true
+    respond_with @resources, paginate: true, hide_total: true
   end
 
   def capped
-    respond_with Post.scoped, paginate: true, hard_limit: 100
+    respond_with @resources, paginate: true, hard_limit: 100
   end
 
   private
 
-  def require_new_resource
-    @resource = Post.new
-    @resource.user = current_resource_owner
-    @resource
+  def require_user
+    @user = user
   end
 
   def require_resource
@@ -25,15 +31,17 @@ class PostsController < ApiController
   end
 
   def require_resources
-    @resources =
-      if has_user?
-        user.posts
-      else
-        Post.scoped
-      end
+    if has_user?
+      @resources = user.posts
+      protect_resource_as user: user
+    else
+      @resources = Post.scoped
+    end
   end
 
   def create_resource
+    @resource = @resources.new
+    @resource.user = current_resource_owner
     @resource.update_attributes!(params.slice(:title, :body))
     @resource
   end
@@ -45,18 +53,16 @@ class PostsController < ApiController
 
   def destroy_resource
     @resource.destroy
+    @resource
   end
 
-  def require_index_resource_authorization
-    authorize! :index_post
+  def require_private_resource
+    @resources = @user.posts
+    protect_resource_as PrivatePost, user: @user
   end
 
-  def require_hide_resource_authorization
-    authorize! :index_post
-  end
-
-  def require_capped_resource_authorization
-    authorize! :index_post
+  def require_index_resource
+    @resources = Post.scoped
   end
 
   def respond_with_resources_options

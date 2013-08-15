@@ -48,6 +48,10 @@ module Garage::Representer
     @representers ||= []
   end
 
+  def resource_class
+    self.class
+  end
+
   def self.included(base)
     self.representers << base
 

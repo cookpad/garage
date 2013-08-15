@@ -24,7 +24,7 @@ describe "Scope" do
   describe "GET /posts/:id" do
     context "without specified scope" do
       let(:scopes) do
-        nil
+        "public"
       end
 
       it "excludes scoped field" do
@@ -35,7 +35,7 @@ describe "Scope" do
 
     context "with specified scope" do
       let(:scopes) do
-        "read_post_body"
+        "public read_post_body"
       end
 
       it "includes scoped field" do

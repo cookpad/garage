@@ -12,6 +12,37 @@ describe Garage do
     with_access_token_header token
   end
 
+  describe 'GET /posts/alice.id/private' do
+    subject {
+      get "/users/#{alice.id}/posts/private"
+      status
+    }
+
+    context 'without a valid scope as alice' do
+      let(:requester) { alice }
+      it 'returns 403' do
+        subject.should == 403
+        last_response.should match /Missing scope.*read_private_post/
+      end
+    end
+
+    context 'with a valid scope as bob' do
+      let(:requester) { bob }
+      let(:scopes) { 'public read_private_post' }
+      it 'returns 403' do
+        subject.should == 403
+      end
+    end
+
+    context 'with a valid scope as alice' do
+      let(:requester) { alice }
+      let(:scopes) { 'public read_private_post' }
+      it 'returns 200' do
+        subject.should == 200
+      end
+    end
+  end
+
   describe 'GET request to post' do
     subject {
       get "/posts/#{the_post.id}"

@@ -11,7 +11,11 @@ Rails.application.routes.draw do
   end
 
   resources :users do
-    resources :posts
+    resources :posts do
+      collection do
+        get :private
+      end
+    end
   end
 
   resource :session

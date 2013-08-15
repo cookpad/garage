@@ -4,13 +4,9 @@ module Garage
 
     included do
       before_filter :require_resource, :only => [:show, :update, :destroy]
-      before_filter :require_resources, :only => :index
-      before_filter :require_new_resource, :only => :create
-      before_filter :require_index_resource_authorization, :only => :index
-      before_filter :require_show_resource_authorization, :only => :show
-      before_filter :require_create_resource_authorization, :only => :create
-      before_filter :require_update_resource_authorization, :only => :update
-      before_filter :require_destroy_resource_authorization, :only => :destroy
+      before_filter :require_resources, :only => [:index, :create]
+      before_filter :require_action_permission_crud, :only => [:index, :create, :show, :update, :destroy]
+      cattr_accessor :resource_class
     end
 
     # Public: List resources
@@ -31,34 +27,70 @@ module Garage
 
     # Public: Update the resource
     def update
-      respond_with update_resource
+      @resource = update_resource
+      respond_with @resource
     end
 
     # Public: Delete the resource
     def destroy
-      respond_with destroy_resource
+      @resource = destroy_resource
+      respond_with @resource
     end
 
     private
 
-    def require_index_resource_authorization
-      authorize! authorization_key, current_resource_owner
+    def current_operation
+      if %w[create update destroy].include?(action_name)
+        :write
+      else
+        :read
+      end
     end
 
-    def require_show_resource_authorization
-      authorize! authorization_key, @resource
+    def ability_from_token
+      Garage::TokenScope.ability(current_resource_owner, doorkeeper_token.scopes)
     end
 
-    def require_create_resource_authorization
-      authorize! authorization_key, @resource
+    def require_permission!(resource, operation = nil)
+      operation ||= current_operation
+      resource.authorize!(current_resource_owner, operation)
     end
 
-    def require_update_resource_authorization
-      authorize! authorization_key, @resource
+    def require_access!(resource, operation = nil)
+      operation ||= current_operation
+      ability_from_token.access!(resource.resource_class, operation)
     end
 
-    def require_destroy_resource_authorization
-      authorize! authorization_key, @resource
+    def require_access_and_permission!(resource, operation = nil)
+      require_permission!(resource, operation)
+      require_access!(resource, operation)
+    end
+
+    def require_action_permission_crud
+      if operated_resource
+        require_access_and_permission!(operated_resource, current_operation)
+      else
+        Rails.logger.debug "skipping permissions check since there's no @resource(s) set"
+      end
+    end
+
+    alias :require_action_permission :require_action_permission_crud
+
+    def protect_resource_as(klass, args = {})
+      if klass.is_a?(Hash)
+        klass, args = self.class.resource_class, klass
+      end
+      @operated_resource = MetaResource.new(klass, args)
+    end
+
+    def operated_resource
+      if @operated_resource
+        @operated_resource
+      elsif @resources
+        MetaResource.new(self.class.resource_class)
+      else
+        @resource
+      end
     end
 
     # Override to set @resource
@@ -69,11 +101,6 @@ module Garage
     # Override to set @resources
     def require_resources
       raise NotImplementedError, "#{self.class}#require_resources is not implemented"
-    end
-
-    # Override to set @resource
-    def require_new_resource
-      raise NotImplementedError, "#{self.class}#require_new_resource is not implemented"
     end
 
     # Override to create a new resource
@@ -91,19 +118,9 @@ module Garage
       raise NotImplementedError, "#{self.class}#destroy_resource is not implemented"
     end
 
-    # Pantry::BookmarkTagsController -> "bookmark_tag"
-    def resource_name
-      @resource_name ||= self.class.name.split("::").last.sub(/Controller$/, "").singularize.underscore
-    end
-
     # Pantry::BookmarkTagsController -> params["bookmark_tag"]
     def resource_params
       params[resource_name]
-    end
-
-    # Pantry::BookmarkTagsController#index -> "index_bookmark_tag"
-    def authorization_key
-      :"#{action_name}_#{resource_name}"
     end
 
     # Override this if you want to pass options to respond_with in index action

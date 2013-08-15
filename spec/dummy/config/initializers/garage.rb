@@ -18,6 +18,33 @@ Garage.configure do
   end
 end
 
+Garage::TokenScope.configure do
+  register :public do
+    access :read, Post
+  end
+
+  register :read_private_post do
+    access :read, PrivatePost
+  end
+
+  register :write_post do
+    access :write, Post
+  end
+
+  register :read_post_body
+end
+
+
+Doorkeeper.configure do
+  orm :active_record
+
+  resource_owner_authenticator do
+    User.find_by_id(session[:user_id]) || redirect_to(new_session_url)
+  end
+  default_scopes  :public
+  optional_scopes *Garage::TokenScope.all_scopes.reject { |s| s == :public }
+end
+
 ActiveSupport::Notifications.subscribe "garage.request" do |name, start, finish, id, payload|
   if payload[:application]
     payload[:controller].response.headers['Application-Id'] = payload[:application].uid
