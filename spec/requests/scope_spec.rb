@@ -28,7 +28,7 @@ describe "Scope" do
       end
 
       it "excludes scoped field" do
-        get "/posts/#{post.id}"
+        get "/posts/#{post.id}?fields=body"
         body["body"].should == nil
       end
     end
@@ -39,7 +39,7 @@ describe "Scope" do
       end
 
       it "includes scoped field" do
-        get "/posts/#{post.id}"
+        get "/posts/#{post.id}?fields=body"
         body["body"].should == "body"
       end
     end
