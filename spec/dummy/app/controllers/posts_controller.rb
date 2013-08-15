@@ -6,16 +6,18 @@ class PostsController < ApiController
   before_filter :require_index_resource, only: [:hide, :capped]
   before_filter :require_action_permission, only: [:private, :hide, :capped]
 
+  self.resource_class = Post
+
   def private
-    respond_with @resource.to_resource # FIXME
+    respond_with @resources
   end
 
   def hide
-    respond_with @resource.to_resource, paginate: true, hide_total: true
+    respond_with @resources, paginate: true, hide_total: true
   end
 
   def capped
-    respond_with @resource.to_resource, paginate: true, hard_limit: 100
+    respond_with @resources, paginate: true, hard_limit: 100
   end
 
   private
@@ -28,16 +30,17 @@ class PostsController < ApiController
     @resource = Post.find(params[:id])
   end
 
-  def require_collection_resource
+  def require_resources
     if has_user?
-      @resource = Garage::MetaResource.new(Post, user: user) { user.posts }
+      @resources = user.posts
+      protect_resource_as user: user
     else
-      @resource = Garage::MetaResource.new(Post) { Post.scoped }
+      @resources = Post.scoped
     end
   end
 
   def create_resource
-    @resource = @resource.new
+    @resource = @resources.new
     @resource.user = current_resource_owner
     @resource.update_attributes!(params.slice(:title, :body))
     @resource
@@ -54,11 +57,12 @@ class PostsController < ApiController
   end
 
   def require_private_resource
-    @resource = Garage::MetaResource.new(PrivatePost, user: @user) { @user.posts }
+    @resources = @user.posts
+    protect_resource_as PrivatePost, user: @user
   end
 
   def require_index_resource
-    @resource = Garage::MetaResource.new(Post) { Post.scoped }
+    @resources = Post.scoped
   end
 
   def respond_with_resources_options

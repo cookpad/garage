@@ -4,44 +4,40 @@ module Garage
 
     included do
       before_filter :require_resource, :only => [:show, :update, :destroy]
-      before_filter :require_collection_resource, :only => [:index, :create]
-      before_filter :require_action_permission, :only => [:index, :create, :show, :update, :destroy]
+      before_filter :require_resources, :only => [:index, :create]
+      before_filter :require_action_permission_crud, :only => [:index, :create, :show, :update, :destroy]
+      cattr_accessor :resource_class
     end
 
     # Public: List resources
     def index
-      respond_with finalize_resource, respond_with_resources_options
+      respond_with @resources, respond_with_resources_options
     end
 
     # Public: Get the resource
     def show
-      respond_with finalize_resource, respond_with_resource_options
+      respond_with @resource, respond_with_resource_options
     end
 
     # Public: Create a new resource
     def create
       @resource = create_resource
-      respond_with finalize_resource, :location => location
+      respond_with @resource, :location => location
     end
 
     # Public: Update the resource
     def update
       @resource = update_resource
-      respond_with finalize_resource
+      respond_with @resource
     end
 
     # Public: Delete the resource
     def destroy
       @resource = destroy_resource
-      respond_with finalize_resource
+      respond_with @resource
     end
 
     private
-
-    def finalize_resource
-      @resource = @resource.to_resource if @resource.respond_to?(:to_resource)
-      @resource
-    end
 
     def current_operation
       if %w[create update destroy].include?(action_name)
@@ -70,8 +66,31 @@ module Garage
       require_access!(resource, operation)
     end
 
-    def require_action_permission
-      require_access_and_permission!(@resource, current_operation)
+    def require_action_permission_crud
+      if operated_resource
+        require_access_and_permission!(operated_resource, current_operation)
+      else
+        Rails.logger.debug "skipping permissions check since there's no @resource(s) set"
+      end
+    end
+
+    alias :require_action_permission :require_action_permission_crud
+
+    def protect_resource_as(klass, args = {})
+      if klass.is_a?(Hash)
+        klass, args = self.class.resource_class, klass
+      end
+      @operated_resource = MetaResource.new(klass, args)
+    end
+
+    def operated_resource
+      if @operated_resource
+        @operated_resource
+      elsif @resources
+        MetaResource.new(self.class.resource_class)
+      else
+        @resource
+      end
     end
 
     # Override to set @resource
@@ -80,8 +99,8 @@ module Garage
     end
 
     # Override to set @resources
-    def require_collection_resource
-      raise NotImplementedError, "#{self.class}#require_collection_resource is not implemented"
+    def require_resources
+      raise NotImplementedError, "#{self.class}#require_resources is not implemented"
     end
 
     # Override to create a new resource
