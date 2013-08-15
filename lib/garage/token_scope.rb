@@ -13,6 +13,10 @@ module Garage
       configuration.scopes.values
     end
 
+    def self.optional_scopes
+      configuration.scopes.values.select(&:optional?)
+    end
+
     def self.ability(user, scopes)
       scopes = scopes.map(&:to_sym)
       scopes = [:public] if scopes.empty? # backward compatiblity for scopes without any scope, assuming public
@@ -49,8 +53,8 @@ module Garage
         @required_scopes[[klass, action]] ||= []
       end
 
-      def register(scope_symbol, &block)
-        scope = Scope.new(scope_symbol)
+      def register(scope_symbol, options={}, &block)
+        scope = Scope.new(scope_symbol, options)
         scope.instance_eval(&block) if block_given?
         scope.accessible_resources.each do |klass, action|
           required_scopes(klass, action) << scope.to_sym
@@ -61,9 +65,10 @@ module Garage
     end
 
     class Scope
-      def initialize(sym)
+      def initialize(sym, options={})
         @sym = sym
         @access = []
+        @hidden = options[:hidden]
       end
 
       def access(action, klass)
@@ -76,6 +81,14 @@ module Garage
 
       def to_sym
         @sym
+      end
+
+      def hidden?
+        !!@hidden
+      end
+
+      def optional?
+        @sym != :public && !hidden?
       end
     end
   end
