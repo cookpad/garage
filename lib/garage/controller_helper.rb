@@ -8,7 +8,7 @@ module Garage
 
       # TODO current_user
 
-      rescue_from Garage::Unauthorized do |exception|
+      rescue_from Garage::HTTPError do |exception|
         render json: { status_code: exception.status_code, error: exception.message }, status: exception.status
       end
 

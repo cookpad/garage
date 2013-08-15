@@ -1,9 +1,12 @@
 module Garage
-  class Error < ::StandardError; end
-
-  class Unauthorized < Error
+  class HTTPError < ::StandardError
     attr_reader :status
+    def status_code
+      Rack::Utils.status_code(status)
+    end
+  end
 
+  class Unauthorized < HTTPError
     def initialize(user, action, resource_class, status = :forbidden, scopes = [])
       @status = status
       if scopes.empty?
@@ -11,10 +14,6 @@ module Garage
       else
         super "Insufficient scope to process the requested operation. Missing scope(s): #{scopes.join(", ")}"
       end
-    end
-
-    def status_code
-      Rack::Utils.status_code(@status)
     end
   end
 end

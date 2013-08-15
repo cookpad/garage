@@ -17,7 +17,7 @@ module Garage::Representer
       end
 
       if definition.respond_to?(:encode)
-        next unless handle_definition?(selector, definition)
+        next unless handle_definition?(selector, definition, options)
         obj[definition.name] = definition.encode(self, options[:responder], selector[definition.name])
       else
         next if selector.excludes?('_links')
@@ -29,10 +29,10 @@ module Garage::Representer
     obj
   end
 
-  def handle_definition?(selector, definition)
-    if definition.selectable?
+  def handle_definition?(selector, definition, options)
+    if definition.requires_select?
       # definition is not selected by default - opt-in
-      selector.includes?(definition.name)
+      selector.includes?(definition.name) && definition.selectable?(self, options[:responder])
     else
       # definition is selected by default - it's opt-out
       ! selector.excludes?(definition.name)
@@ -102,8 +102,7 @@ module Garage::Representer
     end
   end
 
-  class NonEncodableValue < StandardError
-  end
+  class NonEncodableValue < StandardError;  end
 
   class Definition
     attr_reader :options
@@ -113,8 +112,16 @@ module Garage::Representer
       @options = options
     end
 
-    def selectable?
+    def requires_select?
       @options[:selectable]
+    end
+
+    def selectable?(*args)
+      if boolean?(@options[:selectable])
+        @options[:selectable]
+      else
+        @options[:selectable].call(*args)
+      end
     end
 
     def name
@@ -138,6 +145,12 @@ module Garage::Representer
 
     def primitive?(klass)
       [ ActiveSupport::TimeWithZone, Bignum, Fixnum, Float, Hash, Array, String, NilClass, TrueClass, FalseClass ].include? klass
+    end
+
+    private
+
+    def boolean?(value)
+      value.is_a?(TrueClass) || value.is_a?(FalseClass)
     end
   end
 
