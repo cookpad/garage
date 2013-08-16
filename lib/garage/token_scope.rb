@@ -34,7 +34,7 @@ module Garage
       end
 
       def allow?(klass, action)
-        @access.include?([klass, action])
+        @access.include?([klass.to_s, action])
       end
     end
 
@@ -46,7 +46,7 @@ module Garage
 
       def required_scopes(klass, action)
         @required_scopes ||= {}
-        @required_scopes[[klass, action]] ||= []
+        @required_scopes[[klass.to_s, action]] ||= []
       end
 
       def register(scope_symbol, &block)
@@ -67,7 +67,7 @@ module Garage
       end
 
       def access(action, klass)
-        @access << [klass, action]
+        @access << [klass.to_s, action]
       end
 
       def accessible_resources
