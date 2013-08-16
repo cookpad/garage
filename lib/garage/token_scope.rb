@@ -20,13 +20,25 @@ module Garage
     def self.ability(user, scopes)
       scopes = scopes.map(&:to_sym)
       scopes = [:public] if scopes.empty? # backward compatiblity for scopes without any scope, assuming public
-      ability = Ability.new(user, configuration.scopes.slice(*scopes).values.map(&:accessible_resources).flatten(1))
+      ability = Ability.new(user, configuration.scopes.slice(*scopes).values)
     end
 
     class Ability
-      def initialize(user, access)
+      def initialize(user, scopes = [])
         @user = user
-        @access = access
+        @access = []
+        load_scopes(scopes)
+      end
+
+      def load_scopes(scopes)
+        scopes.each do |scope|
+          load_scope(scope)
+        end
+      end
+
+      def load_scope(scope)
+        scope = TokenScope.configuration.scopes[scope] if scope.is_a?(Symbol)
+        @access.concat(scope.accessible_resources)
       end
 
       def missing_scopes(klass, action)
