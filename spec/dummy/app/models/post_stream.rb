@@ -1,0 +1,2 @@
+class PostStream
+end
