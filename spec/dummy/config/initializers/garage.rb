@@ -31,7 +31,9 @@ Garage::TokenScope.configure do
     access :write, Post
   end
 
-  register :read_post_body
+  register :read_post_body do
+    access :read, PostBody
+  end
 
   register :sudo, hidden: true
 end

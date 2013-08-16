@@ -9,7 +9,7 @@ class Post < ActiveRecord::Base
 
   property :id
   property :title
-  property :body, selectable: scope(:read_post_body)
+  property :body, selectable: accessible(PostBody)
   property :user, selectable: true
 
   collection :comments, selectable: true

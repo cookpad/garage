@@ -62,7 +62,15 @@ module Garage
 
     attr_accessor :representation, :field_selector
 
+    def allow_access?(klass, action = :read)
+      ability_from_token.allow?(klass, action)
+    end
+
   private
+
+    def ability_from_token
+      Garage::TokenScope.ability(current_resource_owner, doorkeeper_token.scopes)
+    end
 
     # TODO move this to ::Utils
 
