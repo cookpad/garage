@@ -130,7 +130,7 @@ module Garage
     end
 
     def location
-      { action: :show, id: @resource.id }
+      { action: :show, id: @resource.id } if @resource.try(:respond_to?, :id)
     end
   end
 end
