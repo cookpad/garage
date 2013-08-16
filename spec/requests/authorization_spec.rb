@@ -170,9 +170,19 @@ describe Garage do
   describe 'Log notifications' do
     let(:requester) { alice }
 
-    it 'should add application ID' do
-      get "/posts/#{the_post.id}"
-      last_response.headers['Application-Id'].should == application.uid
+    context 'with successful response' do
+      it 'should add application ID' do
+        get "/posts/#{the_post.id}"
+        last_response.headers['Application-Id'].should == application.uid
+      end
+    end
+
+    context 'with failed response' do
+      it 'should add application ID' do
+        get "/posts/0"
+        last_response.status.should == 404
+        last_response.headers['Application-Id'].should == application.uid
+      end
     end
   end
 end

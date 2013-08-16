@@ -13,7 +13,7 @@ module Garage
       end
 
       before_filter Garage::HypermediaFilter
-      after_filter :notify_request_stats
+      around_filter :notify_request_stats
 
       respond_to :json # , :msgpack
       self.responder = Garage::AppResponder
@@ -98,13 +98,18 @@ module Garage
     end
 
     def notify_request_stats
-      payload = {
-        :controller => self,
-        :application => authorized_application,
-        :token => doorkeeper_token,
-        :resource_owner => current_resource_owner,
-      }
-      ActiveSupport::Notifications.instrument("garage.request", payload)
+      yield
+    ensure
+      begin
+        payload = {
+          :controller => self,
+          :application => authorized_application,
+          :token => doorkeeper_token,
+          :resource_owner => current_resource_owner,
+        }
+        ActiveSupport::Notifications.instrument("garage.request", payload)
+      rescue Exception
+      end
     end
   end
 end
