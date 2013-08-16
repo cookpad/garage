@@ -56,8 +56,10 @@ module Garage
       def register(scope_symbol, options={}, &block)
         scope = Scope.new(scope_symbol, options)
         scope.instance_eval(&block) if block_given?
-        scope.accessible_resources.each do |klass, action|
-          required_scopes(klass, action) << scope.to_sym
+        unless scope.hidden?
+          scope.accessible_resources.each do |klass, action|
+            required_scopes(klass, action) << scope.to_sym
+          end
         end
 
         scopes[scope_symbol] = scope

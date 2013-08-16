@@ -35,6 +35,9 @@ class PostsController < ApiController
       @resources = user.posts
       protect_resource_as user: user
     else
+      if params[:stream]
+        require_access! Garage::MetaResource.new(PostStream), :read
+      end
       @resources = Post.scoped
     end
   end

@@ -41,6 +41,14 @@ describe Garage do
         subject.should == 200
       end
     end
+
+    context 'with a hidden scope as alice' do
+      let(:requester) { alice }
+      let(:scopes) { 'public sudo' }
+      it 'returns 200' do
+        subject.should == 200
+      end
+    end
   end
 
   describe 'GET request to post' do
@@ -58,6 +66,30 @@ describe Garage do
 
     context 'with bob as a requester' do
       let(:requester) { bob }
+      it 'returns 200' do
+        subject.should == 200
+      end
+    end
+  end
+
+  describe 'GET requests to stream (requiring sudo)' do
+    subject {
+      get "/posts?stream=1"
+      status
+    }
+
+    context 'without sudo' do
+      let(:requester) { alice }
+      let(:scopes) { 'public' }
+      it 'does not reval sudo' do
+        subject.should == 403
+        last_response.should_not match /Missing scope.*sudo/
+      end
+    end
+
+    context 'with sudo' do
+      let(:requester) { alice }
+      let(:scopes) { 'public sudo' }
       it 'returns 200' do
         subject.should == 200
       end
