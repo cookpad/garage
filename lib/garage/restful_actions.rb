@@ -47,10 +47,6 @@ module Garage
       end
     end
 
-    def ability_from_token
-      Garage::TokenScope.ability(current_resource_owner, doorkeeper_token.scopes)
-    end
-
     def require_permission!(resource, operation = nil)
       operation ||= current_operation
       resource.authorize!(current_resource_owner, operation)
