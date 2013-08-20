@@ -83,10 +83,13 @@ module Garage
     end
 
     class Scope
+      attr_reader :description
+
       def initialize(sym, options={})
         @sym = sym
         @access = []
         @hidden = options[:hidden]
+        @description = options[:desc]
       end
 
       def name
