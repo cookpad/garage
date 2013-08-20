@@ -1,3 +1,24 @@
+# Public: represents permissions of the current request user against
+# the resource and resource class.
+#
+# Examples
+#
+#   class Post
+#     include Garage::Authorizable
+#
+#     def build_permissions(perms, other)
+#       perms.permits! :read
+#       perms.permits! :write if owner == other
+#     end
+#
+#     def self.build_permissions(perms, other, target)
+#       if target[:user]
+#         perms.permits! :read, :write if target[:user] == other
+#       else
+#         perms.permits! :read, :write
+#       end
+#     end
+#   end
 require "garage/permission"
 
 module Garage

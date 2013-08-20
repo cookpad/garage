@@ -1,3 +1,4 @@
+# Public: proxy object to handle model Class as a resource
 module Garage
   class MetaResource
     include Garage::Authorizable

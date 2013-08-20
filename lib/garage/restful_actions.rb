@@ -1,3 +1,21 @@
+# Public: mixes in CRUD controller actions to your Action Controller
+# classes to provide a simple RESTful actions that provides
+# resource-based permissions with built-in integrations with
+# Doorkeeper scopes.
+#
+# Examples
+#
+#   class PostsController < ApiController
+#     include Garage::RestfulActions
+#
+#     def require_resources
+#       @resources = Post.all
+#     end
+#
+#     def require_resource
+#       @resource = Post.find(params[:id])
+#     end
+#   end
 module Garage
   module RestfulActions
     extend ActiveSupport::Concern
@@ -10,28 +28,38 @@ module Garage
     end
 
     # Public: List resources
+    # Renders `@resources` with options specified with `respond_with_resources_options`
+    # Requires `:read` permission on `resource_class` specified for `@resources`
     def index
       respond_with @resources, respond_with_resources_options
     end
 
     # Public: Get the resource
+    # Renders `@resource` with options specified with `respond_with_resource_options`
+    # Requries `:read` permission on `@resource`
     def show
       respond_with @resource, respond_with_resource_options
     end
 
     # Public: Create a new resource
+    # Calls `create_resource` in your controller to create a new resource
+    # Requires `:write` permission on `resource_class` specified for `@resources`
     def create
       @resource = create_resource
       respond_with @resource, :location => location
     end
 
     # Public: Update the resource
+    # Calls `update_resource` in your controller to update `@resource`
+    # Requires `:write` permission on `@resource`
     def update
       @resource = update_resource
       respond_with @resource
     end
 
     # Public: Delete the resource
+    # Calls `destroy_resource` in your controller to destroy `@resource`
+    # Requires `:write` permission on `@resource`
     def destroy
       @resource = destroy_resource
       respond_with @resource
@@ -39,6 +67,7 @@ module Garage
 
     private
 
+    # Private: returns either `:read` or `:write`, depending on the current action name
     def current_operation
       if %w[create update destroy].include?(action_name)
         :write
@@ -47,16 +76,43 @@ module Garage
       end
     end
 
+    # Private: Call this method to require additional permission on
+    # extra resource your controller handles. It will check if the
+    # current request user has permission to perform the operation
+    # (`:read` or `:write`) on the resource.
+    #
+    # Examples
+    #
+    #   before_filter :require_recipe
+    #   def require_recipe
+    #     @recipe = Recipe.find(params[:recipe_id])
+    #     require_permission! @recipe, :read
+    #   end
     def require_permission!(resource, operation = nil)
       operation ||= current_operation
       resource.authorize!(current_resource_owner, operation)
     end
 
+    # Private: Call this method to require additional access on extra
+    # resource class your controller needs access to. It will check if
+    # the current request token has an access permission (scope) to
+    # perform the operation (`:read` or `:write`) on the resource
+    # class.
+    #
+    # Examples
+    #
+    #   before_filter :require_stream
+    #   def require_stream
+    #     require_access! PostStream, :read
+    #   end
     def require_access!(resource, operation = nil)
       operation ||= current_operation
       ability_from_token.access!(resource.resource_class, operation)
     end
 
+    # Private: Call this method to require additional access and
+    # permission on extra resource your controller performs operation
+    # on.
     def require_access_and_permission!(resource, operation = nil)
       require_permission!(resource, operation)
       require_access!(resource, operation)
@@ -72,6 +128,29 @@ module Garage
 
     alias :require_action_permission :require_action_permission_crud
 
+    # Private: Call this method if you need to *change* the target
+    # resource to provision access and permission.
+    #
+    #   def require_resources
+    #     @resources = Post.where(user_id: @user.id)
+    #   end
+    #
+    # By default, in `index` and `write` actions, Garage will check
+    # `:read` and `:write` access respectively on the default
+    # `resource_class` of `@resources`, in this case Post class.  If
+    # you need more fine grained control than that, you should specify
+    # the optional parameters here, such as:
+    #
+    #   def require_resources
+    #     @resources = Post.where(user_id: @user.id)
+    #     protect_source_as PrivatePost, user: @user
+    #   end
+    #
+    # This way, the token should require acess scope to `PrivatePost`
+    # (instead of `Post`), and the authorized user should have a
+    # permission to operate the action on resources owned by `@user`
+    # (instead of public). The `:user` option will be passed as
+    # parameters to `build_permissions` class method.
     def protect_resource_as(klass, args = {})
       if klass.is_a?(Hash)
         klass, args = self.class.resource_class, klass
