@@ -18,7 +18,7 @@ module Garage
     end
 
     def self.hidden_scopes
-      configuration.scopes.alues.select(&:hidden?)
+      configuration.scopes.values.select(&:hidden?)
     end
 
     def self.ability(user, scopes)
@@ -87,6 +87,10 @@ module Garage
         @sym = sym
         @access = []
         @hidden = options[:hidden]
+      end
+
+      def name
+        @sym.to_s
       end
 
       def access(action, klass)
