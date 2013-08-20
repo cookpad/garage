@@ -17,6 +17,10 @@ module Garage
       configuration.scopes.values.select(&:optional?)
     end
 
+    def self.hidden_scopes
+      configuration.scopes.alues.select(&:hidden?)
+    end
+
     def self.ability(user, scopes)
       scopes = scopes.map(&:to_sym)
       scopes = [:public] if scopes.empty? # backward compatiblity for scopes without any scope, assuming public
