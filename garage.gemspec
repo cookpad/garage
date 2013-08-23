@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "Garage Platform Engine"
   s.description = "Garage extends your RESTful, Hypermedia APIs as a Platform"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency 'rails', '>= 3.2.11'
   s.add_dependency "doorkeeper", "~> 0.6.7"
