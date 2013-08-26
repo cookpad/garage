@@ -1,6 +1,6 @@
 module Garage
   class HTTPError < ::StandardError
-    attr_reader :status
+    attr_accessor :status
     def status_code
       Rack::Utils.status_code(status)
     end
