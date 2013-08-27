@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency 'rails', '>= 3.2.11'
-  s.add_dependency "doorkeeper", "~> 0.6.7"
+  s.add_dependency "doorkeeper", ">= 0.6.7"
   s.add_dependency "rack-accept-default", "~> 0.0.2"
   s.add_dependency "http_status_exceptions"
   s.add_dependency "oj"
