@@ -41,7 +41,6 @@ module Garage
     def _encode_to_hash(resource, options = {})
       resource.represent!
       resource.params = controller.params.slice(*resource.class.params)
-      resource.default_url_options = {}
       resource.partial = options[:partial]
       resource.selector = options[:selector] || controller.field_selector
       maybe_cache(resource, options[:selector]) { resource.to_hash(:responder => self) }

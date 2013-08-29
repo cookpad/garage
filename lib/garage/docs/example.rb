@@ -3,8 +3,8 @@ module Garage
     class Example
       class << self
         def where(args)
-          exampler.call(args[:controller], args[:name]).compact.map do |path|
-            new(controller: args[:controller], path: path)
+          exampler.call(args[:controller], args[:name]).compact.map do |resource|
+            new(resource)
           end
         end
 
@@ -15,18 +15,16 @@ module Garage
         end
       end
 
-      def initialize(args)
-        @controller = args[:controller]
-        @path = args[:path]
+      def initialize(resource)
+        @resource = resource
       end
 
       def url
-        if @path.is_a?(String)
-          @path
+        if @resource.is_a?(String)
+          @resource
         else
-          rendered = Garage::AppResponder.new(@controller, [@path]).
-            encode_to_hash(@path, selector: Garage::NestedFieldQuery::DefaultSelector.new)
-          rendered['_links']['self']['href']
+          @resource.represent!
+          @resource.link_path_for(:self)
         end
       end
     end
