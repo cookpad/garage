@@ -17,4 +17,8 @@ module Garage::Docs::ResourcesHelper
   def doc_name(resource)
     resource.respond_to?(:doc_name) ? resource.doc_name : resource.name
   end
+
+  def action_classes
+    %W[#{controller_name}_controller #{action_name}_action]
+  end
 end

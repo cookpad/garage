@@ -8,7 +8,7 @@
     = javascript_include_tag "garage/application"
     = favicon_link_tag "favicon.ico"
 
-  %body
+  %body{ class: action_classes }
     .navbar.navbar-default.navbar-static-top
       .container
         .navbar-header
@@ -19,7 +19,8 @@
             %li= link_to "Console", garage_docs.console_resources_path
           %ul.nav.navbar-nav.navbar-right
             - if _current_user
-              %li= link_to "signout", "/signout", method: :post
+              %li= link_to "Signout", "/signout", method: :post
 
-    .container
-      = yield
+    .main
+      .container
+        = yield

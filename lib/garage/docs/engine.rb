@@ -3,7 +3,8 @@ require "haml"
 require "sass-rails"
 require "coffee-rails"
 require "garage/docs/application"
-require "garage/docs/linkable_example"
+require "garage/docs/document"
+require "garage/docs/example"
 
 module Garage
   module Docs

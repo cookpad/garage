@@ -1,34 +1,33 @@
 .section.console
   %h1 Console
-  = form_tag nil, :class => "console form-inline" do
+
+  = form_tag nil, class: "console form-horizontal" do
     = hidden_field_tag :base, @base_url
-    .field.token
-      %p
-        = label_tag :access_token, "Access Token"
-      %p
-        = text_field_tag :access_token, session[:access_token], :class => "input-xxlarge"
-      = button_tag "Info", :class => "button validate-token", :type => "button"
-      = button_tag "GetToken", :class => "button get-oauth-token", :type => "button"
 
-    .field.location
-      %p
-        = label_tag :url, "URL"
-      %p
-        - params[:location] += "?fields=*" if params[:location]
-        = text_field_tag :location, params[:location], :class => "input-xxlarge"
-      = select_tag :method, options_from_collection_for_select(["GET", "POST", "PUT", "DELETE"], :to_s, :to_s, params[:method]), :class => "span1"
-      = submit_tag "Send", :class => "send-request"
+    .form-group
+      = label_tag :access_token, "Access Token", class: "col-lg-2 control-label"
+      .col-lg-10
+        .input-group
+          = text_field_tag :access_token, session[:access_token], class: "form-control"
+          %span.input-group-btn
+            = button_tag "Get token", type: "button", class: "get-oauth-token btn btn-primary"
 
-    .field
-      .parameters
+    .form-group
+      = label_tag :location, "URL", class: "col-lg-2 control-label"
+      .col-lg-2
+        = select_tag :method, options_from_collection_for_select(["GET", "POST", "PUT", "DELETE"], :to_s, :to_s, params[:method]), class: "form-control"
+      .col-lg-8
+        .input-group
+          = text_field_tag :location, params[:location], class: "form-control"
+          %span.input-group-btn
+            = button_tag "Send", type: "submit", class: "send-request btn btn-primary"
 
-    .field
-      %h2 Headers
-      %pre#api-headers
+  .response
+    %h4 Response headers
+    %pre#api-headers
 
-    .field
-      %h2 Response
-      %pre#api-response
+    %h4 Response body
+    %pre#api-response
 
 #oauth-dialog
   .modal-header
