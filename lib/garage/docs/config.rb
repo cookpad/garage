@@ -10,7 +10,7 @@ module Garage
 
       def reset
         @exampler = Proc.new { [] }
-        @document_root = 'doc/garage'
+        @document_root = Rails.root.join('doc/garage')
         @current_user_method = Proc.new { current_user }
         @authenticate = Proc.new {}
         @console_app_uid = ''
