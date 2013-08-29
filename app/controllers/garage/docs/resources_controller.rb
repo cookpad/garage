@@ -10,13 +10,13 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   before_filter :set_locale
 
   def index
+    @documents = Garage::Docs::Document.all
   end
 
   def show
-    @document = @application.find_document(params[:id])
-    @examples = Garage.configuration.docs.exampler.call(self, params[:id]).compact.map do |e|
-      Garage::Docs::LinkableExample.new(e, self)
-    end
+    @documents = Garage::Docs::Document.all
+    @document = Garage::Docs::Document.find_by_name(params[:id])
+    @examples = Garage::Docs::Example.where(controller: self, name: params[:id])
   end
 
   def console
