@@ -9,15 +9,17 @@
     = favicon_link_tag "favicon.ico"
 
   %body
-    %header
-      .section
-        %h1
-          = link_to "Garage", garage_docs.resources_path
-        %ul.right
-          %li= link_to "Docs", garage_docs.resources_path
-          %li= link_to "Console", garage_docs.console_resources_path
-          - if _current_user
-            %li= link_to "signout", "/signout", method: :post
+    .navbar.navbar-default.navbar-static-top
+      .container
+        .navbar-header
+          .navbar-brand
+            = link_to "Garage", garage_docs.resources_path
+        .navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            %li= link_to "Console", garage_docs.console_resources_path
+          %ul.nav.navbar-nav.navbar-right
+            - if _current_user
+              %li= link_to "signout", "/signout", method: :post
 
-    .main
+    .container
       = yield

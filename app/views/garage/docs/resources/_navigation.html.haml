@@ -1,5 +1,5 @@
-.section.navigation
-  %h1 Resources
-  %ul
-    - @application.documents.each do |document|
+.well.sidebar-nav
+  %ul.nav
+    %li Resources
+    - @documents.each do |document|
       %li= link_to document.name.humanize, garage_docs.resource_path(document.name)
