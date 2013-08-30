@@ -1,5 +1,5 @@
 module Garage::Representer
-  attr_accessor :params, :default_url_options, :representer_attrs, :partial, :selector
+  attr_accessor :params, :representer_attrs, :partial, :selector
 
   def partial?
     @partial
@@ -23,7 +23,7 @@ module Garage::Representer
         next if selector.excludes?('_links')
         block = definition.block
         obj['_links'] ||= {}
-        obj['_links'][definition.rel.to_s] = { 'href' => instance_exec(&block) }
+        obj['_links'][definition.rel.to_s] = { 'href' => definition.pathify(self) }
       end
     end
     obj
@@ -39,6 +39,10 @@ module Garage::Representer
     end
   end
 
+  def default_url_options
+    @default_url_options ||= {}
+  end
+
   def represent!
     self.representer_attrs ||= []
     self.representer_attrs += self.class.representer_attrs
@@ -50,6 +54,10 @@ module Garage::Representer
 
   def resource_class
     self.class
+  end
+
+  def link_path_for(rel)
+    representer_attrs.grep(Link).find { |link| link.rel === rel }.try(:pathify, self)
   end
 
   def self.included(base)
@@ -174,6 +182,10 @@ module Garage::Representer
 
     def initialize(rel, options, block)
       @rel, @options, @block = rel, options, block
+    end
+
+    def pathify(representer)
+      representer.instance_exec &@block
     end
   end
 end
