@@ -8,6 +8,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   before_filter :require_docs_application
   before_filter :require_console_application
   before_filter :set_locale
+  before_filter :require_document, only: :show
 
   def index
     @documents = Garage::Docs::Document.all
@@ -15,7 +16,6 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
 
   def show
     @documents = Garage::Docs::Document.all
-    @document = Garage::Docs::Document.find_by_name(params[:id])
     @examples = Garage::Docs::Example.where(controller: self, name: params[:id])
   end
 
@@ -83,5 +83,15 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
 
   def require_console_application
     @app = console_application or render(text: "OAuth app does not exist", status: :forbidden)
+  end
+
+  def require_document
+    @document = Garage::Docs::Document.find_by_name(params[:id])
+    case
+    when !@document
+      head 404
+    when !@document.visible_by?(_current_user)
+      head 403
+    end
   end
 end

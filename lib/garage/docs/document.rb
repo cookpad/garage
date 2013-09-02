@@ -53,6 +53,27 @@ module Garage
       def body
         pathname.read
       end
+
+      # If you need authentication logic,
+      # assign a Proc to Garage.docs.configuration.docs_authorization_method.
+      #
+      # Example:
+      #
+      #   Garage.docs.configuration.docs_authorization_method do |args|
+      #     if name.start_with?("admin_")
+      #       args[:user].admin?
+      #     else
+      #       true
+      #     end
+      #   end
+      #
+      def visible_by?(user)
+        if method = Garage.configuration.docs.docs_authorization_method
+          method.call(document: self, user: user)
+        else
+          true
+        end
+      end
     end
   end
 end
