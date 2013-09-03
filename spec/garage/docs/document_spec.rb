@@ -17,11 +17,11 @@ describe Garage::Docs::Document do
     double(admin?: true)
   end
 
-  describe "#visible_by?" do
+  describe "#visible_to?" do
     context "with default settings" do
       it "returns true" do
-        document.visible_by?(user).should == true
-        document.visible_by?(admin).should == true
+        document.visible_to?(user).should == true
+        document.visible_to?(admin).should == true
       end
     end
 
@@ -34,8 +34,8 @@ describe Garage::Docs::Document do
       end
 
       it "returns the evaluation result of docs_authorization_method" do
-        document.visible_by?(user).should == false
-        document.visible_by?(admin).should == true
+        document.visible_to?(user).should == false
+        document.visible_to?(admin).should == true
       end
     end
   end

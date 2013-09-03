@@ -67,7 +67,7 @@ module Garage
       #     end
       #   end
       #
-      def visible_by?(user)
+      def visible_to?(user)
         if method = Garage.configuration.docs.docs_authorization_method
           method.call(document: self, user: user)
         else

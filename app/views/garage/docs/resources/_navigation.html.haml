@@ -2,5 +2,5 @@
   %ul.nav
     %li Resources
     - @documents.each do |document|
-      - if document.visible_by?(_current_user)
+      - if document.visible_to?(_current_user)
         %li= link_to document.name.humanize, garage_docs.resource_path(document.name)

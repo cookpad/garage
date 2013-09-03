@@ -90,7 +90,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
     case
     when !@document
       head 404
-    when !@document.visible_by?(_current_user)
+    when !@document.visible_to?(_current_user)
       head 403
     end
   end
