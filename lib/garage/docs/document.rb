@@ -54,6 +54,14 @@ module Garage
         pathname.read
       end
 
+      def resource_class
+        relative_base_name.camelize.singularize.constantize
+      end
+
+      def examples(*args)
+        resource_class.garage_examples(*args)
+      end
+
       # If you need authentication logic,
       # assign a Proc to Garage.docs.configuration.docs_authorization_method.
       #
@@ -73,6 +81,12 @@ module Garage
         else
           true
         end
+      end
+
+      private
+
+      def relative_base_name
+        pathname.relative_path_from(Pathname.new("#{Garage.configuration.docs.document_root}/resources")).to_s.sub('.md', '')
       end
     end
   end

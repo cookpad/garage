@@ -33,4 +33,8 @@ class Post < ActiveRecord::Base
       perms.permits! :read, :write
     end
   end
+
+  def self.garage_examples(user)
+    [:posts_path, Post.first]
+  end
 end
