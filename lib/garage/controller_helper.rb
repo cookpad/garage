@@ -3,6 +3,9 @@ module Garage
     extend ActiveSupport::Concern
     included do
       use Rack::AcceptDefault
+
+      around_filter :notify_request_stats
+
       include ::Doorkeeper::Helpers::Filter
       doorkeeper_for :all
 
@@ -13,7 +16,6 @@ module Garage
       end
 
       before_filter Garage::HypermediaFilter
-      around_filter :notify_request_stats
 
       respond_to :json # , :msgpack
       self.responder = Garage::AppResponder
