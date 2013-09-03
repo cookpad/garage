@@ -5,11 +5,11 @@ describe Garage do
   let(:alice) { create(:user) }
   let(:bob) { create(:user )}
   let(:the_post) { create(:post, user: alice, title: "Foo") }
-  let(:token) { client_is_authorized(application, requester, scopes: scopes).token }
+  let(:token) { client_is_authorized(application, requester, scopes: scopes) }
   let(:scopes) { 'public write_post' }
 
   before do
-    with_access_token_header token
+    with_access_token_header token.token
   end
 
   describe 'GET /posts/alice.id/private' do
@@ -181,6 +181,20 @@ describe Garage do
       it 'should add application ID' do
         get "/posts/0"
         last_response.status.should == 404
+        last_response.headers['Application-Id'].should == application.uid
+      end
+    end
+
+    context 'with expired token' do
+      before do
+        token.expires_in = 1
+        token.created_at = 1.hour.ago
+        token.save
+      end
+
+      it 'should add application ID' do
+        get "/posts/#{the_post.id}"
+        last_response.status.should == 401
         last_response.headers['Application-Id'].should == application.uid
       end
     end
