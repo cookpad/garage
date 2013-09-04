@@ -55,7 +55,7 @@ module Garage
       end
 
       def resource_class
-        relative_base_name.camelize.singularize.constantize
+        extract_resource_class || relative_base_name.camelize.singularize.constantize
       end
 
       def examples(*args)
@@ -84,6 +84,12 @@ module Garage
       end
 
       private
+
+      def extract_resource_class
+        if /<!-- resource_class: (\S+)/ === body
+          $1.constantize
+        end
+      end
 
       def relative_base_name
         pathname.relative_path_from(Pathname.new("#{Garage.configuration.docs.document_root}/resources")).to_s.sub('.md', '')
