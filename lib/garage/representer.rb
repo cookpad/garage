@@ -57,6 +57,7 @@ module Garage::Representer
   end
 
   def link_path_for(rel)
+    represent! unless representer_attrs
     representer_attrs.grep(Link).find { |link| link.rel === rel }.try(:pathify, self)
   end
 
