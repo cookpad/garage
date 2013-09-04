@@ -55,11 +55,15 @@ module Garage
       end
 
       def resource_class
-        extract_resource_class || relative_base_name.camelize.singularize.constantize
+        @resource_class ||= extract_resource_class || relative_base_name.camelize.singularize.constantize
       end
 
       def examples(*args)
-        resource_class.garage_examples(*args)
+        if resource_class.respond_to?(:garage_examples)
+          resource_class.garage_examples(*args)
+        else
+          []
+        end
       end
 
       # If you need authentication logic,
