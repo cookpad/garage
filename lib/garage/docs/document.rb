@@ -56,10 +56,12 @@ module Garage
 
       def resource_class
         @resource_class ||= extract_resource_class || relative_base_name.camelize.singularize.constantize
+      rescue NameError
+        nil
       end
 
       def examples(*args)
-        if resource_class.respond_to?(:garage_examples)
+        if resource_class && resource_class.respond_to?(:garage_examples)
           resource_class.garage_examples(*args)
         else
           []
