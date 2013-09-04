@@ -1,7 +1,7 @@
 module Garage
   module Docs
     class Config
-      attr_accessor :exampler, :document_root, :current_user_method, :authenticate,
+      attr_accessor :document_root, :current_user_method, :authenticate,
         :console_app_uid, :remote_server, :docs_authorization_method
 
       def initialize
@@ -9,7 +9,6 @@ module Garage
       end
 
       def reset
-        @exampler = Proc.new { [] }
         @document_root = Rails.root.join('doc/garage')
         @current_user_method = Proc.new { current_user }
         @authenticate = Proc.new {}
@@ -21,10 +20,6 @@ module Garage
       class Builder
         def initialize(config)
           @config = config
-        end
-
-        def exampler(&block)
-          @config.exampler = block
         end
 
         def document_root=(value)

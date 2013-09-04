@@ -1,27 +1,21 @@
 module Garage
   module Docs
     class Example
-      class << self
-        def where(args)
-          exampler.call(args[:controller], args[:name]).compact.map do |resource|
-            new(resource)
-          end
-        end
-
-        private
-
-        def exampler
-          Garage.configuration.docs.exampler
+      def self.build_all(controller, examples)
+        examples.compact.map do |resource|
+          new(resource, controller)
         end
       end
 
-      def initialize(resource)
-        @resource = resource
+      def initialize(resource, controller)
+        @resource, @controller = resource, controller
       end
 
       def url
         if @resource.is_a?(String)
           @resource
+        elsif @resource.respond_to?(:to_proc)
+          @resource.to_proc.call(@controller.main_app)
         else
           @resource.represent!
           @resource.link_path_for(:self)

@@ -12,4 +12,8 @@ class User < ActiveRecord::Base
   link(:self) { user_path(self) }
   link(:canonical) { user_path(self) }
   link(:posts) { user_posts_path(self) }
+
+  def self.garage_examples(user)
+    [:users_path, user]
+  end
 end

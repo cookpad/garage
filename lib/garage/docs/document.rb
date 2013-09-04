@@ -54,6 +54,20 @@ module Garage
         pathname.read
       end
 
+      def resource_class
+        @resource_class ||= extract_resource_class || relative_base_name.camelize.singularize.constantize
+      rescue NameError
+        nil
+      end
+
+      def examples(*args)
+        if resource_class && resource_class.respond_to?(:garage_examples)
+          resource_class.garage_examples(*args)
+        else
+          []
+        end
+      end
+
       # If you need authentication logic,
       # assign a Proc to Garage.docs.configuration.docs_authorization_method.
       #
@@ -73,6 +87,18 @@ module Garage
         else
           true
         end
+      end
+
+      private
+
+      def extract_resource_class
+        if /<!-- resource_class: (\S+)/ === body
+          $1.constantize
+        end
+      end
+
+      def relative_base_name
+        pathname.relative_path_from(Pathname.new("#{Garage.configuration.docs.document_root}/resources")).to_s.sub('.md', '')
       end
     end
   end
