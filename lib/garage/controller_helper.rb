@@ -22,7 +22,7 @@ module Garage
     end
 
     def doorkeeper_unauthorized_render_options
-      { json: { code: 401, error: "Unauthorized (invalid token)" } }
+      { json: { status_code: 401, error: "Unauthorized (invalid token)" } }
     end
 
     def authorized_application
