@@ -8,7 +8,7 @@ module Garage
       controller.request.format = helper.dictionary_request_format if helper.has_dictionary_mime_type?
       controller.field_selector = helper.field_selector
     rescue Garage::NestedFieldQuery::InvalidQuery
-      raise HTTPStatus::BadRequest, "Invalid query in ?fields="
+      raise Garage::BadRequest, "Invalid query in ?fields="
     end
 
     attr_reader :controller
