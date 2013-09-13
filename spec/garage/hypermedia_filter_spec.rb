@@ -74,8 +74,8 @@ describe Garage::HypermediaFilter do
         end
       end
 
-      it "raises HTTPStatus::BadRequest exception" do
-        expect { described_class.filter(controller) }.to raise_error(HTTPStatus::BadRequest)
+      it "raises Garage::BadRequest exception" do
+        expect { described_class.filter(controller) }.to raise_error(Garage::BadRequest)
       end
     end
   end

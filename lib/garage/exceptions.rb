@@ -6,6 +6,13 @@ module Garage
     end
   end
 
+  class BadRequest < HTTPError
+    def initialize(error)
+      @status = :bad_request
+      super(error)
+    end
+  end
+
   class Unauthorized < HTTPError
     def initialize(user, action, resource_class, status = :forbidden, scopes = [])
       @status = status

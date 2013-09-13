@@ -83,7 +83,7 @@ module Garage
       {:from => :gte, :to => :lte, :gt => nil, :lt => nil, :gte => nil, :lte => nil}.each do |key, as|
         k = "#{prefix}.#{key}"
         if params.has_key?(k)
-          query[as || key] = fuzzy_parse(params[k]) or raise HTTPStatus::BadRequest, "Can't parse datetime #{params[k]}"
+          query[as || key] = fuzzy_parse(params[k]) or raise Garage::BadRequest, "Can't parse datetime #{params[k]}"
         end
       end
       query if query.size > 0
