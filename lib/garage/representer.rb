@@ -87,7 +87,7 @@ module Garage::Representer
       representer_attrs << Collection.new(name, options)
     end
 
-    def scope(scope)
+    def oauth_scope(scope)
       ->(resource, responder){
         # FIXME: this only works with User resource for now
         # partial representation will not render request scope-specific fields for better caching
