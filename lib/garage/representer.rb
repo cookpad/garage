@@ -5,10 +5,6 @@ module Garage::Representer
     @partial
   end
 
-  def cacheable?
-    false
-  end
-
   def to_hash(options={})
     obj = {}
     representer_attrs.each do |definition|

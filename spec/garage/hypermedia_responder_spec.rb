@@ -36,10 +36,6 @@ describe Garage::HypermediaResponder do
     Class.new do
       include Garage::Representer
 
-      def cacheable?
-        false
-      end
-
       def represent!
       end
 
