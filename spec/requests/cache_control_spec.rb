@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Cache-Control headers' do
+describe 'Cache-Control headers', pending: true do
   let(:application) { create(:application) }
   let(:user) { create(:user) }
   let(:token) { client_is_authorized(application, user, :scopes => "public").token }
