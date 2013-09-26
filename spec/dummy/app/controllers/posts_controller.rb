@@ -69,9 +69,7 @@ class PostsController < ApiController
   end
 
   def respond_with_resources_options
-    options = { paginate: true }
-    options[:cacheable_with] = user if has_user?
-    options
+    { paginate: true }
   end
 
   def has_user?

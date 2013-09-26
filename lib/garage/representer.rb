@@ -5,10 +5,6 @@ module Garage::Representer
     @partial
   end
 
-  def cacheable?
-    false
-  end
-
   def to_hash(options={})
     obj = {}
     representer_attrs.each do |definition|
@@ -54,6 +50,10 @@ module Garage::Representer
 
   def resource_class
     self.class
+  end
+
+  def to_resource
+    self
   end
 
   def link_path_for(rel)

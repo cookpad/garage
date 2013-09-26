@@ -1,7 +1,4 @@
 Garage.configure do
-  cast_resource do |res|
-    res # FIXME
-  end
   docs.current_user_method {
     extend CurrentUserHelper
     current_user

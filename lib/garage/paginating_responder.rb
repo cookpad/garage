@@ -37,10 +37,6 @@ module Garage
       if hard_limit
         limit = hard_limit
         rs.instance_variable_set(:@total_count, limit)
-      elsif @options[:cacheable_with]
-        delegate = CacheableListDelegate.new(rs, @options[:cacheable_with])
-        total = Rails.cache.fetch(delegate.cache_key_count) { total_count(rs) }
-        rs.instance_variable_set(:@total_count, total) # OMG
       end
     end
 
@@ -65,7 +61,7 @@ module Garage
         controller.response.headers['X-List-TotalCount'] = total_count(rs).to_s
       end
 
-      # construct_links must be called after calling rs.total_count to avoid invalid count cache
+      # FIXME construct_links must be called after calling rs.total_count to avoid invalid count cache
       construct_links(rs, per_page)
 
       if hide_total?

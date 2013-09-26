@@ -10,10 +10,20 @@ module Garage
   end
 
   class Config
-    attr_accessor :cast_resource, :docs
+    attr_writer :cast_resource, :docs
 
     def docs
       @docs ||= Docs::Config.new
+    end
+
+    def cast_resource
+      @cast_resource ||= proc { |resource|
+        if resource.respond_to?(:map)
+          resource.map(&:to_resource)
+        else
+          resource.to_resource
+        end
+      }
     end
 
     class Builder

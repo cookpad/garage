@@ -4,7 +4,6 @@ require "rack-accept-default"
 
 require "garage/config"
 require "garage/nested_field_query"
-require "garage/cacheable_list_delegate"
 require "garage/app_responder"
 require "garage/controller_helper"
 require "garage/representer"

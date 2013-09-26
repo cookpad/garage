@@ -4,15 +4,7 @@ module Garage
   module HypermediaResponder
     def display(resource, given_options={})
       given_options[:content_type] = representation.content_type if representation.dictionary?
-      if @options[:cacheable_with]
-        delegate = Garage::CacheableListDelegate.new(resource, @options[:cacheable_with])
-        representation = maybe_cache(delegate, controller.field_selector) {
-          transform(resource)
-        }
-        super(render(representation), given_options)
-      else
-        super(render(transform(resource)), given_options)
-      end
+      super(render(transform(resource)), given_options)
     end
 
     def render(data)
@@ -43,32 +35,7 @@ module Garage
       resource.params = controller.params.slice(*resource.class.params)
       resource.partial = options[:partial]
       resource.selector = options[:selector] || controller.field_selector
-      maybe_cache(resource, options[:selector]) { resource.to_hash(:responder => self) }
-    end
-
-    def maybe_cache(resource, selector, &blk)
-      if resource.cacheable? && resource.respond_to?(:cache_key) &&
-          /no-cache/ !~ controller.request.headers['Cache-Control']
-        key = cache_key_for(resource, selector)
-        cached = true
-        Rails.cache.fetch(key) {
-          cached = false
-          blk.call
-        }.tap do
-          if cached
-            Rails.logger.info "Responder Cache HIT: #{key}"
-            controller.response.headers['X-Garage-Cache'] = Rack::Utils.build_query(key)
-          end
-        end
-      else
-        blk.call
-      end
-    end
-
-    def cache_key_for(resource, selector)
-      hash = controller.cache_context.merge(r: resource.cache_key)
-      hash[:s] = selector.canonical if selector
-      hash
+      resource.to_hash(:responder => self)
     end
 
     def cache
