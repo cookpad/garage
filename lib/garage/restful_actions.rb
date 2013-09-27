@@ -193,11 +193,6 @@ module Garage
       raise NotImplementedError, "#{self.class}#destroy_resource is not implemented"
     end
 
-    # Pantry::BookmarkTagsController -> params["bookmark_tag"]
-    def resource_params
-      params[resource_name]
-    end
-
     # Override this if you want to pass options to respond_with in index action
     def respond_with_resources_options
       {}
