@@ -6,8 +6,6 @@ class PostsController < ApiController
   before_filter :require_index_resource, only: [:hide, :capped]
   before_filter :require_action_permission, only: [:private, :hide, :capped]
 
-  self.resource_class = Post
-
   def private
     respond_with @resources
   end

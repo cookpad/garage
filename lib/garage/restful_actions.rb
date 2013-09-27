@@ -24,7 +24,16 @@ module Garage
       before_filter :require_resource, :only => [:show, :update, :destroy]
       before_filter :require_resources, :only => [:index, :create]
       before_filter :require_action_permission_crud, :only => [:index, :create, :show, :update, :destroy]
-      cattr_accessor :resource_class
+    end
+
+    module ClassMethods
+      def resource_class=(klass)
+        @resource_class = klass
+      end
+
+      def resource_class
+        @resource_class ||= name.sub(/Controller\z/, '').demodulize.singularize.constantize
+      end
     end
 
     # Public: List resources
@@ -191,11 +200,6 @@ module Garage
     # Override to destroy @resource
     def destroy_resource
       raise NotImplementedError, "#{self.class}#destroy_resource is not implemented"
-    end
-
-    # Pantry::BookmarkTagsController -> params["bookmark_tag"]
-    def resource_params
-      params[resource_name]
     end
 
     # Override this if you want to pass options to respond_with in index action
