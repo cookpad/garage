@@ -70,6 +70,9 @@ module Garage
       end
 
       def register(scope_symbol, options={}, &block)
+        if options[:namespace]
+          scope_symbol = [options[:namespace], scope_symbol].join(".").to_sym
+        end
         scope = Scope.new(scope_symbol, options)
         scope.instance_eval(&block) if block_given?
         unless scope.hidden?

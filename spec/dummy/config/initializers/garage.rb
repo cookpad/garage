@@ -32,7 +32,7 @@ Garage::TokenScope.configure do
     access :read, PostStream
   end
 
-  register :"foobar.read_post" do
+  register :read_post, namespace: :foobar do
     access :read, NamespacedPost
   end
 end
