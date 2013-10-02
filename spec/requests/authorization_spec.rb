@@ -167,6 +167,28 @@ describe Garage do
     end
   end
 
+  describe 'GET /posts/namespaced' do
+    let(:requester) { alice }
+    subject {
+      get "/posts/namespaced"
+      status
+    }
+
+    context 'without a valid scope' do
+      it 'returns 403' do
+        subject.should == 403
+        last_response.should match /Missing scope.*foobar\.read_post/
+      end
+    end
+
+    context 'with a valid scope' do
+      let(:scopes) { 'public foobar.read_post' }
+      it 'returns 200' do
+        subject.should == 200
+      end
+    end
+  end
+
   describe 'Log notifications' do
     let(:requester) { alice }
 

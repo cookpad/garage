@@ -31,6 +31,10 @@ Garage::TokenScope.configure do
     access :read, PrivatePost
     access :read, PostStream
   end
+
+  register :"foobar.read_post" do
+    access :read, NamespacedPost
+  end
 end
 
 
