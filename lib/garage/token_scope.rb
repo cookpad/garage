@@ -60,6 +60,12 @@ module Garage
 
 
     class Config
+      def namespace(ns, &block)
+        @ns = ns
+        instance_eval(&block)
+        @ns = nil
+      end
+
       def scopes
         @scopes ||= {}
       end
@@ -70,8 +76,8 @@ module Garage
       end
 
       def register(scope_symbol, options={}, &block)
-        if options[:namespace]
-          scope_symbol = [options[:namespace], scope_symbol].join(".").to_sym
+        if options[:namespace] || @ns
+          scope_symbol = [options[:namespace] || @ns, scope_symbol].join(".").to_sym
         end
         scope = Scope.new(scope_symbol, options)
         scope.instance_eval(&block) if block_given?
