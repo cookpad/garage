@@ -3,8 +3,9 @@ class PostsController < ApiController
 
   before_filter :require_user, only: :private
   before_filter :require_private_resource, only: :private
+  before_filter :require_namespaced_resource, only: :namespaced
   before_filter :require_index_resource, only: [:hide, :capped]
-  before_filter :require_action_permission, only: [:private, :hide, :capped]
+  before_filter :require_action_permission, only: [:private, :hide, :capped, :namespaced]
 
   def private
     respond_with @resources
@@ -16,6 +17,10 @@ class PostsController < ApiController
 
   def capped
     respond_with @resources, paginate: true, hard_limit: 100
+  end
+
+  def namespaced
+    respond_with @resources
   end
 
   private
@@ -60,6 +65,11 @@ class PostsController < ApiController
   def require_private_resource
     @resources = @user.posts
     protect_resource_as PrivatePost, user: @user
+  end
+
+  def require_namespaced_resource
+    @resources = Post.all
+    protect_resource_as NamespacedPost
   end
 
   def require_index_resource
