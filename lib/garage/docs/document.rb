@@ -25,12 +25,23 @@ module Garage
           )
         end
 
+        def build_permissions(perms, other, target)
+          perms.permits! :read
+        end
+
         private
 
         def application
           Garage::Docs.application
         end
       end
+
+      include Garage::Authorizable
+      include Garage::Representer
+
+      property :name
+      property :toc
+      property :rendered_body
 
       attr_reader :pathname
 
@@ -49,6 +60,8 @@ module Garage
       def render
         self.class.renderer.render(body).html_safe
       end
+
+      alias :rendered_body :render
 
       def body
         pathname.read

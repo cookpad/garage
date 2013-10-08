@@ -34,6 +34,7 @@ Garage::TokenScope.configure do
 
   register :meta do
     access :read, Garage::Meta::RemoteService
+    access :read, Garage::Docs::Document
   end
 
   namespace :foobar do

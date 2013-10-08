@@ -12,4 +12,5 @@ end
 
 Garage::Meta::Engine.routes.draw do
   resources :services
+  resources :resources
 end
