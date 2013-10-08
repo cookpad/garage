@@ -9,3 +9,7 @@ Garage::Docs::Engine.routes.draw do
     end
   end
 end
+
+Garage::Meta::Engine.routes.draw do
+  resources :services
+end
