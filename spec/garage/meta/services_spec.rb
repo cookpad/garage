@@ -10,10 +10,9 @@ describe '/meta/services', type: :request do
 
   context 'without token' do
     let(:token) { nil }
-    it 'returns 403' do
+    it 'returns 401' do
       get '/meta/services'
-      body['error'].should match /Insufficient scope/
-      status.should == 403
+      status.should == 401
     end
   end
 
@@ -21,6 +20,7 @@ describe '/meta/services', type: :request do
     let(:token) { client_is_authorized(application, nil, scopes: 'public').token }
     it 'returns 403' do
       get '/meta/services'
+      body['error'].should match /Insufficient scope/
       status.should == 403
     end
   end

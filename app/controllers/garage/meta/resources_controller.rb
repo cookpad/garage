@@ -1,8 +1,8 @@
 module Garage
   module Meta
     class ResourcesController < Garage::ApplicationController
-      include Garage::RestfulActions
       include Garage::ControllerHelper
+      include Garage::RestfulActions
 
       self.resource_class = Garage::Docs::Document
 
