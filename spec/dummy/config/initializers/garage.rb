@@ -56,7 +56,7 @@ Garage::Meta::RemoteService.configure do
     namespace :foo
     name "Foo API"
     endpoint "http://foo.api.example.com/v1"
-    alternate_endpoint :internal, "http://aoo.api-internal.example.amazonaws.com/v1"
+    alternate_endpoint :internal, "http://foo.api-internal.example.amazonaws.com/v1"
   end
 end
 
