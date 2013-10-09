@@ -11,6 +11,7 @@ require "sprockets/railtie"
 Bundler.require(*Rails.groups)
 require "garage"
 require "garage/docs"
+require "garage/meta"
 
 module Dummy
   class Application < Rails::Application

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   use_doorkeeper
 
   mount Garage::Docs::Engine => '/docs'
+  mount Garage::Meta::Engine => '/meta'
 
   resources :posts do
     collection do

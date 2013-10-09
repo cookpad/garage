@@ -65,7 +65,9 @@ module Garage::Representer
     self.representers << base
 
     base.class_eval do
-      include Rails.application.routes.url_helpers
+      if Rails.application
+        include Rails.application.routes.url_helpers
+      end
       extend ClassMethods
     end
   end

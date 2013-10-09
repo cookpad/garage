@@ -71,7 +71,7 @@ module Garage
   private
 
     def ability_from_token
-      Garage::TokenScope.ability(current_resource_owner, doorkeeper_token.scopes)
+      Garage::TokenScope.ability(current_resource_owner, doorkeeper_token.try(:scopes) || [])
     end
 
     # TODO move this to ::Utils
