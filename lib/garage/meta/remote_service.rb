@@ -54,11 +54,11 @@ module Garage
         end
 
         def namespace(arg)
-          @service.namespace = arg
+          @service.namespace = arg.to_s
         end
 
         def name(arg)
-          @service.namespace = arg
+          @service.name = arg
         end
 
         def endpoint(arg)
