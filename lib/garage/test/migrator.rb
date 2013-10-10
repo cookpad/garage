@@ -7,11 +7,19 @@ module Garage
 
       included do
         before(:all) do
-          silence_stream(STDOUT) { CreateDoorkeeperTables.up }
+          silence_stream(STDOUT) do
+            begin
+              CreateDoorkeeperTables.migrate(:up)
+            rescue ActiveRecord::StatementInvalid
+              # Rescue exceptions if the tables are already created.
+            end
+          end
         end
 
         after(:all) do
-          silence_stream(STDOUT) { CreateDoorkeeperTables.down }
+          silence_stream(STDOUT) do
+            CreateDoorkeeperTables.migrate(:down)
+          end
         end
       end
     end
