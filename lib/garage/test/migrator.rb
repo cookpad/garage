@@ -18,7 +18,11 @@ module Garage
 
         after(:all) do
           silence_stream(STDOUT) do
-            CreateDoorkeeperTables.migrate(:down)
+            begin
+              CreateDoorkeeperTables.migrate(:down)
+            rescue ActiveRecord::StatementInvalid
+              # Rescue exceptions if the tables are already created.
+            end
           end
         end
       end
