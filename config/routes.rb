@@ -1,5 +1,5 @@
 Garage::Docs::Engine.routes.draw do
-  root :to => 'resources#index'
+  root :to => 'resources#index', as: nil
   resources :resources do
     collection do
       get 'console'
