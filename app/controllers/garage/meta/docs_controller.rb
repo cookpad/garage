@@ -1,6 +1,6 @@
 module Garage
   module Meta
-    class ResourcesController < Garage::ApplicationController
+    class DocsController < Garage::ApplicationController
       include Garage::ControllerHelper
       include Garage::RestfulActions
 
