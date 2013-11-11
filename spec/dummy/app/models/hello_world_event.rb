@@ -4,6 +4,6 @@ class HelloWorldEvent
   end
 
   def process
-    p @event
+    Rails.logger.debug @event
   end
 end
