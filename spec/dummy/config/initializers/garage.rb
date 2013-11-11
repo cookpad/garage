@@ -60,6 +60,11 @@ Garage::Meta::RemoteService.configure do
   end
 end
 
+Garage::Webhook.configure do
+  application_secret ENV['PING_APPLICATION_SECRET']
+  subscribe 'com.example.HelloWorld', HelloWorldEvent
+end
+
 Doorkeeper.configure do
   orm :active_record
 

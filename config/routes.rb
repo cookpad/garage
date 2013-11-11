@@ -14,3 +14,7 @@ Garage::Meta::Engine.routes.draw do
   resources :services
   resources :docs
 end
+
+Garage::Webhook::Engine.routes.draw do
+  post '/' => 'events#create'
+end

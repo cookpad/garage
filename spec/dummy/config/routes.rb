@@ -22,4 +22,6 @@ Rails.application.routes.draw do
 
   resource :session
   resource :echo
+
+  mount Garage::Webhook::Engine => '/events'
 end
