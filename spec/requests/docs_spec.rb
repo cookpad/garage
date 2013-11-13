@@ -4,6 +4,7 @@ describe "Docs" do
   include RestApiSpecHelper
 
   before do
+    header.delete("Accept")
     Garage.configuration.docs.console_app_uid = application.uid
   end
 

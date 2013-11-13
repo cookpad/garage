@@ -160,7 +160,7 @@ describe "Authorization" do
       it "logs application id" do
         get "/posts/#{id}", params, env
         response.status.should == 200
-        response.headers["Application-Id"].should == access_token.application.uid
+        response.headers["Application-Id"].should == application_id
       end
     end
 
@@ -172,7 +172,7 @@ describe "Authorization" do
       it "logs application id" do
         get "/posts/#{id}", params, env
         response.status.should == 404
-        response.headers["Application-Id"].should == access_token.application.uid
+        response.headers["Application-Id"].should == application_id
       end
     end
 

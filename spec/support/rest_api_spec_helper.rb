@@ -20,12 +20,12 @@ module RestApiSpecHelper
     end
 
     let(:header) do
-      {}
+      { "Accept" => "application/json" }
     end
 
     let(:env) do
       header.inject({}) do |table, (key, value)|
-        table.merge("HTTP_#{key.upcase.gsub(?-, ?_)}" => value)
+        table.merge("HTTP_#{key.upcase.gsub(?-, ?_)}" => value.to_s)
       end
     end
 
