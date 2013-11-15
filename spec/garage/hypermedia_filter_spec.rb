@@ -29,10 +29,10 @@ describe Garage::HypermediaFilter do
     ""
   end
 
-  describe ".filter" do
+  describe ".before" do
     it "assigns parsed field selector to controller.field_selector" do
       controller.should_receive(:field_selector=).with("fields")
-      described_class.filter(controller)
+      described_class.before(controller)
     end
 
     context "with 'application/vnd.cookpad.dictionary+json' MIME format" do
@@ -42,12 +42,12 @@ describe Garage::HypermediaFilter do
 
       it "assigns :dictionary to controller.representation" do
         controller.should_receive(:representation=).with(:dictionary)
-        described_class.filter(controller)
+        described_class.before(controller)
       end
 
       it "assigns :json to controller.request.format" do
         controller.request.should_receive(:format=).with(:json)
-        described_class.filter(controller)
+        described_class.before(controller)
       end
     end
 
@@ -58,12 +58,12 @@ describe Garage::HypermediaFilter do
 
       it "assigns :dictionary to controller.representation" do
         controller.should_receive(:representation=).with(:dictionary)
-        described_class.filter(controller)
+        described_class.before(controller)
       end
 
       it "assigns :msgpack to controller.request.format" do
         controller.request.should_receive(:format=).with(:msgpack)
-        described_class.filter(controller)
+        described_class.before(controller)
       end
     end
 
@@ -75,7 +75,7 @@ describe Garage::HypermediaFilter do
       end
 
       it "raises Garage::BadRequest exception" do
-        expect { described_class.filter(controller) }.to raise_error(Garage::BadRequest)
+        expect { described_class.before(controller) }.to raise_error(Garage::BadRequest)
       end
     end
   end
