@@ -2,7 +2,7 @@ module Garage
   class HypermediaFilter
     MIME_DICT = %r[application/vnd\.cookpad\.dictionary\+(json|x-msgpack)]
 
-    def self.filter(controller)
+    def self.before(controller)
       helper = new(controller)
       controller.representation = helper.dictionary_representation if helper.has_dictionary_mime_type?
       controller.request.format = helper.dictionary_request_format if helper.has_dictionary_mime_type?
