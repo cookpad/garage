@@ -104,7 +104,7 @@ module Garage
       headers = []
       links.each do |rel, page|
         url = build_path_for(:page => page, :per_page => per_page)
-        headers << "<#{url}>; rel=\"#{rel}\""
+        headers << "<#{url}>; rel=\"#{rel}\"; page=\"#{page}\""
       end
       controller.response.headers['Link'] = headers.join ', '
     end

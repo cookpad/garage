@@ -40,6 +40,11 @@ describe 'Request to /posts' do
       page_for('last').should == 2
     end
 
+    it "paginates posts with page numbers" do
+      get "/posts"
+      LinkHeader.parse(response_header('Link')).find_link(["rel", "next"])['page'].should == "2"
+    end
+
     it "paginates entries with per_page" do
       get "/posts?per_page=10"
       body.should have(10).items
