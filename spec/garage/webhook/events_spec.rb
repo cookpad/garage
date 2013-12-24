@@ -11,7 +11,7 @@ describe '/webhook/events', type: :request do
     OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), secret, request_body)
   }
   let(:request_body) {
-    { channel: channel, messages: [ {id: 1}, {id: 2} ] }.to_json
+    { channel: channel, message: {id: 1} }.to_json
   }
 
   before do
@@ -58,21 +58,10 @@ describe '/webhook/events', type: :request do
       should == 200
     end
 
-    it 'processes events one by one' do
+    it 'processes events one' do
       proxy = double()
       HelloWorldEvent.stub(:new) { proxy }
-      proxy.should_receive(:process).twice
-      run
-    end
-  end
-
-  context 'with batch processing event' do
-    it 'returns 200' do
-      should == 200
-    end
-
-    it 'processes events by batch' do
-      HelloWorldEvent.should_receive(:batch_process).once.with(an_instance_of(Array))
+      proxy.should_receive(:process).once
       run
     end
   end

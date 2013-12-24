@@ -13,12 +13,8 @@ module Garage
         event_class = find_subscription(params[:channel])
         if event_class.nil?
           # ignore unknown events
-        elsif event_class.respond_to?(:batch_process)
-          event_class.batch_process(params[:messages])
         else
-          params[:messages].each do |message|
-            event_class.new(message).process
-          end
+          event_class.new(params[:message]).process
         end
       end
 
