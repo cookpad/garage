@@ -5,7 +5,7 @@ module Garage::Representer
     @partial
   end
 
-  def to_hash(options={})
+  def render_hash(options={})
     obj = {}
     representer_attrs.each do |definition|
       if definition.options[:if]

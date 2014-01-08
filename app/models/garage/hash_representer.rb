@@ -5,7 +5,7 @@ class Garage::HashRepresenter
     @object = object
   end
 
-  def to_hash(options = {})
+  def render_hash(options = {})
     @object
   end
 end
