@@ -35,7 +35,7 @@ module Garage
       resource.params = controller.params.slice(*resource.class.params)
       resource.partial = options[:partial]
       resource.selector = options[:selector] || controller.field_selector
-      resource.to_hash(:responder => self)
+      resource.render_hash(:responder => self)
     end
 
     def cache

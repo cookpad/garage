@@ -39,7 +39,7 @@ describe Garage::HypermediaResponder do
       def represent!
       end
 
-      def to_hash(options = {})
+      def render_hash(options = {})
         { name: "example" }
       end
     end
@@ -77,7 +77,7 @@ describe Garage::HypermediaResponder do
         Class.new(super()) do
           param :key1
 
-          def to_hash(options = {})
+          def render_hash(options = {})
             params
           end
         end
