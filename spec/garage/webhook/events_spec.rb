@@ -8,7 +8,7 @@ describe '/webhook/events', type: :request do
   let(:content_type) { 'application/json' }
 
   let(:signature) {
-    OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), secret, request_body)
+    OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, request_body)
   }
   let(:request_body) {
     { channel: channel, message: {id: 1} }.to_json

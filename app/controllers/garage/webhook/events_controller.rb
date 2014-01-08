@@ -36,7 +36,7 @@ module Garage
 
       def verify_webhook
         received = request.headers['Ping-Signature']
-        computed = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), config.application_secret, request.raw_post)
+        computed = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), config.application_secret, request.raw_post)
         unless Rack::Utils.secure_compare(received, computed)
           render json: { error: 'Signature not verified' }, status: 400
         end
