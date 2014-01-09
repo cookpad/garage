@@ -1,5 +1,3 @@
-require 'digest'
-
 module Garage
   module Docs
     class Document
