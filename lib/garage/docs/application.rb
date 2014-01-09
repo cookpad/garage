@@ -10,7 +10,8 @@ module Garage
       end
 
       def documents
-        @documents ||= pathnames.map {|pathname| Garage::Docs::Document.new(pathname) }
+        cached = Garage.configuration.docs.docs_cache_enabled
+        @documents ||= pathnames.map {|pathname| Garage::Docs::Document.new(pathname, cached) }
       end
 
       private

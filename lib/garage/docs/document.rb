@@ -44,21 +44,39 @@ module Garage
       property :rendered_body
 
       attr_reader :pathname
+      attr_accessor :cached
 
-      def initialize(pathname)
+      def initialize(pathname, cached = false)
         @pathname = pathname
+        @cached = cached
       end
 
       def name
         pathname.basename(".md").to_s
       end
 
+      def cache_key(type)
+        "garage-doc-#{type}-#{pathname}"
+      end
+
       def toc
-        self.class.toc_renderer.render(body).html_safe
+        if cached
+          Rails.cache.fetch(cache_key(:toc)) do
+            self.class.toc_renderer.render(body).html_safe
+          end
+        else
+          self.class.toc_renderer.render(body).html_safe
+        end
       end
 
       def render
-        self.class.renderer.render(body).html_safe
+        if cached
+          Rails.cache.fetch(cache_key(:render)) do
+            self.class.renderer.render(body).html_safe
+          end
+        else
+          self.class.renderer.render(body).html_safe
+        end
       end
 
       alias :rendered_body :render
