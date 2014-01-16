@@ -3,7 +3,6 @@ Rails.application.routes.draw do
 
   mount Garage::Docs::Engine => '/docs'
   mount Garage::Meta::Engine => '/meta'
-  mount Garage::Webhook::Engine => '/events'
 
   resources :posts do
     collection do

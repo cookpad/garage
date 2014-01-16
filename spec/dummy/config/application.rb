@@ -12,7 +12,6 @@ Bundler.require(*Rails.groups)
 require "garage"
 require "garage/docs"
 require "garage/meta"
-require "garage/webhook"
 
 module Dummy
   class Application < Rails::Application
