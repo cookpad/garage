@@ -1,223 +1,190 @@
-require 'spec_helper'
+require "spec_helper"
 
-describe Garage do
-  let(:application) { create(:application) }
-  let(:alice) { create(:user) }
-  let(:bob) { create(:user )}
-  let(:the_post) { create(:post, user: alice, title: "Foo") }
-  let(:token) { client_is_authorized(application, requester, scopes: scopes) }
-  let(:scopes) { 'public write_post' }
+describe "Authorization" do
+  include RestApiSpecHelper
+  include AuthenticatedContext
 
-  before do
-    with_access_token_header token.token
+  let(:alice) do
+    FactoryGirl.create(:user)
   end
 
-  describe 'GET /posts/alice.id/private' do
-    subject {
-      get "/users/#{alice.id}/posts/private"
-      status
-    }
-
-    context 'without a valid scope as alice' do
-      let(:requester) { alice }
-      it 'returns 403' do
-        subject.should == 403
-        last_response.should match /Missing scope.*read_private_post/
-      end
-    end
-
-    context 'with a valid scope as bob' do
-      let(:requester) { bob }
-      let(:scopes) { 'public read_private_post' }
-      it 'returns 403' do
-        subject.should == 403
-      end
-    end
-
-    context 'with a valid scope as alice' do
-      let(:requester) { alice }
-      let(:scopes) { 'public read_private_post' }
-      it 'returns 200' do
-        subject.should == 200
-      end
-    end
-
-    context 'with a hidden scope as alice' do
-      let(:requester) { alice }
-      let(:scopes) { 'public sudo' }
-      it 'returns 200' do
-        subject.should == 200
-      end
-    end
+  let(:bob) do
+    FactoryGirl.create(:user)
   end
 
-  describe 'GET request to post' do
-    subject {
-      get "/posts/#{the_post.id}"
-      status
-    }
+  let(:scopes) do
+    "public read_private_post write_post sudo"
+  end
 
-    context 'with alice as a requester' do
-      let(:requester) { alice }
-      it 'returns 200' do
-        subject.should == 200
-      end
+  let(:resource_owner_id) do
+    requester.id
+  end
+
+  let(:requester) do
+    alice
+  end
+
+  let(:resource) do
+    FactoryGirl.create(:post, user: alice)
+  end
+
+  let(:id) do
+    resource.id
+  end
+
+  describe "GET /users/:user_id/posts/private" do
+    let(:user_id) do
+      alice.id
     end
 
-    context 'with bob as a requester' do
-      let(:requester) { bob }
-      it 'returns 200' do
-        subject.should == 200
+    context "without valid scope" do
+      let(:scopes) do
+        "public"
       end
+      it { should == 403 }
+    end
+
+    context "without authority" do
+      let(:requester) do
+        bob
+      end
+      it { should == 403 }
+    end
+
+    context "with valid scope" do
+      it { should == 200 }
+    end
+
+    context "with another valid scope" do
+      let(:scopes) do
+        "sudo"
+      end
+      it { should == 200 }
     end
   end
 
-  describe 'GET requests to stream (requiring sudo)' do
-    subject {
-      get "/posts?stream=1"
-      status
-    }
-
-    context 'without sudo' do
-      let(:requester) { alice }
-      let(:scopes) { 'public' }
-      it 'does not reval sudo' do
-        subject.should == 403
-        last_response.should_not match /Missing scope.*sudo/
-      end
+  describe "GET /posts/:id" do
+    let(:requester) do
+      alice
     end
 
-    context 'with sudo' do
-      let(:requester) { alice }
-      let(:scopes) { 'public sudo' }
-      it 'returns 200' do
-        subject.should == 200
+    context "with valid requester" do
+      it { should == 200 }
+    end
+
+    context "with another valid requester" do
+      let(:requester) do
+        bob
       end
+      it { should == 200 }
     end
   end
 
-  describe 'PUT request to post' do
-    subject {
-      put "/posts/#{the_post.id}", title: "Bar"
-      status
-    }
-
-    context 'without a valid scope' do
-      let(:scopes) { 'public' }
-      let(:requester) { alice }
-      it 'returns 403' do
-        subject.should == 403
-      end
-    end
-
-    context 'with alice as a requester' do
-      let(:requester) { alice }
-      it 'returns 204' do
-        subject.should == 204
-        the_post.reload.title.should == "Bar"
-      end
-    end
-
-    context 'with bob as a requester' do
-      let(:requester) { bob }
-      it 'returns 403' do
-        subject.should == 403
-        the_post.reload.title.should == "Foo"
-      end
-    end
-  end
-
-  describe 'POST request' do
-    subject {
-      post "/posts", title: "Hello World"
-      last_response
-    }
-
-    let(:body) { JSON.parse subject.body }
-
-    context 'with alice as a requester' do
-      let(:requester) { alice }
-      it 'returns successful' do
-        subject.status.should == 201
-        Post.find(body['id']).title.should == "Hello World"
-      end
-    end
-  end
-
-  describe 'DELETE request to post' do
-    subject {
-      delete "/posts/#{the_post.id}"
-      status
-    }
-
-    context 'with alice as a requester' do
-      let(:requester) { alice }
-      it 'returns 204' do
-        subject.should == 204
-        expect { Post.find(the_post.id) }.to raise_error
-      end
-    end
-
-    context 'with bob as a requester' do
-      let(:requester) { bob }
-      it 'returns 403' do
-        subject.should == 403
-        expect { the_post.reload }.not_to raise_error
-      end
-    end
-  end
-
-  describe 'GET /posts/namespaced' do
-    let(:requester) { alice }
-    subject {
-      get "/posts/namespaced"
-      status
-    }
-
-    context 'without a valid scope' do
-      it 'returns 403' do
-        subject.should == 403
-        last_response.should match /Missing scope.*foobar\.read_post/
-      end
-    end
-
-    context 'with a valid scope' do
-      let(:scopes) { 'public foobar.read_post' }
-      it 'returns 200' do
-        subject.should == 200
-      end
-    end
-  end
-
-  describe 'Log notifications' do
-    let(:requester) { alice }
-
-    context 'with successful response' do
-      it 'should add application ID' do
-        get "/posts/#{the_post.id}"
-        last_response.headers['Application-Id'].should == application.uid
-      end
-    end
-
-    context 'with failed response' do
-      it 'should add application ID' do
-        get "/posts/0"
-        last_response.status.should == 404
-        last_response.headers['Application-Id'].should == application.uid
-      end
-    end
-
-    context 'with expired token' do
+  describe "GET /posts" do
+    context "with stream=1 & no valid scope" do
       before do
-        token.expires_in = 1
-        token.created_at = 1.hour.ago
-        token.save
+        params[:stream] = 1
       end
 
-      it 'should add application ID' do
-        get "/posts/#{the_post.id}"
-        last_response.status.should == 401
-        last_response.headers['Application-Id'].should == application.uid
+      let(:scopes) do
+        "public"
+      end
+
+      it { should == 403 }
+    end
+
+    context "with stream=1 & valid scope" do
+      it { should == 200 }
+    end
+  end
+
+  describe "PUT /posts/:id" do
+    before do
+      params[:title] = "Bar"
+    end
+
+    context "with invalid requester" do
+      let(:requester) do
+        bob
+      end
+      it { should == 403 }
+    end
+
+    context "with valid condition" do
+      it { should == 204 }
+    end
+  end
+
+  describe "POST /posts" do
+    before do
+      params[:title] = "test"
+    end
+
+    context "with valid condition" do
+      it { should == 201 }
+    end
+  end
+
+  describe "DELETE /posts/:id" do
+    context "with valid condition" do
+      it { should == 204 }
+    end
+
+    context "with invalid requester" do
+      let(:requester) do
+        bob
+      end
+      it { should == 403 }
+    end
+  end
+
+  describe "GET /posts/namespaced" do
+    let(:scopes) do
+      "foobar.read_post"
+    end
+
+    context "with valid condition" do
+      it { should == 200 }
+    end
+
+    context "without valid scope" do
+      let(:scopes) do
+        "public"
+      end
+      it { should == 403 }
+    end
+  end
+
+  describe "log notifications" do
+    context "with 200 case" do
+      it "logs application id" do
+        get "/posts/#{id}", params, env
+        response.status.should == 200
+        response.headers["Application-Id"].should == access_token.application.uid
+      end
+    end
+
+    context "with 404 case" do
+      let(:id) do
+        0
+      end
+
+      it "logs application id" do
+        get "/posts/#{id}", params, env
+        response.status.should == 404
+        response.headers["Application-Id"].should == access_token.application.uid
+      end
+    end
+
+    context "with 401 case" do
+      before do
+        header.delete("Authorization")
+      end
+
+      it "logs application id" do
+        get "/posts/#{id}", params, env
+        response.status.should == 401
+        response.headers["Application-Id"].should == nil
       end
     end
   end

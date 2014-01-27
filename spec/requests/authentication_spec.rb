@@ -1,78 +1,26 @@
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Request to echo resource' do
-  let(:application) { create(:application) }
-  let(:user) { create(:user) }
+describe "Authentication" do
+  include RestApiSpecHelper
+  include AuthenticatedContext
 
-  before do
-    with_access_token_header token if token
-    get '/echo'
-  end
+  describe "GET /echo" do
+    context "without Authorization header" do
+      before do
+        header["Authorization"] = nil
+      end
 
-  subject { status }
-
-  context 'without any token' do
-    let(:token) { nil }
-    it 'returns 401' do
-      subject.should == 401
+      it "returns 401 with JSON" do
+        should == 401
+        response.body.should be_json
+      end
     end
 
-    it 'returns JSON' do
-      last_response.content_type.should match %r[application/json]
-    end
-  end
-
-  context 'with a bad token' do
-    let(:token) { nil }
-    it 'returns 401' do
-      subject.should == 401
-    end
-  end
-
-  context 'with a user-authenticated token' do
-    let(:token) { client_is_authorized(application, user).token }
-    it 'returns 200' do
-      subject.should == 200
-    end
-  end
-
-  context 'with client-authenticated token' do
-    let(:token) { client_is_authorized(application, nil).token }
-    it 'returns 200' do
-      subject.should == 200
-    end
-  end
-end
-
-describe 'Request to OAuth token info' do
-  let(:application) { create(:application) }
-  let(:user) { create(:user) }
-
-  before do
-    with_access_token_header token if token
-    get '/oauth/token/info'
-  end
-
-  context 'without any token' do
-    let(:token) { nil }
-    it 'returns 401' do
-      status.should == 401
-    end
-  end
-
-  context 'with a user-authenticated token' do
-    let(:token) { client_is_authorized(application, user).token }
-    it 'returns resource-owner-id' do
-      body['resource_owner_id'].should == user.id
-      body['application']['uid'].should == application.uid
-    end
-  end
-
-  context 'with client-authenticated token' do
-    let(:token) { client_is_authorized(application, nil).token }
-    it 'returns no resource-owner-id' do
-      body['resource_owner_id'].should be_nil
-      body['application']['uid'].should == application.uid
+    context "with non existent access token" do
+      before do
+        header["Authorization"] = "Bearer #{SecureRandom.hex(32)}"
+      end
+      it { should == 401 }
     end
   end
 end

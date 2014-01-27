@@ -4,11 +4,12 @@ gem "rails", "~> 3.2.11"
 gem "kaminari"
 
 group :test do
+  gem "database_cleaner"
   gem "factory_girl"
   gem "factory_girl_rails"
   gem "forgery"
   gem "link_header"
-  gem "database_cleaner"
+  gem "rspec-json_matcher", "0.1.2"
 end
 
 group :development, :test do

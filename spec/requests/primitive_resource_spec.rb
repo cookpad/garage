@@ -1,17 +1,13 @@
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Request to echo resource' do
-  let(:application) { create(:application) }
-  let(:user) { create(:user) }
-  let(:token) { client_is_authorized(application, user).token }
+describe "Primitive Resource" do
+  include RestApiSpecHelper
+  include AuthenticatedContext
 
-  before do
-    with_access_token_header token
-  end
-
-  it 'returns a hash' do
-    get '/echo'
-    body.should be_a Hash
-    body.should == {"message" => "Hello World"}
+  describe "GET /echo" do
+    it "returns a Hash" do
+      should == 200
+      response.body.should be_json(message: "Hello World")
+    end
   end
 end

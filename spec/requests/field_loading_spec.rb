@@ -1,203 +1,187 @@
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Field loading API' do
-  let(:application) { create(:application) }
-  let(:user) { create(:user) }
-  let(:bob)  { create(:user) }
-  let!(:post) { create(:post, user: user) }
-  let!(:comment) { create(:comment, post: post, user: bob) }
-  let(:location_with_query) { location + '?' + query }
-  let(:query) { '' }
+describe "Field loading API" do
+  include RestApiSpecHelper
+  include AuthenticatedContext
 
-  before do
-    with_access_token_header(client_is_authorized(application, user).token)
+  let(:post) do
+    FactoryGirl.create(:post)
   end
 
-  subject {
-    get location_with_query
-    body
-  }
+  describe "GET /posts/:id" do
+    let(:id) do
+      post.id
+    end
 
-  describe '/post' do
-    let(:location) { "/posts/#{post.id}" }
+    let!(:comment) do
+      FactoryGirl.create(:comment, user: user, post: post)
+    end
 
-    context 'with no query' do
-      it 'has basic fields' do
-        subject.should have_key 'id'
-        subject.should have_key 'title'
-        subject.should_not have_key 'user'
-        subject.should_not have_key 'comments'
+    context "with params[:fields] = nil" do
+      it "returns default fields" do
+        should == 200
+        response.body.should be_json_as(
+          id: Fixnum,
+          title: String,
+          _links: Hash,
+        )
       end
     end
 
-    context 'with __default__ query' do
-      let(:query) { 'fields=__default__' }
-      it 'has basic fields' do
-        subject.should have_key 'id'
-        subject.should have_key 'title'
-        subject.should_not have_key 'user'
-        subject.should_not have_key 'comments'
+    context "with params[:fields] = '__default__,user'" do
+      before do
+        params[:fields] = "__default__,user"
+      end
+
+      it "returns default and user fields" do
+        should == 200
+        response.body.should be_json_as(
+          id: Fixnum,
+          title: String,
+          user: Hash,
+          _links: Hash,
+        )
       end
     end
 
-    context 'with * query' do
-      let(:query) { 'fields=*' }
-      it 'has all fields' do
-        subject.should have_key 'id'
-        subject.should have_key 'title'
-        subject.should have_key 'user'
-        subject.should have_key 'comments'
+    context "with params[:fields] = '*'" do
+      before do
+        params[:fields] = "*"
+      end
+
+      it "returns all fields" do
+        should == 200
+        response.body.should be_json_as(
+          id: Fixnum,
+          title: String,
+          user: Hash,
+          comments: Array,
+          _links: Hash,
+        )
       end
     end
 
-    context 'with fields=id query' do
-      let(:query) { 'fields=id' }
-      it 'has only id field' do
-        subject.should have_key 'id'
-        subject.should_not have_key 'title'
+    context "with params[:fields] = 'id'" do
+      before do
+        params[:fields] = "id"
+      end
+
+      it "returns only id field" do
+        should == 200
+        response.body.should be_json_as(id: Fixnum)
       end
     end
 
-    context 'with fields=__default__,id query' do
-      let(:query) { 'fields=__default__,id' }
-      it 'has id field plus default fields' do
-        subject.should have_key 'id'
-        subject.should have_key 'title'
-        subject.should_not have_key 'user'
-        subject.should_not have_key 'comments'
+    context "with params[:fields] = 'id,title'" do
+      before do
+        params[:fields] = "id,title"
+      end
+
+      it "returns only id and title fields" do
+        should == 200
+        response.body.should be_json_as(id: Fixnum, title: String)
       end
     end
 
-    context 'with fields=id,title query' do
-      let(:query) { 'fields=id,title' }
-      it 'has only id field' do
-        subject.should have_key 'id'
-        subject.should have_key 'title'
-        subject.should_not have_key 'user'
+    context "with params[:fields] = 'user[id]'" do
+      before do
+        params[:fields] = "user[id]"
+      end
+
+      it "returns only user's id field" do
+        should == 200
+        response.body.should be_json_as(
+          user: {
+            id: Fixnum,
+          },
+        )
       end
     end
 
-    context 'with fields=user query' do
-      let(:query) { 'fields=user' }
-      it 'has default fields for user' do
-        subject.should have_key 'user'
-        subject['user'].should have_key 'id'
-        subject['user'].should have_key 'name'
+    context "with params[:fields] = 'comments[__default__,post_owner]'" do
+      before do
+        params[:fields] = "comments[__default__,post_owner]"
+      end
+
+      it "returns only comments default & post_owner fields" do
+        should == 200
+        response.body.should be_json_as(
+          comments: [
+            {
+              id: Fixnum,
+              body: String,
+              commenter: Hash,
+              post_owner: Hash,
+            },
+          ],
+        )
       end
     end
 
-    context 'with fields=user[id] query' do
-      let(:query) { 'fields=user[id]' }
-      it 'has only the specified fields for user' do
-        subject.should have_key 'user'
-        subject['user'].should have_key 'id'
-        subject['user'].should_not have_key 'name'
+    context "with params[:fields] = 'comments[*]'" do
+      before do
+        params[:fields] = "comments[__default__,post_owner]"
+      end
+
+      it "returns only comments all fields" do
+        should == 200
+        response.body.should be_json_as(
+          comments: [
+            {
+              id: Fixnum,
+              body: String,
+              commenter: Hash,
+              post_owner: Hash,
+            },
+          ],
+        )
       end
     end
 
-    context 'with fields=comments query' do
-      let(:query) { 'fields=comments' }
-      it 'has everything for comments' do
-        subject.should have_key 'comments'
-        subject['comments'].should be_an Array
-        subject['comments'].first.should have_key 'id'
-        subject['comments'].first.should have_key 'commenter'
-        subject['comments'].first.should_not have_key 'post_owner'
+    context "with params[:fields] = 'comments[commenter[id]]'" do
+      before do
+        params[:fields] = "comments[commenter[id]]"
       end
-    end
 
-    context 'with fields=comments[__default__,id] query' do
-      let(:query) { 'fields=comments[__default__,id]' }
-      it 'has everything for comments' do
-        subject.should have_key 'comments'
-        subject['comments'].should be_an Array
-        subject['comments'].first.should have_key 'id'
-        subject['comments'].first.should have_key 'commenter'
-        subject['comments'].first.should_not have_key 'post_owner'
-      end
-    end
-
-    context 'with fields=comments[id] query' do
-      let(:query) { 'fields=comments[id]' }
-      it 'has only id for comments' do
-        subject.should have_key 'comments'
-        subject['comments'].first.should have_key 'id'
-        subject['comments'].first.should_not have_key 'body'
-        subject['comments'].first.should_not have_key 'commenter'
-        subject['comments'].first.should_not have_key 'post_owner'
-      end
-    end
-
-    context 'with fields=comments[*] query' do
-      let(:query) { 'fields=comments[*]' }
-      it 'has everything for comments' do
-        subject.should have_key 'comments'
-        subject['comments'].first.should have_key 'id'
-        subject['comments'].first.should have_key 'body'
-        subject['comments'].first.should have_key 'commenter'
-        subject['comments'].first.should have_key 'post_owner'
-        subject['comments'].first['post_owner'].should have_key 'id'
-        subject['comments'].first['commenter'].should have_key 'id'
-      end
-    end
-
-    context 'with fields=comments[id,commenter[id]] query' do
-      let(:query) { 'fields=comments[id,commenter[id]]' }
-      it 'has everything for comments' do
-        subject.should have_key 'comments'
-        subject['comments'].first.should have_key 'id'
-        subject['comments'].first.should have_key 'commenter'
-        subject['comments'].first.should_not have_key 'body'
-        subject['comments'].first.should_not have_key 'post_owner'
-        subject['comments'].first['commenter'].should have_key 'id'
-        subject['comments'].first['commenter'].should_not have_key 'name'
+      it "returns only comments commenter id field" do
+        should == 200
+        response.body.should be_json_as(
+          comments: [
+            {
+              commenter: {
+                id: Fixnum,
+              },
+            },
+          ],
+        )
       end
     end
   end
 
-  describe 'cached resources' do
-    let(:location) { "/users/#{user.id}/posts" }
-
+  describe "GET /users/:user_id/posts" do
     before do
-      create(:post, user: user)
+      FactoryGirl.create(:post, user: user)
     end
 
-    context 'with no query' do
-      it 'has all fields' do
-        subject.first.should have_key 'id'
-        subject.first.should have_key 'title'
+    let(:user_id) do
+      user.id
+    end
+
+    context "with caching" do
+      it "caches response per params[:fields]" do
+        should == 200
+        response.body.should be_json_as([{ id: Fixnum, title: String, _links: Hash }])
+        params[:fields] = "id"
+        get path, params, env
+        response.body.should be_json_as([{ id: Fixnum }])
       end
     end
 
-    context 'with fields=id query' do
-      let(:query) { 'fields=id' }
-      it 'has id fields' do
-        subject.first.should have_key 'id'
-        subject.first.should_not have_key 'title'
+    context "with invalid params[:fields]" do
+      before do
+        params[:fields] = "[]"
       end
-    end
-
-    context 'with no query first, then access with fields' do
-      it 'has only fields' do
-        subject.first.should have_key 'title'
-        get(location + '?fields=id')
-        body.first.should_not have_key 'title'
-      end
-    end
-  end
-
-  describe 'Bad fields query' do
-    let(:location) { '/posts' }
-    subject {
-      get location_with_query
-      status
-    }
-
-    context 'with badly formatted id' do
-      let(:query) { 'fields=[]' }
-      it 'results in 400 Bad Request' do
-        subject.should == 400
-      end
+      it { should == 400 }
     end
   end
 end

@@ -1,53 +1,70 @@
-require 'spec_helper'
+require "spec_helper"
 
-describe '/docs/resources' do
-  let(:application) { create :application }
+describe "Docs" do
+  include RestApiSpecHelper
 
   before do
-    uid = application.uid
-    Garage.configuration.docs.console_app_uid = uid
+    Garage.configuration.docs.console_app_uid = application.uid
   end
 
-  context 'without any headers' do
-    it 'should serve the overview page in default' do
-      get '/docs/resources'
-      body.should match /This is overview/
+  after do
+    Garage.configuration.docs.console_app_uid = nil
+  end
+
+  let(:application) do
+    FactoryGirl.create(:application)
+  end
+
+  let!(:post) do
+    FactoryGirl.create(:post)
+  end
+
+  describe "GET /docs/resources/post" do
+    it "returns response with a link to the post example" do
+      should == 200
+      response.body.should include "location=%2Fposts%2F#{post.id}"
     end
   end
 
-  context 'with lang= parameter' do
-    it 'should serve the overview page in Japanese' do
-      get '/docs/resources?lang=ja'
-      body.should match /Japanese page/
-    end
-  end
-
-  context 'with Accept-Language: ja header' do
-    before do
-      header 'Accept-Language', 'ja'
-    end
-
-    it 'should serve the overview page in Japanese' do
-      get '/docs/resources'
-      body.should match /Japanese page/
-    end
-
-    context 'with lang=en override' do
-      it 'should serve the overview page in English' do
-        get '/docs/resources?lang=en'
-        body.should match /This is overview/
+  describe "GET /docs/resources" do
+    context "with valid condition" do
+      it "returns default overview page" do
+        should == 200
+        response.body.should include "This is overview"
       end
     end
-  end
 
-  context 'with unsupported Accept-Language language' do
-    before do
-      header 'Accept-Language', 'zh'
+    context "with params[:lang] = 'ja'" do
+      before do
+        params[:lang] = "ja"
+      end
+
+      it "returns Japanese overview page" do
+        should == 200
+        response.body.should include "Japanese page"
+      end
     end
 
-    it 'should serve the overview page in default language' do
-      get '/docs/resources'
-      body.should match /This is overview/
+    context "with header['Accept-Language'] = 'ja'" do
+      before do
+        header["Accept-Language"] = "ja"
+      end
+
+      it "returns Japanese overview page" do
+        should == 200
+        response.body.should include "Japanese page"
+      end
+    end
+
+    context "with header['Accept-Language'] = 'unsupported'" do
+      before do
+        header["Accept-Language"] = "unsupported"
+      end
+
+      it "returns default overview page" do
+        should == 200
+        response.body.should include "This is overview"
+      end
     end
   end
 end

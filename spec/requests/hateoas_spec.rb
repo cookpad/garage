@@ -1,47 +1,40 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe "HATEOAS" do
-  let(:application) { create(:application) }
-  let(:user) { create(:user) }
-  let(:token) { client_is_authorized(application, user).token }
+  include RestApiSpecHelper
+  include AuthenticatedContext
 
-  before {
-    with_access_token_header token
-  }
-
-  context "with test link href" do
-    before { get "/users/#{user.id}" }
-    subject { body['_links']['self']['href'] }
-
-    it { should_not match /\?scheme=http/ }
-    it { should_not match %r[^http://] }
-    it { should match %r[^/] }
+  let(:id) do
+    user.id
   end
 
-  it "should follow uri and link@self" do
-    get "/users/#{user.id}"
+  describe "GET /users/:id" do
+    context "with valid condition" do
+      it "returns _links fields" do
+        should == 200
+        response.body.should be_json_including(
+          _links: {
+            self: {
+              href: path,
+            }
+          },
+        )
+      end
+    end
 
-    @body = body
-    follow_link 'self'
-    body.should == @body
-    follow_link 'self'
-    body.should == @body
+    context "with following" do
+      it "returns chained links" do
+        should == 200
 
-    create(:post, :user => user)
+        get JSON.parse(response.body)["_links"]["self"]["href"], params, env
+        response.status.should == 200
 
-    follow_link 'posts'
-    body.should have(1).items
+        get JSON.parse(response.body)["_links"]["self"]["href"], params, env
+        response.status.should == 200
 
-    follow_link 'self', body[0]
-    status.should == 200
-    body.should_not be_nil
-    body['_links'].should have_key 'self'
-  end
-
-  it 'follows rel="canonical"' do
-    get "/users/#{user.id}"
-    @body = body
-    follow_link 'canonical'
-    body.should == @body
+        get JSON.parse(response.body)["_links"]["posts"]["href"], params, env
+        response.status.should == 200
+      end
+    end
   end
 end
