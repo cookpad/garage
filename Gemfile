@@ -10,6 +10,7 @@ group :test do
   gem "forgery"
   gem "link_header"
   gem "rspec-json_matcher", "0.1.2"
+  gem "webmock"
 end
 
 group :development, :test do

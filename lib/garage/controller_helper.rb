@@ -7,6 +7,7 @@ module Garage
       around_filter :notify_request_stats
 
       include ::Doorkeeper::Helpers::Filter
+      include Garage::AuthCenter::ControllerHelper
       doorkeeper_for :all
 
       # TODO current_user
@@ -23,10 +24,6 @@ module Garage
 
     def doorkeeper_unauthorized_render_options
       { json: { status_code: 401, error: "Unauthorized (invalid token)" } }
-    end
-
-    def authorized_application
-      doorkeeper_token.application if doorkeeper_token
     end
 
     def current_resource_owner
@@ -105,7 +102,6 @@ module Garage
       begin
         payload = {
           :controller => self,
-          :application => authorized_application,
           :token => doorkeeper_token,
           :resource_owner => current_resource_owner,
         }

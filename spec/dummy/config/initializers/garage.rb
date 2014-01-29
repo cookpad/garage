@@ -71,7 +71,7 @@ Doorkeeper.configure do
 end
 
 ActiveSupport::Notifications.subscribe "garage.request" do |name, start, finish, id, payload|
-  if payload[:application]
-    payload[:controller].response.headers['Application-Id'] = payload[:application].uid
+  if payload[:token].application_id
+    payload[:controller].response.headers['Application-Id'] = payload[:token].application_id
   end
 end

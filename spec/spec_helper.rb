@@ -4,6 +4,7 @@ require "garage"
 require File.expand_path("../dummy/config/environment", __FILE__)
 require "rspec/rails"
 require "rspec/autorun"
+require "webmock/rspec"
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
@@ -17,3 +18,5 @@ RSpec.configure do |config|
     Rails.cache.clear
   end
 end
+
+Garage.configuration.auth_center_url = "http://auth.example.com/oauth/token"

@@ -2,6 +2,7 @@ require "rails"
 require "doorkeeper"
 require "rack-accept-default"
 
+require "garage/auth_center"
 require "garage/config"
 require "garage/nested_field_query"
 require "garage/app_responder"
