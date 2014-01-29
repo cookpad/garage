@@ -10,6 +10,7 @@ module Garage
   end
 
   class Config
+    attr_accessor :auth_center_host, :auth_center_url
     attr_writer :cast_resource, :docs
 
     def docs

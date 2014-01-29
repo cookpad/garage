@@ -6,7 +6,7 @@ describe "Authentication" do
   describe "GET /echo" do
     context "with 401 from auth server" do
       before do
-        stub_request(:get, Garage::AuthCenter::AccessTokenFetcher.url).to_return(status: 401)
+        stub_request(:get, Garage.configuration.auth_center_url).to_return(status: 401)
       end
 
       it "returns 401 with JSON" do

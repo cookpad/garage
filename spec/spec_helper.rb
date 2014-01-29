@@ -19,4 +19,4 @@ RSpec.configure do |config|
   end
 end
 
-Garage::AuthCenter::AccessTokenFetcher.url = "http://auth.example.com/oauth/token"
+Garage.configuration.auth_center_url = "http://auth.example.com/oauth/token"
