@@ -110,8 +110,11 @@ describe "Authorization" do
       it { should == 403 }
     end
 
-    context "with valid condition" do
-      it { should == 204 }
+    context "with response body option" do
+      it "returns 200 with response body" do
+        should == 200
+        response.body.should be_json_including(id: resource.id)
+      end
     end
   end
 
@@ -126,8 +129,11 @@ describe "Authorization" do
   end
 
   describe "DELETE /posts/:id" do
-    context "with valid condition" do
-      it { should == 204 }
+    context "with response body option" do
+      it "returns 200 with response body" do
+        should == 200
+        response.body.should be_json_including(id: resource.id)
+      end
     end
 
     context "with invalid requester" do

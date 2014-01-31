@@ -76,6 +76,13 @@ class PostsController < ApiController
     @resources = Post.scoped
   end
 
+  def respond_with_resource_options
+    {
+      delete: { body: true },
+      put: { body: true },
+    }
+  end
+
   def respond_with_resources_options
     { paginate: true }
   end
