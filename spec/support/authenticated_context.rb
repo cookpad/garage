@@ -4,7 +4,7 @@ module AuthenticatedContext
   included do
     before do
       header["Authorization"] = "Bearer dummy-access-token"
-      stub_access_token_response(resource_owner_id: resource_owner_id, scope: scopes, application_id: application_id)
+      stub_access_token_request(resource_owner_id: resource_owner_id, scope: scopes, application_id: application_id)
     end
 
     let(:scopes) do

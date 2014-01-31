@@ -29,7 +29,7 @@ describe "Authentication" do
     context "with valid access token from auth server" do
       before do
         header["Authorization"] = "Bearer #{SecureRandom.hex(32)}"
-        stub_access_token_response
+        stub_access_token_request
       end
       it { should == 200 }
     end
