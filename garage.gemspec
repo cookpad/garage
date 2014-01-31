@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "oauth2"
   s.add_dependency "redcarpet", ">= 2.3.0"
   s.add_dependency "haml"
+  s.add_dependency "hashie"
   s.add_dependency "sass-rails"
   s.add_dependency "coffee-rails"
   s.add_dependency "http_accept_language", "~> 1.0.2"
