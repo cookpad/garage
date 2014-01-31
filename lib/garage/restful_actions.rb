@@ -63,7 +63,7 @@ module Garage
     # Requires `:write` permission on `@resource`
     def update
       @resource = update_resource
-      respond_with @resource
+      respond_with @resource, respond_with_resource_options
     end
 
     # Public: Delete the resource
@@ -71,7 +71,7 @@ module Garage
     # Requires `:write` permission on `@resource`
     def destroy
       @resource = destroy_resource
-      respond_with @resource
+      respond_with @resource, respond_with_resource_options
     end
 
     private
