@@ -9,8 +9,4 @@ class ApiController < ApplicationController
   def resource_owner_exists?(resource_owner_id)
     User.exists?(resource_owner_id)
   end
-
-  def backdoor_privileged_application?(app)
-    true
-  end
 end
