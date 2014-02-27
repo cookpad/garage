@@ -6,7 +6,7 @@ module Garage
     module AuthenticationHelper
       def stub_access_token_request(attributes = {})
         Hashie::Mash.new(
-          application_id: SecureRandom.hex(32),
+          application_id: 1,
           expired_at: 1.month.since,
           scope: "",
           token: SecureRandom.hex(32),
