@@ -14,7 +14,7 @@ module Garage
           @renderer ||= Redcarpet::Markdown.new(
             Redcarpet::Render::HTML.new(with_toc_data: true),
             fenced_code_blocks: true,
-            no_intra_emphasis: true
+            no_intra_emphasis: true,
             tables: true,
           )
         end
