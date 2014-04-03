@@ -64,7 +64,7 @@ module Garage
     end
 
     class DataRenderer
-      JSON_ESCAPE_TABLE = { "<" => "\u003C", ">" => "\u003E" }.freeze
+      JSON_ESCAPE_TABLE = { "<" => '\u003C', ">" => '\u003E' }.freeze
 
       def self.render(*args)
         new(*args).render
@@ -77,7 +77,7 @@ module Garage
       end
 
       def render
-        Oj.dump(converted_data, mode: :compat).gsub(/([<>])/, JSON_ESCAPE_TABLE)
+        Oj.dump(converted_data, mode: :compat).gsub(/([<>])/, JSON_ESCAPE_TABLE).tap do |x|  end
       end
 
       private
