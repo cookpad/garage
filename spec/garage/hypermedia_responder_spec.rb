@@ -147,7 +147,8 @@ describe Garage::HypermediaResponder::DataRenderer do
         end
 
         it "replaces them with '\\u003C' & '\\u003E'" do
-          should == %<{"name":"\u003Cx\u003E"}>
+          should_not match /<x>/
+          should == %<{"name":"\\u003Cx\\u003E"}>
         end
       end
     end
