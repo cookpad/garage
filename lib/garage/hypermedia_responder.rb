@@ -77,7 +77,7 @@ module Garage
       end
 
       def render
-        Oj.dump(converted_data, mode: :compat).gsub(/([<>])/, JSON_ESCAPE_TABLE).tap do |x|  end
+        Oj.dump(converted_data, mode: :compat).gsub(/([<>])/, JSON_ESCAPE_TABLE)
       end
 
       private
