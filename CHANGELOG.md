@@ -1,4 +1,6 @@
 # CHANGELOG
+## 1.1.2
+* Update redcarpet gem version. redcarpet 3.1.1 has fixed SEGV bug.
 
 ## 1.1.1
 * Fix `<` & `>` handling on JSON encoding
