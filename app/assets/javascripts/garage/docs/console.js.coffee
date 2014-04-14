@@ -66,6 +66,7 @@ jQuery ()->
     $.ajax
       type: $('#method').val(),
       url: url,
+      cache: false,
       data: buildData($('.parameters')),
       dataType: 'json',
       success: (data, textStatus, xhr) ->
