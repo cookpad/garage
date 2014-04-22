@@ -25,6 +25,11 @@ describe "Docs" do
       should == 200
       response.body.should include "location=%2Fposts%2F#{post.id}"
     end
+
+    it "returns response with a title" do
+      should == 200
+      response.body.should include "<title>Post API - Garage</title>"
+    end
   end
 
   describe "GET /docs/resources" do

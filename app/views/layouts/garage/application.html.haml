@@ -2,7 +2,7 @@
 %html
   %head
     %meta{ charset: "utf-8" }
-    %title Garage
+    %title= @title ? "#{@title} - Garage" : "Garage"
     = csrf_meta_tags
     = stylesheet_link_tag "garage/application", :media => "all"
     = javascript_include_tag "garage/application"
