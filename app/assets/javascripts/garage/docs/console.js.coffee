@@ -69,6 +69,9 @@ jQuery ()->
       cache: false,
       data: buildData($('.parameters')),
       dataType: 'json',
+      complete: ->
+        queryString = $.param({'location': $('#location').val(), 'method': $('#method').val()})
+        history.pushState('', '', "#{location.pathname}?#{queryString}")
       success: (data, textStatus, xhr) ->
         $('#api-headers').text("#{xhr.status} #{xhr.statusText}\n" + xhr.getAllResponseHeaders())
         $('#api-response').html buildHyperlinks(JSON.stringify(data, undefined, 2))
