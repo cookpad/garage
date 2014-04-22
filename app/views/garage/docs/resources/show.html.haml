@@ -1,5 +1,5 @@
 = render layout: "layout_navigation" do
-  %h1 #{@document.name.humanize} API
+  %h1= @title
 
   - if @examples.any?
     .section.examples

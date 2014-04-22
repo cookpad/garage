@@ -17,6 +17,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   def show
     @documents = Garage::Docs::Document.all
     @examples = Garage::Docs::Example.build_all(self, @document.examples(_current_user))
+    @title = "#{@document.name.humanize} API"
   end
 
   def console
