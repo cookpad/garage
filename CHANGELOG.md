@@ -1,4 +1,8 @@
 # CHANGELOG
+
+## 1.1.3
+* Improve console
+
 ## 1.1.2
 * Update redcarpet gem version. redcarpet 3.1.1 has fixed SEGV bug.
 
