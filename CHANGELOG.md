@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.1.4
+* Fix redcarpet version
+
 ## 1.1.3
 * Improve console
 
