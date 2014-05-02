@@ -1,8 +1,5 @@
 # CHANGELOG
 
-## 1.1.6
-* Reveal `Definition#name`
-
 ## 1.1.5
 * Inheritable property
 

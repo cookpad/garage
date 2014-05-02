@@ -121,7 +121,7 @@ module Garage::Representer
   class NonEncodableValue < StandardError;  end
 
   class Definition
-    attr_reader :name, :options
+    attr_reader :options
 
     def initialize(name, options={})
       @name = name
