@@ -69,24 +69,23 @@ module Garage::Representer
         include Rails.application.routes.url_helpers
       end
       extend ClassMethods
+
+      class_attribute :representer_attrs
+      self.representer_attrs = []
     end
   end
 
   module ClassMethods
-    def representer_attrs
-      @representer_attrs ||= []
-    end
-
     def property(name, options={})
-      representer_attrs << Definition.new(name, options)
+      self.representer_attrs += [Definition.new(name, options)]
     end
 
     def link(rel, options={}, &block)
-      representer_attrs << Link.new(rel, options, block)
+      self.representer_attrs += [Link.new(rel, options, block)]
     end
 
     def collection(name, options={})
-      representer_attrs << Collection.new(name, options)
+      self.representer_attrs += [Collection.new(name, options)]
     end
 
     def oauth_scope(scope)
