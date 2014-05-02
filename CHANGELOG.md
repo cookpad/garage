@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.1.5
+* Inheritable property
+
 ## 1.1.4
 * Fix redcarpet version
 
