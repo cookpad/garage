@@ -1,4 +1,6 @@
 # CHANGELOG
+## 1.1.6
+* Add disable AuthCenter option. But authentication with doorkeeperDB is still alive.
 
 ## 1.1.5
 * Inheritable property
