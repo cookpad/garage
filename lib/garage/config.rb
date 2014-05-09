@@ -10,8 +10,12 @@ module Garage
   end
 
   class Config
-    attr_accessor :auth_center_host, :auth_center_url
+    attr_accessor :auth_center_host, :auth_center_url, :enable_auth_center
     attr_writer :cast_resource, :docs
+
+    def initialize
+      @enable_auth_center = true
+    end
 
     def docs
       @docs ||= Docs::Config.new

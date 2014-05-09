@@ -7,7 +7,7 @@ module Garage
       around_filter :notify_request_stats
 
       include ::Doorkeeper::Helpers::Filter
-      include Garage::AuthCenter::ControllerHelper
+      include Garage::AuthCenter::ControllerHelper if Garage.configuration.enable_auth_center
       doorkeeper_for :all
 
       # TODO current_user
