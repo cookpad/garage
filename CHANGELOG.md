@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.1.7
+* Use Authorization Code Grant Flow at console
+
 ## 1.1.6
 * Add disable AuthCenter option. But authentication with doorkeeperDB is still alive.
 
