@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.1.8
+* Revert adding disable AuthCenter option. It has bugs.
+
 ## 1.1.7
 * Use Authorization Code Grant Flow at console
 
