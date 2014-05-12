@@ -27,20 +27,20 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   def authenticate
     session[:platform_return_to] = params[:return_to]
 
-    client = oauth2_client(@app)
-
-    # TODO: because it authenticates against self host provider, use
-    # Implicit Grant flow to prevent the callback app accessing itself
-    # and blocks with a single process server i.e. Webrick
-    redirect_to client.implicit.authorize_url(
+    redirect_to oauth2_client(@app).auth_code.authorize_url(
       :redirect_uri => garage_docs.callback_resources_url,
       :scope => params[:scopes].join(' ')
     )
   end
 
   def callback
-    if params[:access_token]
-      session[:access_token] = params[:access_token]
+    if params[:code]
+      client = oauth2_client(@app)
+
+      # This will block if your API server runs on the same process (e.g. Webrick)
+      token = client.auth_code.get_token(params[:code], redirect_uri: garage_docs.callback_resources_url)
+      session[:access_token] = token.token
+
       redirect_to session[:platform_return_to] || garage_docs.console_resources_path
     else
       render :layout => false
