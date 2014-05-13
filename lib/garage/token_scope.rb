@@ -104,6 +104,7 @@ module Garage
       def name
         @sym.to_s
       end
+      alias_method :to_s, :name
 
       def access(action, klass)
         @access << [klass.to_s, action]
