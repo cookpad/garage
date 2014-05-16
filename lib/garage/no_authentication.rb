@@ -2,6 +2,7 @@ module Garage
   # include after RestfulActions
   module NoAuthentication
     extend ActiveSupport::Concern
+    include Utils
 
     included do
       use Rack::AcceptDefault
