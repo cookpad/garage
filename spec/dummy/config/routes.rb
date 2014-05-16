@@ -18,9 +18,13 @@ Rails.application.routes.draw do
         get :private
       end
     end
+
+    resources :public_posts, only: :index
   end
 
   resource :session
   resource :echo
   resource :ping
+
+  get :mine, to: 'public_posts#my'
 end
