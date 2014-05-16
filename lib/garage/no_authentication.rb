@@ -21,15 +21,10 @@ module Garage
       end
     end
 
-    # Use this method to specify requested resource_owner_id. It might be empty. Clients are not forced to
-    # send Resource-Owner-Id header.
+    # Use this method to specify requested resource_owner_id.
+    # It might be nil. Clients are not forced to send Resource-Owner-Id header.
     def resource_owner_id
-      request.headers["Resource-Owner-Id"] or raise Garage::BadRequest.new('Expected Resource-Owner-Id, but empty')
-    end
-
-    # Call this to know a client sends Resource-Owner-Id header or not.
-    def has_resource_owner_id?
-      !!request.headers["Resource-Owner-Id"]
+      request.headers["Resource-Owner-Id"]
     end
   end
 end
