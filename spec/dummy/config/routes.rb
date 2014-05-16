@@ -22,4 +22,5 @@ Rails.application.routes.draw do
 
   resource :session
   resource :echo
+  resource :ping
 end
