@@ -24,6 +24,8 @@ module Garage
       before_filter :require_resource, :only => [:show, :update, :destroy]
       before_filter :require_resources, :only => [:index, :create]
       before_filter :require_action_permission_crud, :only => [:index, :create, :show, :update, :destroy]
+
+      validate_non_authentication!
     end
 
     module ClassMethods
@@ -33,6 +35,15 @@ module Garage
 
       def resource_class
         @resource_class ||= name.sub(/Controller\z/, '').demodulize.singularize.constantize
+      end
+
+      private
+
+      # Temporary validation untill authentication option is fully separated.
+      def validate_non_authentication!
+        if included_modules.include? ::Garage::NoAuthentication
+          raise "Don't include RestfulActions after NoAuthentication"
+        end
       end
     end
 
