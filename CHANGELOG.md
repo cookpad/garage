@@ -1,4 +1,8 @@
 # CHANGELOG
+## 1.1.9
+* Change scope symbols to strings.
+* Add no authentication and no AuthCenter option.
+
 ## 1.1.8
 * Revert adding disable AuthCenter option. It has bugs.
 
