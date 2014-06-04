@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.2.0
+* Add `Garage.configuration.rescue_error` (default: true)
+
 ## 1.1.9
 * Change scope symbols to strings.
 * Add no authentication and no AuthCenter option.

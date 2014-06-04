@@ -10,8 +10,18 @@ module Garage
   end
 
   class Config
+    DEFAULT_RESCUE_ERROR = true
+
     attr_accessor :auth_center_host, :auth_center_url
-    attr_writer :cast_resource, :docs
+    attr_writer :cast_resource, :docs, :rescue_error
+
+    # Set false if you want to rescue errors by yourself
+    # @return [true, false] A flag to rescue Garage::HTTPError in ControllerHelper (default: true)
+    # @example
+    #   Garage.configuration.rescue_error = false
+    def rescue_error
+      instance_variable_defined?(:@rescue_error) ? @rescue_error : DEFAULT_RESCUE_ERROR
+    end
 
     def docs
       @docs ||= Docs::Config.new
