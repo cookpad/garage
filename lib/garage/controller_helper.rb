@@ -14,8 +14,10 @@ module Garage
 
       # TODO current_user
 
-      rescue_from Garage::HTTPError do |exception|
-        render json: { status_code: exception.status_code, error: exception.message }, status: exception.status
+      if Garage.configuration.rescue_error
+        rescue_from Garage::HTTPError do |exception|
+          render json: { status_code: exception.status_code, error: exception.message }, status: exception.status
+        end
       end
 
       before_filter Garage::HypermediaFilter
