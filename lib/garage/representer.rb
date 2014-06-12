@@ -73,6 +73,12 @@ module Garage::Representer
   end
 
   module ClassMethods
+    attr_writer :representer_attrs
+
+    def inherited(child)
+      child.representer_attrs = self.representer_attrs.clone
+    end
+
     def representer_attrs
       @representer_attrs ||= []
     end
