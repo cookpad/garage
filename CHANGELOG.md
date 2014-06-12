@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.2.1
+* Replace inheritable property implementation to speed things up
+
 ## 1.2.0
 * Add `Garage.configuration.rescue_error` (default: true)
 
