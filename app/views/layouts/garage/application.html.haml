@@ -13,10 +13,10 @@
       .container
         .navbar-header
           .navbar-brand
-            = link_to "Garage", garage_docs.resources_path
+            = link_to "Garage", resources_path
         .navbar-collapse.collapse
           %ul.nav.navbar-nav
-            %li= link_to "Console", garage_docs.console_resources_path
+            %li= link_to "Console", console_resources_path
           %ul.nav.navbar-nav.navbar-right
             - if _current_user
               %li= link_to "Signout", "/signout", method: :post
