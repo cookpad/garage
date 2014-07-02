@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.2.2
+* Support Rails 4 style path methods
+
 ## 1.2.1
 * Replace inheritable property implementation to speed things up
 
