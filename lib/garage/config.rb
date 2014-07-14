@@ -12,7 +12,7 @@ module Garage
   class Config
     DEFAULT_RESCUE_ERROR = true
 
-    attr_accessor :auth_center_host, :auth_center_url
+    attr_accessor :auth_center_host, :auth_center_url, :auth_center_timeout
     attr_writer :cast_resource, :docs, :rescue_error
 
     # Set false if you want to rescue errors by yourself
