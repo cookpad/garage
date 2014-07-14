@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.2.3
+* Add `read_timeout` option for connecting slow auth center (like staging).
+
 ## 1.2.2
 * Support Rails 4 style path methods
 
