@@ -28,7 +28,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
     session[:platform_return_to] = params[:return_to]
 
     redirect_to oauth2_client(@app).auth_code.authorize_url(
-      :redirect_uri => garage_docs.callback_resources_url,
+      :redirect_uri => callback_resources_url,
       :scope => params[:scopes].join(' ')
     )
   end
@@ -38,10 +38,10 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
       client = oauth2_client(@app)
 
       # This will block if your API server runs on the same process (e.g. Webrick)
-      token = client.auth_code.get_token(params[:code], redirect_uri: garage_docs.callback_resources_url)
+      token = client.auth_code.get_token(params[:code], redirect_uri: callback_resources_url)
       session[:access_token] = token.token
 
-      redirect_to session[:platform_return_to] || garage_docs.console_resources_path
+      redirect_to session[:platform_return_to] || console_resources_path
     else
       render :layout => false
     end
