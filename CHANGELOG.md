@@ -1,4 +1,8 @@
 # CHANGELOG
+## 1.2.4
+* Remove garage_docs prefix.
+* Limit upper version of doorkeeper gem.
+
 ## 1.2.3
 * Add `read_timeout` option for connecting slow auth center (like staging).
 
