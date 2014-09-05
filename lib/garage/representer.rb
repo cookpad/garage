@@ -17,7 +17,6 @@ module Garage::Representer
         obj[definition.name] = definition.encode(self, options[:responder], selector[definition.name])
       else
         next if selector.excludes?('_links')
-        block = definition.block
         obj['_links'] ||= {}
         obj['_links'][definition.rel.to_s] = { 'href' => definition.pathify(self) }
       end
