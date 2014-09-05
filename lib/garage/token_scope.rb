@@ -24,7 +24,7 @@ module Garage
     def self.ability(user, scopes)
       scopes = scopes.map(&:to_sym)
       scopes = [:public] if scopes.empty? # backward compatiblity for scopes without any scope, assuming public
-      ability = Ability.new(user, configuration.scopes.slice(*scopes).values)
+      Ability.new(user, configuration.scopes.slice(*scopes).values)
     end
 
     class Ability
