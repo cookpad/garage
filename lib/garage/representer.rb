@@ -204,7 +204,7 @@ module Garage::Representer
     end
 
     def pathify(representer)
-      representer.instance_exec &@block
+      representer.instance_exec(&@block)
     end
   end
 end
