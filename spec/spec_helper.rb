@@ -15,6 +15,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include RSpec::JsonMatcher, type: :request
   config.include Garage::Test::AuthenticationHelper, type: :request
+  config.infer_spec_type_from_file_location!
 
   config.before(:each) do
     Rails.cache.clear
