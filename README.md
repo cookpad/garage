@@ -1,13 +1,49 @@
 # Garage
 Rails engine to add RESTful hypermedia API to your application.
 
-## Usage
+## Quickstart
 
 In `Gemfile`:
 
 ```ruby
 gem 'garage', github: 'cookpad/garage'
 ```
+
+In your Rails model class:
+
+```ruby
+class Employee < ActiveRecord::Base
+  include Garage::Representer
+
+  belongs_to :division
+  property :id
+  property :title
+  property :first_name
+  property :last_name
+
+  property :division, selectable: true
+
+  link(:division) { division_path(division) }
+
+  def self.build_permissions(perms, other, target)
+    perms.permits! :read
+  end
+end
+```
+
+In your controller class:
+
+```ruby
+class EmployeesController < ApplicationController
+  include Garage::RestfulActions
+
+  def require_resources
+    @resources = Employee.all
+  end
+end
+```
+
+## Advanced Configurations
 
 In `config/initializer/garage.rb`:
 
@@ -31,10 +67,6 @@ Doorkeeper.configure do
 end
 ```
 
-## Configuration
-```ruby
-Garage.configuration.rescue_error # Set false if you want to rescue errors by yourself (default: true)
-```
 ## Authors 
 
 * Tatsuhiko Miyagawa
