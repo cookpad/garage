@@ -75,5 +75,3 @@ ActiveSupport::Notifications.subscribe "garage.request" do |name, start, finish,
     payload[:controller].response.headers['Application-Id'] = payload[:token].application_id
   end
 end
-
-Garage.configuration.auth_center_timeout = 3

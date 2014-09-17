@@ -2,13 +2,14 @@ require "spec_helper"
 
 describe "Authentication" do
   include RestApiSpecHelper
+  include AuthenticatedContext
 
   describe "GET /echo" do
-    context "with 401 from auth server" do
+    context "without valid token" do
       before do
-        stub_request(:get, Garage.configuration.auth_center_url).to_return(status: 401)
+        header["Authorization"] = "Bearer #{access_token.token}"
+        access_token.destroy
       end
-
       it "returns 401 with JSON" do
         should == 401
         response.body.should be_json
@@ -27,10 +28,6 @@ describe "Authentication" do
     end
 
     context "with valid access token from auth server" do
-      before do
-        header["Authorization"] = "Bearer #{SecureRandom.hex(32)}"
-        stub_access_token_request
-      end
       it { should == 200 }
     end
   end

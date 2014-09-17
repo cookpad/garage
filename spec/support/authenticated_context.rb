@@ -3,8 +3,7 @@ module AuthenticatedContext
 
   included do
     before do
-      header["Authorization"] = "Bearer dummy-access-token"
-      stub_access_token_request(resource_owner_id: resource_owner_id, scope: scopes, application_id: application_id)
+      header["Authorization"] = "Bearer #{access_token.token}"
     end
 
     let(:scopes) do
@@ -19,8 +18,16 @@ module AuthenticatedContext
       user.id
     end
 
+    let(:application) do
+      FactoryGirl.create(:application)
+    end
+
     let(:application_id) do
-      SecureRandom.hex(32)
+      application.id
+    end
+
+    let(:access_token) do
+      FactoryGirl.create(:access_token, resource_owner_id: resource_owner_id, scopes: scopes, application: application)
     end
   end
 end
