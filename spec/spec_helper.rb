@@ -13,7 +13,6 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.include FactoryGirl::Syntax::Methods
   config.include RSpec::JsonMatcher, type: :request
-  config.infer_spec_type_from_file_location!
 
   config.before(:each) do
     Rails.cache.clear

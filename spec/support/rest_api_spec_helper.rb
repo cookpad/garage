@@ -29,11 +29,11 @@ module RestApiSpecHelper
       end
     end
 
-    let(:method) do |example|
+    let(:method) do
       example.full_description[/ (GET|POST|PUT|DELETE) /, 1].downcase
     end
 
-    let(:path) do |example|
+    let(:path) do
       example.full_description[/ (?:GET|POST|PUT|DELETE) (.+?)(?: |$)/, 1].gsub(/:([^\s\/]+)/) { send($1) }
     end
 
