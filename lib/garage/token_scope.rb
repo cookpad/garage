@@ -50,7 +50,7 @@ module Garage
       end
 
       def access!(klass, action)
-        allow?(klass, action) or raise Garage::Unauthorized.new(@user, action, klass, :forbidden, missing_scopes(klass, action))
+        allow?(klass, action) or raise MissingScopeError.new(@user, action, klass, :forbidden, missing_scopes(klass, action))
       end
 
       def allow?(klass, action)

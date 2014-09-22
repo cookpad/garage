@@ -32,8 +32,8 @@ module Garage
     end
 
     def authorize!(action)
-      exists?          or raise Unauthorized.new(user, action, resource_class, :not_found)
-      permits?(action) or raise Unauthorized.new(user, action, resource_class, :forbidden)
+      exists?          or raise PermissionError.new(user, action, resource_class, :not_found)
+      permits?(action) or raise PermissionError.new(user, action, resource_class, :forbidden)
     end
 
     def for(action)

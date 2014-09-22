@@ -14,8 +14,11 @@ module Garage
   end
 
   class Unauthorized < HTTPError
+    attr_reader :user, :action, :resource_class, :scopes
+
     def initialize(user, action, resource_class, status = :forbidden, scopes = [])
-      @status = status
+      @user, @action, @resource_class, @status, @scopes = user, action, resource_class, status, scopes
+
       if scopes.empty?
         super "Authorized user is not allowed to take the requested operation #{action} on #{resource_class}"
       else
@@ -23,4 +26,7 @@ module Garage
       end
     end
   end
+
+  class PermissionError < Unauthorized; end
+  class MissingScopeError < Unauthorized; end
 end
