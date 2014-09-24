@@ -1,4 +1,8 @@
 # CHANGELOG
+## 1.2.5
+* Divide unauthorized error into missing scope error and permission error
+  so that application can identify and handle missing scope error and permission error.
+
 ## 1.2.4
 * Remove garage_docs prefix.
 * Limit upper version of doorkeeper gem.
