@@ -1,4 +1,5 @@
 require 'action_controller'
+require 'action_controller/responder'
 require "garage/hypermedia_responder"
 require "garage/resource_casting_responder"
 require "garage/paginating_responder"
