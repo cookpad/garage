@@ -1,5 +1,7 @@
 module Garage
   module PaginatingResponder
+    DEFAULT_MAX_PER_PAGE = 100
+
     def display(resource, *args)
       if @options[:paginate]
         resource = paginate resource
@@ -30,7 +32,7 @@ module Garage
     end
 
     def max_per_page
-      @options[:max_per_page] || @max_per_page || 100
+      @options[:max_per_page] || @max_per_page || DEFAULT_MAX_PER_PAGE
     end
 
     def set_total_count(rs, per_page)
