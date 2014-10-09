@@ -13,6 +13,7 @@ In `Gemfile`:
 
 ```ruby
 gem 'garage', github: 'cookpad/garage'
+gem 'responders', '~> 2.0' # If you use Rails4.2+
 ```
 
 In your Rails model class:
