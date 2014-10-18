@@ -2,11 +2,10 @@ language: ruby
 rvm:
   - 2.1
   - 2.0
-  - 1.9.3
 branches:
   only:
     - master
 script:
-  - bundle exec rake spec
+  - bundle exec rspec
 notifications:
   email: false
