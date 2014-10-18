@@ -5,7 +5,9 @@ rvm:
 branches:
   only:
     - master
+before_script:
+  - RAILS_ENV=test bundle exec rake db:create db:migrate
 script:
-  - bundle exec rspec
+  - bundle exec rake spec
 notifications:
   email: false
