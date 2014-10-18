@@ -3,7 +3,11 @@ source "https://rubygems.org"
 gem "rails", "~> 3.2.11"
 gem "kaminari"
 
-group :test do
+group :development, :test do
+  gem "rspec-rails" , "~> 2.14.0"
+  gem "mysql2"
+  gem "pry-rails"
+  gem "quiet_assets"
   gem "database_cleaner"
   gem "factory_girl"
   gem "factory_girl_rails"

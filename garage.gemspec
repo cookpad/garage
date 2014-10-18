@@ -27,9 +27,4 @@ Gem::Specification.new do |s|
   s.add_dependency "sass-rails"
   s.add_dependency "coffee-rails"
   s.add_dependency "http_accept_language", "~> 1.0.2"
-
-  s.add_development_dependency "rspec-rails", "~> 2.14.0"
-  s.add_development_dependency "pry-rails"
-  s.add_development_dependency "mysql2"
-  s.add_development_dependency "quiet_assets"
 end
