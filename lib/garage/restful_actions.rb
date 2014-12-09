@@ -166,7 +166,7 @@ module Garage
     #     protect_source_as PrivatePost, user: @user
     #   end
     #
-    # This way, the token should require acess scope to `PrivatePost`
+    # This way, the token should require access scope to `PrivatePost`
     # (instead of `Post`), and the authorized user should have a
     # permission to operate the action on resources owned by `@user`
     # (instead of public). The `:user` option will be passed as
