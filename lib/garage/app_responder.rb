@@ -1,4 +1,9 @@
-require 'action_controller'
+if Rails.version.to_f < 4.2
+  require 'action_controller'
+else
+  require 'action_controller/responder'
+end
+
 require "garage/hypermedia_responder"
 require "garage/resource_casting_responder"
 require "garage/paginating_responder"

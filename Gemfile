@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 gem "rails", ">= 3.2.0"
 gem "kaminari"
+gem "responders"
 
 group :development, :test do
   gem "rspec-rails" , "~> 2.14.0"
