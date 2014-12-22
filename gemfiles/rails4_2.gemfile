@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", ">= 3.2.0"
+gem "rails", "~> 4.2.0"
 gem "kaminari"
 
 group :development, :test do
@@ -20,7 +20,7 @@ end
 # Declare your gem's dependencies in garage.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
-gemspec
+gemspec path: '../'
 
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
