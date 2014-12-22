@@ -1,5 +1,7 @@
 class Post < ActiveRecord::Base
-  attr_accessible :body, :title
+  if Rails.version.to_i < 4
+    attr_accessible :body, :title
+  end
 
   belongs_to :user, :touch => true
   has_many :comments
