@@ -120,7 +120,7 @@ describe "Field loading API" do
 
     context "with params[:fields] = 'comments[*]'" do
       before do
-        params[:fields] = "comments[__default__,post_owner]"
+        params[:fields] = "comments[*]"
       end
 
       it "returns only comments all fields" do
