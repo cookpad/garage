@@ -1,4 +1,8 @@
 # CHANGELOG
+## 1.3.0
+* Support Rails 4.2.
+* Drop support of Rails 3.x.
+
 ## 1.2.5
 * Divide unauthorized error into missing scope error and permission error
   so that application can identify and handle missing scope error and permission error.
