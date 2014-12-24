@@ -218,7 +218,7 @@ module Garage
       {}
     end
 
-    # Override this if you want to pass options to respond_with in show action
+    # Override this if you want to pass options to respond_with in show, update and destroy actions
     def respond_with_resource_options
       {}
     end
