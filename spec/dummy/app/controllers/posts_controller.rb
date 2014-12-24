@@ -41,12 +41,7 @@ class PostsController < ApiController
       if params[:stream]
         require_access! Garage::MetaResource.new(PostStream), :read
       end
-      @resources =
-        if Rails.version.to_i < 4
-          Post.scoped
-        else
-          Post.all
-        end
+      @resources = Post.all
     end
   end
 
@@ -78,12 +73,7 @@ class PostsController < ApiController
   end
 
   def require_index_resource
-    @resources =
-      if Rails.version.to_i < 4
-        Post.scoped
-      else
-        Post.all
-      end
+    @resources = Post.all
   end
 
   def respond_with_resource_options
@@ -106,10 +96,6 @@ class PostsController < ApiController
   end
 
   def post_params
-    if Rails.version.to_i >= 4
-      params.permit(:title, :body)
-    else
-      params.slice(:title, :body)
-    end
+    params.permit(:title, :body)
   end
 end

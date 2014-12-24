@@ -1,8 +1,4 @@
 class User < ActiveRecord::Base
-  if ::Rails.version.to_i < 4
-    attr_accessible :email, :name
-  end
-
   has_many :posts
 
   include Garage::Representer

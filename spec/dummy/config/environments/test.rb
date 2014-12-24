@@ -13,15 +13,8 @@ Dummy::Application.configure do
 
   config.cache_store = :memory_store
 
-  if Rails.version.to_i < 4
-    # Log error messages when you accidentally call methods on nil
-    config.whiny_nils = true
-  end
-
-  if Rails.version.to_i >= 4
-    config.eager_load = false
-    config.i18n.enforce_available_locales = true
-  end
+  config.eager_load = false
+  config.i18n.enforce_available_locales = true
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
