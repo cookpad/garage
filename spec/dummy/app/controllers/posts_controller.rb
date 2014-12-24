@@ -41,19 +41,19 @@ class PostsController < ApiController
       if params[:stream]
         require_access! Garage::MetaResource.new(PostStream), :read
       end
-      @resources = Post.scoped
+      @resources = Post.all
     end
   end
 
   def create_resource
     @resource = @resources.new
     @resource.user = current_resource_owner
-    @resource.update_attributes!(params.slice(:title, :body))
+    @resource.update_attributes!(post_params)
     @resource
   end
 
   def update_resource
-    @resource.update_attributes!(params.slice(:title, :body))
+    @resource.update_attributes!(post_params)
     @resource
   end
 
@@ -73,7 +73,7 @@ class PostsController < ApiController
   end
 
   def require_index_resource
-    @resources = Post.scoped
+    @resources = Post.all
   end
 
   def respond_with_resource_options
@@ -93,5 +93,9 @@ class PostsController < ApiController
 
   def user
     User.find(params[:user_id])
+  end
+
+  def post_params
+    params.permit(:title, :body)
   end
 end

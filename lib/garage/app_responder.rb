@@ -1,4 +1,10 @@
-require 'action_controller'
+if Rails::VERSION::MAJOR > 4 ||
+    (Rails::VERSION::MAJOR == 4 && Rails::VERSION::MINOR >= 2)
+  require 'action_controller/responder'
+else
+  require 'action_controller'
+end
+
 require "garage/hypermedia_responder"
 require "garage/resource_casting_responder"
 require "garage/paginating_responder"

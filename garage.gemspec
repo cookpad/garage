@@ -15,10 +15,11 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", '>= 3.2.11'
+  s.add_dependency "rails", '>= 4.0.0'
   s.add_dependency "doorkeeper", ">= 0.6.7", "< 1.4.0"
   s.add_dependency "rack-accept-default", "~> 0.0.2"
   s.add_dependency "oj"
+  s.add_dependency "responders"
 
   s.add_dependency "oauth2"
   s.add_dependency "redcarpet", "~> 3.1.1"

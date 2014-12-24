@@ -13,8 +13,8 @@ Dummy::Application.configure do
 
   config.cache_store = :memory_store
 
-  # Log error messages when you accidentally call methods on nil
-  config.whiny_nils = true
+  config.eager_load = false
+  config.i18n.enforce_available_locales = true
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -30,9 +30,6 @@ Dummy::Application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
-
-  # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
