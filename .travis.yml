@@ -9,7 +9,6 @@ gemfile:
 branches:
   only:
     - master
-    - support_rails42
 before_script:
   - RAILS_ENV=test bundle exec rake db:create db:migrate
 script:
