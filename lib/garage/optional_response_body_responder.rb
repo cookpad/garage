@@ -1,12 +1,13 @@
 module Garage::OptionalResponseBodyResponder
   protected
 
-  if Rails.version.to_f < 4.2
-    def api_behavior(error)
+  if Rails::VERSION::MAJOR > 4 ||
+      (Rails::VERSION::MAJOR == 4 && Rails::VERSION::MINOR >= 2)
+    def api_behavior
       api_behavior_handler || super
     end
   else
-    def api_behavior
+    def api_behavior(error)
       api_behavior_handler || super
     end
   end

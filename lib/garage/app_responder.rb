@@ -1,7 +1,8 @@
-if Rails.version.to_f < 4.2
-  require 'action_controller'
-else
+if Rails::VERSION::MAJOR > 4 ||
+    (Rails::VERSION::MAJOR == 4 && Rails::VERSION::MINOR >= 2)
   require 'action_controller/responder'
+else
+  require 'action_controller'
 end
 
 require "garage/hypermedia_responder"
