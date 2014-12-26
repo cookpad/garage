@@ -1,4 +1,6 @@
 # Garage
+[![Build Status](https://travis-ci.org/cookpad/garage.svg?branch=master)](https://travis-ci.org/cookpad/garage)
+
 Rails framework to add RESTful hypermedia API to your application.
 
 ## What Is It?
@@ -73,7 +75,7 @@ Doorkeeper.configure do
 end
 ```
 
-## Authors 
+## Authors
 
 * Tatsuhiko Miyagawa
 * Taiki Ono
@@ -84,4 +86,3 @@ end
 
 * [roar](https://github.com/apotonick/roar)
 * [doorkeeper](https://github.com/doorkeeper-gem/doorkeeper)
-
