@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency "rack-accept-default", "~> 0.0.2"
   s.add_dependency "oj"
   s.add_dependency "responders"
-
   s.add_dependency "oauth2"
   s.add_dependency "redcarpet", "~> 3.1.1"
   s.add_dependency "haml"
@@ -28,4 +27,17 @@ Gem::Specification.new do |s|
   s.add_dependency "sass-rails"
   s.add_dependency "coffee-rails"
   s.add_dependency "http_accept_language", "~> 1.0.2"
+
+  s.add_development_dependency "appraisal"
+  s.add_development_dependency "rspec-rails" , "~> 2.14.0"
+  s.add_development_dependency "mysql2"
+  s.add_development_dependency "pry-rails"
+  s.add_development_dependency "quiet_assets"
+  s.add_development_dependency "database_cleaner"
+  s.add_development_dependency "factory_girl"
+  s.add_development_dependency "factory_girl_rails"
+  s.add_development_dependency "forgery"
+  s.add_development_dependency "link_header"
+  s.add_development_dependency "rspec-json_matcher", "0.1.2"
+  s.add_development_dependency "webmock"
 end
