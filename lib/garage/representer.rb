@@ -26,7 +26,7 @@ module Garage::Representer
 
   def handle_definition?(selector, definition, options)
     if definition.requires_select?
-      # definition is not selected by default - opt-in
+      # definition is not selected by default - it's opt-in
       selector.includes?(definition.name) && definition.selectable?(self, options[:responder])
     else
       # definition is selected by default - it's opt-out
