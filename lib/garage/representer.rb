@@ -30,7 +30,7 @@ module Garage::Representer
       selector.includes?(definition.name) && definition.selectable?(self, options[:responder])
     else
       # definition is selected by default - it's opt-out
-      ! selector.excludes?(definition.name)
+      !selector.excludes?(definition.name)
     end
   end
 
