@@ -8,11 +8,16 @@ class Post < ActiveRecord::Base
   property :id
   property :title
   property :body, selectable: accessible(PostBody)
+  property :tag, as: :label, selectable: true
   property :user, selectable: true
 
   collection :comments, selectable: true
 
   link(:self) { post_path(self) }
+
+  def tag
+    'cat'
+  end
 
   def owner
     user

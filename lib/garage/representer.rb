@@ -147,7 +147,7 @@ module Garage::Representer
     end
 
     def name
-      @options[:as] || @name.to_s
+      (@options[:as] || @name).to_s
     end
 
     def encode(object, responder, selector = nil)
