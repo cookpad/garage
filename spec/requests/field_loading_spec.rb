@@ -54,6 +54,7 @@ describe "Field loading API" do
         response.body.should be_json_as(
           id: Fixnum,
           title: String,
+          label: String,
           user: Hash,
           comments: Array,
           _links: Hash,
@@ -72,14 +73,18 @@ describe "Field loading API" do
       end
     end
 
-    context "with params[:fields] = 'id,title'" do
+    context "with params[:fields] = 'id,title,label'" do
       before do
-        params[:fields] = "id,title"
+        params[:fields] = "id,title,label"
       end
 
       it "returns only id and title fields" do
         should == 200
-        response.body.should be_json_as(id: Fixnum, title: String)
+        response.body.should be_json_as(
+          id: Fixnum,
+          title: String,
+          label: String
+        )
       end
     end
 
