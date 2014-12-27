@@ -7,13 +7,6 @@ Dummy::Application.configure do
   # and recreated between test runs. Don't rely on the data there!
   config.cache_classes = true
 
-  # Configure static asset server for tests with Cache-Control for performance
-  if Rails::VERSION::MAJOR > 4 ||
-      (Rails::VERSION::MAJOR == 4 && Rails::VERSION::MINOR >= 2)
-    config.serve_static_files = true
-  else
-    config.serve_static_assets = true
-  end
   config.static_cache_control = "public, max-age=3600"
 
   config.cache_store = :memory_store
