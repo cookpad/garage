@@ -82,8 +82,8 @@ module Garage::Representer
       @representer_attrs ||= []
     end
 
-    def property(name, options={})
-      representer_attrs << Definition.new(name, options)
+    def property(name, options={}, &block)
+      representer_attrs << Definition.new(name, options, block)
     end
 
     def link(rel, options={}, &block)
@@ -129,9 +129,10 @@ module Garage::Representer
   class Definition
     attr_reader :options
 
-    def initialize(name, options={})
+    def initialize(name, options={}, block=nil)
       @name = name
       @options = options
+      @block = block
     end
 
     def requires_select?
@@ -151,7 +152,7 @@ module Garage::Representer
     end
 
     def encode(object, responder, selector = nil)
-      value = object.send(@name)
+      value = @block ? object.instance_eval(&@block) : object.send(@name)
       encode_value(value, responder, selector)
     end
 

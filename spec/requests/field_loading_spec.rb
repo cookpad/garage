@@ -56,6 +56,7 @@ describe "Field loading API" do
           title: String,
           label: String,
           user: Hash,
+          comment: Hash,
           comments: Array,
           _links: Hash,
         )

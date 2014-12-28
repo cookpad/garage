@@ -9,6 +9,7 @@ class Post < ActiveRecord::Base
   property :title
   property :body, selectable: accessible(PostBody)
   property :tag, as: :label, selectable: true
+  property(:comment, selectable: true) { comments.first }
   property :user, selectable: true
 
   collection :comments, selectable: true
