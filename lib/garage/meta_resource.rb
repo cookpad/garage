@@ -7,7 +7,7 @@ module Garage
 
     def initialize(resource_class, args = {})
       @resource_class = resource_class
-      @args  = args
+      @args = args
     end
 
     def build_permissions(perms, user)
