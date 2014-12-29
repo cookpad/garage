@@ -16,8 +16,10 @@ module Garage
       before_filter Garage::HypermediaFilter
       skip_before_filter :require_action_permission_crud
 
-      rescue_from Garage::HTTPError do |exception|
-        render json: { status_code: exception.status_code, error: exception.message }, status: exception.status
+      if Garage.configuration.rescue_error
+        rescue_from Garage::HTTPError do |exception|
+          render json: { status_code: exception.status_code, error: exception.message }, status: exception.status
+        end
       end
     end
 
