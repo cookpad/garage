@@ -13,6 +13,7 @@ class Post < ActiveRecord::Base
   property :user, selectable: true
 
   collection :comments, selectable: true
+  collection(:numbers, selectable: true) { [1, 2, 3] }
 
   link(:self) { post_path(self) }
 

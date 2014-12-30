@@ -58,6 +58,7 @@ describe "Field loading API" do
           user: Hash,
           comment: Hash,
           comments: Array,
+          numbers: Array,
           _links: Hash,
         )
       end
