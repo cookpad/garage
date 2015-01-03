@@ -155,7 +155,7 @@ module Garage
     #     @resources = Post.where(user_id: @user.id)
     #   end
     #
-    # By default, in `index` and `write` actions, Garage will check
+    # By default, in `index` and `create` actions, Garage will check
     # `:read` and `:write` access respectively on the default
     # `resource_class` of `@resources`, in this case Post class.  If
     # you need more fine grained control than that, you should specify
