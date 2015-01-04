@@ -6,13 +6,16 @@ module Garage::Representer
   end
 
   def render_hash(options={})
+    # return "end of file" if selector.eof?
     obj = {}
+    return obj if selector.eof?
     representer_attrs.each do |definition|
       if definition.options[:if]
         next unless definition.options[:if].call(self, options[:responder])
       end
 
       if definition.respond_to?(:encode)
+        # next if selector.eof?
         next unless handle_definition?(selector, definition, options)
         obj[definition.name] = definition.encode(self, options[:responder], selector[definition.name])
       else
@@ -25,6 +28,7 @@ module Garage::Representer
   end
 
   def handle_definition?(selector, definition, options)
+    # return false if selector.eof?
     if definition.requires_select?
       # definition is not selected by default - it's opt-in
       selector.includes?(definition.name) && definition.selectable?(self, options[:responder])
@@ -151,6 +155,7 @@ module Garage::Representer
     end
 
     def encode(object, responder, selector = nil)
+      # return "end of file def" if selector.eof?
       value = object.send(@name)
       encode_value(value, responder, selector)
     end
@@ -189,6 +194,7 @@ module Garage::Representer
 
   class Collection < Definition
     def encode(object, responder, selector = nil)
+      # return "end of file coll" if selector.eof?
       value = object.send(@name)
       value.map do |item|
         encode_value(item, responder, selector)
