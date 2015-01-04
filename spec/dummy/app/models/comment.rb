@@ -12,6 +12,7 @@ class Comment < ActiveRecord::Base
 
   property :id
   property :body
+  property :post, selectable: true
   property :commenter # no :selectable here!
   property :post_owner, selectable: true
 end
