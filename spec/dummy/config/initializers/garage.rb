@@ -12,6 +12,8 @@ Garage.configure do
   docs.docs_cache_enabled = false
 end
 
+Garage.configuration.auth_filter = Garage::AuthFilter::Test
+
 Garage::TokenScope.configure do
   register :public do
     access :read, Post

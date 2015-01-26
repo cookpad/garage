@@ -12,7 +12,7 @@ module Garage
   class Config
     DEFAULT_RESCUE_ERROR = true
 
-    attr_writer :cast_resource, :docs, :rescue_error
+    attr_writer :cast_resource, :docs, :rescue_error, :auth_filter
 
     # Set false if you want to rescue errors by yourself
     # @return [true, false] A flag to rescue Garage::HTTPError in ControllerHelper (default: true)
@@ -20,6 +20,14 @@ module Garage
     #   Garage.configuration.rescue_error = false
     def rescue_error
       instance_variable_defined?(:@rescue_error) ? @rescue_error : DEFAULT_RESCUE_ERROR
+    end
+
+    # Set auth filter module which must satisfy AuthFilter interface.
+    # @return [Module]
+    # @example
+    #   Garage.configuration.auth_filter = Garage::AuthFilter::NoAuthentication
+    def auth_filter
+      instance_variable_defined?(:@auth_filter) ? @auth_filter : raise('Missing configuration, select auth_filter.')
     end
 
     def docs
