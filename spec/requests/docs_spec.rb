@@ -5,15 +5,15 @@ describe "Docs" do
 
   before do
     header.delete("Accept")
-    Garage.configuration.docs.console_app_uid = application.uid
+    Garage.configuration.docs.console_app_uid = application_uid
   end
 
   after do
     Garage.configuration.docs.console_app_uid = nil
   end
 
-  let(:application) do
-    FactoryGirl.create(:application)
+  let(:application_uid) do
+    SecureRandom.uuid
   end
 
   let!(:post) do

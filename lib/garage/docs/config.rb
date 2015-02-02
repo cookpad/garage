@@ -2,7 +2,8 @@ module Garage
   module Docs
     class Config
       attr_accessor :document_root, :current_user_method, :authenticate,
-        :console_app_uid, :remote_server, :docs_authorization_method, :docs_cache_enabled
+        :console_app_uid, :console_app_secret, :remote_server,
+        :docs_authorization_method, :docs_cache_enabled
 
       def initialize
         reset
@@ -37,6 +38,10 @@ module Garage
 
         def console_app_uid=(value)
           @config.console_app_uid = value
+        end
+
+        def console_app_secret=(value)
+          @config.console_app_secret = value
         end
 
         def remote_server=(value)

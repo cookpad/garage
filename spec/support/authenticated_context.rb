@@ -3,7 +3,11 @@ module AuthenticatedContext
 
   included do
     before do
-      header["Authorization"] = "Bearer #{access_token.token}"
+      header["Authorization"] = "Bearer dummy-token"
+      header["Resource-Owner-Id"] = resource_owner_id
+      header["Application-Id"] = application_id
+      header["Scope"] = scopes
+      header["ExpiredAt"] = nil
     end
 
     let(:scopes) do
@@ -18,16 +22,8 @@ module AuthenticatedContext
       user.id
     end
 
-    let(:application) do
-      FactoryGirl.create(:application)
-    end
-
     let(:application_id) do
-      application.id
-    end
-
-    let(:access_token) do
-      FactoryGirl.create(:access_token, resource_owner_id: resource_owner_id, scopes: scopes, application: application)
+      rand(128)
     end
   end
 end

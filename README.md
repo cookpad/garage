@@ -69,13 +69,6 @@ Garage::TokenScope.configure do
     access :read, Post
   end
 end
-
-Doorkeeper.configure do
-  # regular doorkeeper configurations go here
-
-  default_scopes :public
-  optional_scopes *Garage::TokenScope.optional_scopes
-end
 ```
 
 ## Authors

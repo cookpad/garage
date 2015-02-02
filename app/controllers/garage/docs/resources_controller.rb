@@ -56,7 +56,10 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   private
 
   def console_application
-    Doorkeeper::Application.by_uid(Garage.configuration.docs.console_app_uid)
+    {
+      uid: Garage.configuration.docs.console_app_uid,
+      secret: Garage.configuration.docs.console_app_secret,
+    }
   end
 
   def remote_server
@@ -66,7 +69,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   end
 
   def oauth2_client(app)
-    OAuth2::Client.new(app.uid, app.secret, :site => remote_server)
+    OAuth2::Client.new(app[:uid], app[:secret], :site => remote_server)
   end
 
   def set_locale
@@ -83,7 +86,10 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   end
 
   def require_console_application
-    @app = console_application or render(text: "OAuth app does not exist", status: :forbidden)
+    @app = console_application
+    unless @app[:uid] && @app[:secret]
+      render(text: 'Configuration for console application is missing.', status: :forbidden)
+    end
   end
 
   def require_document

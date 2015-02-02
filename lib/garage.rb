@@ -1,5 +1,4 @@
 require "rails"
-require "doorkeeper"
 require "rack-accept-default"
 
 require "garage/auth_filter"
