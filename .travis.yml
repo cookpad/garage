@@ -1,18 +1,16 @@
 language: ruby
 sudo: false
 rvm:
+  - 2.0.0
   - 2.1
-  - 2.0
+  - 2.2
+  - ruby-head
 gemfile:
-  - gemfiles/rails4_0.gemfile
-  - gemfiles/rails4_1.gemfile
-  - gemfiles/rails4_2.gemfile
-branches:
-  only:
-    - master
+  - gemfiles/rails_4.0.gemfile
+  - gemfiles/rails_4.1.gemfile
+  - gemfiles/rails_4.2.gemfile
 before_script:
   - RAILS_ENV=test bundle exec rake db:create db:migrate
-script:
-  - bundle exec rake spec
-notifications:
-  email: false
+matrix:
+  allow_failures:
+    - rvm: ruby-head
