@@ -168,6 +168,7 @@ module Garage::Representer
     def primitive?(klass)
       [
         ActiveSupport::TimeWithZone,
+        Date,
         Bignum,
         Fixnum,
         Float,
