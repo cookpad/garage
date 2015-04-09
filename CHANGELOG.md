@@ -1,4 +1,11 @@
 # CHANGELOG
+## 1.3.1
+* Fix Definition#name to convert @options[:as] to string.
+* Accept doorkeeper > 1.4.1 for security issue.
+* Add rescue_error check to NoAuthentication as ControllerHelper.
+* Support date type as a representable object.
+* Loosen redcarpet version restriction to accept >= 3.2.x.
+
 ## 1.3.0
 * Support Rails 4.2.
 * Drop support of Rails 3.x.
