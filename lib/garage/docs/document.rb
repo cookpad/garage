@@ -53,7 +53,15 @@ module Garage
       end
 
       def name
-        pathname.basename(".md").to_s
+        relative_base_name.to_s.gsub('/', '-')
+      end
+
+      def classified_name
+        name.split('-').map(&:classify).join('::')
+      end
+
+      def humanized_name
+        name.split('-').map(&:humanize).join(' / ')
       end
 
       def cache_key(type)

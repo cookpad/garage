@@ -34,6 +34,11 @@ describe "Meta Docs" do
               rendered_body: String,
             },
             {
+              name: "site_admin-admin_user",
+              toc: String,
+              rendered_body: String,
+            },
+            {
               name: "user",
               toc: String,
               rendered_body: String,
