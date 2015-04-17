@@ -12,7 +12,7 @@ module Garage
 
         def renderer
           @renderer ||= Redcarpet::Markdown.new(
-            Redcarpet::Render::HTML.new(with_toc_data: true),
+            Garage::Docs::Renderer.new(with_toc_data: true),
             fenced_code_blocks: true,
             no_intra_emphasis: true,
             tables: true,
@@ -21,7 +21,7 @@ module Garage
 
         def toc_renderer
           @toc_renderer ||= Redcarpet::Markdown.new(
-            Redcarpet::Render::HTML_TOC,
+            Garage::Docs::TocRenderer.new,
             no_intra_emphasis: true
           )
         end
