@@ -8,8 +8,7 @@ module Garage
 
       around_filter :notify_request_stats
 
-      include ::Doorkeeper::Helpers::Filter
-      doorkeeper_for :all
+      before_action :doorkeeper_authorize!
 
       # TODO current_user
 
