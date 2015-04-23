@@ -14,4 +14,3 @@
 //= require jquery_ujs
 //= require garage/docs/jquery.colorbox
 //= require garage/docs/console
-//= require garage/docs/show

@@ -8,6 +8,8 @@ Garage.configure do
   if ENV['GARAGE_REMOTE_SERVER']
     docs.remote_server = ENV['GARAGE_REMOTE_SERVER']
   end
+
+  docs.docs_cache_enabled = false
 end
 
 Garage::TokenScope.configure do

@@ -12,7 +12,7 @@ module Garage
 
         def renderer
           @renderer ||= Redcarpet::Markdown.new(
-            Redcarpet::Render::HTML.new(with_toc_data: true),
+            Garage::Docs::Renderer.new(with_toc_data: true),
             fenced_code_blocks: true,
             no_intra_emphasis: true,
             tables: true,
@@ -21,7 +21,7 @@ module Garage
 
         def toc_renderer
           @toc_renderer ||= Redcarpet::Markdown.new(
-            Redcarpet::Render::HTML_TOC,
+            Garage::Docs::TocRenderer.new,
             no_intra_emphasis: true
           )
         end
@@ -53,7 +53,11 @@ module Garage
       end
 
       def name
-        pathname.basename(".md").to_s
+        relative_base_name.to_s.gsub('/', '-')
+      end
+
+      def humanized_name
+        name.split('-').map(&:humanize).join(' / ')
       end
 
       def cache_key(type)
