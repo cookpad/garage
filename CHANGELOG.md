@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.4.1
+* Support namespace in API document feature.
+
 ## 1.4.0
 * Support doorkeeper gem v2.0.0 or later.
 * Drop support of doorkeeper v1.4.2 or earlier.
