@@ -15,6 +15,13 @@ group :development, :test do
   gem "forgery"
   gem "link_header"
   gem "rspec-json_matcher", "0.1.2"
+end
+
+group :development do
+  gem "puma"
+end
+
+group :test do
   gem "webmock"
 end
 
