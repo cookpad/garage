@@ -57,7 +57,7 @@ describe "Authorization" do
 
     context "with another valid scope" do
       let(:scopes) do
-        "sudo"
+        "public sudo"
       end
       it { should == 200 }
     end
@@ -146,7 +146,7 @@ describe "Authorization" do
 
   describe "GET /posts/namespaced" do
     let(:scopes) do
-      "foobar.read_post"
+      "public foobar.read_post"
     end
 
     context "with valid condition" do
