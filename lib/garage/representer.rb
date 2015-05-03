@@ -169,6 +169,7 @@ module Garage::Representer
       [
         ActiveSupport::TimeWithZone,
         Date,
+        Time,
         Bignum,
         Fixnum,
         Float,
