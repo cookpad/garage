@@ -13,6 +13,7 @@ module Garage
     DEFAULT_RESCUE_ERROR = true
 
     attr_writer :cast_resource, :docs, :rescue_error, :auth_filter
+    attr_accessor :auth_server_url, :auth_server_host, :auth_server_timeout
 
     # Set false if you want to rescue errors by yourself
     # @return [true, false] A flag to rescue Garage::HTTPError in ControllerHelper (default: true)
