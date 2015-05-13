@@ -23,11 +23,11 @@ module Garage
     end
 
     # Set auth filter module which must satisfy AuthFilter interface.
-    # @return [Module]
+    # @return [Module] A auth filter. default is NoAuthentication filter.
     # @example
-    #   Garage.configuration.auth_filter = Garage::AuthFilter::NoAuthentication
+    #   Garage.configuration.auth_filter = Garage::AuthFilter::AuthServer
     def auth_filter
-      instance_variable_defined?(:@auth_filter) ? @auth_filter : raise('Missing configuration, select auth_filter.')
+      instance_variable_defined?(:@auth_filter) ? @auth_filter : Garage::AuthFilter::NoAuthentication
     end
 
     def docs
