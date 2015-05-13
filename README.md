@@ -86,6 +86,30 @@ The following auth filters are available.
 - `Garage::AuthFilter::AuthServer` - Delegate authentication to OAuth server.
     This auth filter has configurations. See detail at `lib/garage/auth_filter/auth_server.rb`.
 
+## Delegate Authentication/Authorization to your OAuth server
+
+To delegate auth to your OAuth server, use `Garage::AuthFilter::AuthServer` filter.
+Then configure auth server filter:
+
+- `Garage.configuration.auth_server_url` - A full url of your OAuth server's
+    access token validation endpoint. i.e. `https://example.com/token`.
+- `Garage.configuration.auth_server_host` - A host header value to request to
+    your OAuth server. Can be empty.
+- `Garage.configuration.auth_server_timeout` - A read timeout second. Default
+    is 1 second.
+
+The OAuth server must response a json with following structure.
+
+- `token`(string) - OAuth access token value.
+- `token_type` (string) - OAuth access token value. i.e. `bearer` type.
+- `scope` (string) - OAuth scopes separated by spaces. i.e. `public read_user`.
+- `application_id` (integer) - OAuth application id of the access token.
+- `resource_owner_id` (integer, null) - Resource owner id of the access token.
+- `expired_at` (string, null) - Expire datetime with string representation.
+- `revoked_at` (string, null) - Revoked datetime with string representation.
+
+When requested access token is invalid, OAuth server must response 401.
+
 ## Customize Authentication/Authorization
 
 Garage supports customizable Authentication/Authorization filter.
