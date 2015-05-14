@@ -8,7 +8,7 @@ module Garage
 
       around_filter :notify_request_stats
 
-      include Garage.configuration.auth_filter
+      include Garage.configuration.authentication_strategy
 
       if Garage.configuration.rescue_error
         rescue_from Garage::HTTPError do |exception|

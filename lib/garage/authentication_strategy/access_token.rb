@@ -1,5 +1,5 @@
 module Garage
-  module AuthFilter
+  module AuthenticationStrategy
     class AccessToken
       attr_reader :scope, :token, :token_type
 

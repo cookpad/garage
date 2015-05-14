@@ -1,5 +1,5 @@
 module Garage
-  module AuthFilter
+  module AuthenticationStrategy
     module NoAuthentication
       def access_token
         nil

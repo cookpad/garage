@@ -1,7 +1,7 @@
 require "rails"
 require "rack-accept-default"
 
-require "garage/auth_filter"
+require "garage/authentication_strategy"
 require "garage/config"
 require "garage/nested_field_query"
 require "garage/app_responder"

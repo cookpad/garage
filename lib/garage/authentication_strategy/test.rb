@@ -1,5 +1,5 @@
 module Garage
-  module AuthFilter
+  module AuthenticationStrategy
     module Test
       extend ActiveSupport::Concern
 

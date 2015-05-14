@@ -71,25 +71,25 @@ Garage::TokenScope.configure do
 end
 
 # If you to want use different authentication/authorization logic.
-Garage.configuration.auth_filter = Garage::AuthFilter::Test
+Garage.configuration.authentication_strategy = Garage::AuthenticationStrategy::Test
 ```
 
-The following auth filters are available.
+The following authentication strategies are available.
 
-- `Garage::AuthFilter::NoAuthentication` - Does not authenticate request and
+- `Garage::AuthenticationStrategy::NoAuthentication` - Does not authenticate request and
     does not verify permission and access on resource operation. For non-public,
     internal-use Garage application.
-- `Garage::AuthFilter::Test` - Trust request thoroughly, and build access token
+- `Garage::AuthenticationStrategy::Test` - Trust request thoroughly, and build access token
     from request headers. For testing or prototyping.
-- `Garage::AuthFilter::Doorkeeper` - Authenticate request with doorkeeper gem.
-    To use this filter, bundle [garage-doorkeeper gem](https://github.com/taiki45/garage-doorkeeper).
-- `Garage::AuthFilter::AuthServer` - Delegate authentication to OAuth server.
-    This auth filter has configurations. See detail at `lib/garage/auth_filter/auth_server.rb`.
+- `Garage::AuthenticationStrategy::Doorkeeper` - Authenticate request with doorkeeper gem.
+    To use this strategy, bundle [garage-doorkeeper gem](https://github.com/taiki45/garage-doorkeeper).
+- `Garage::AuthenticationStrategy::AuthServer` - Delegate authentication to OAuth server.
+    This auth strategy has configurations.
 
 ## Delegate Authentication/Authorization to your OAuth server
 
-To delegate auth to your OAuth server, use `Garage::AuthFilter::AuthServer` filter.
-Then configure auth server filter:
+To delegate auth to your OAuth server, use `Garage::AuthenticationStrategy::AuthServer` strategy.
+Then configure auth server strategy:
 
 - `Garage.configuration.auth_server_url` - A full url of your OAuth server's
     access token validation endpoint. i.e. `https://example.com/token`.
@@ -112,8 +112,8 @@ When requested access token is invalid, OAuth server must response 401.
 
 ## Customize Authentication/Authorization
 
-Garage supports customizable Authentication/Authorization filter.
-The AuthFilter has some conventions to follow.
+Garage supports customizable Authentication/Authorization strategy.
+The AuthenticationStrategy has some conventions to follow.
 
 - Offer OAuth access token via `access_token` method. With no access token case
     (does not authenticate request) `access_token` should return `nil`.
@@ -125,7 +125,7 @@ The AuthFilter has some conventions to follow.
     `verify_permission` method. Return `true` to verify them.
 
 ```ruby
-module MyAuthFilter
+module MyAuthenticationStrategy
   extend ActiveSupport::Concern
 
   included do
@@ -136,7 +136,7 @@ module MyAuthFilter
   def access_token
     # Fetch some `attributes` from DB or auth server API using request.
     # Then returns an AccessToken with caching.
-    @access_token ||= Garage::AuthFilter::AccessToken.new(attributes)
+    @access_token ||= Garage::AuthenticationStrategy::AccessToken.new(attributes)
   end
 
   # Whether verify permission and access in `RestfulActions`.

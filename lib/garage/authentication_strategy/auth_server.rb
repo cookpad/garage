@@ -3,7 +3,7 @@ require 'net/http'
 require 'uri'
 
 module Garage
-  module AuthFilter
+  module AuthenticationStrategy
     module AuthServer
       extend ActiveSupport::Concern
 
@@ -41,7 +41,7 @@ module Garage
           if @request.authorization.present?
             response = get
             if response.valid?
-              Garage::AuthFilter::AccessToken.new(response.to_hash)
+              Garage::AuthenticationStrategy::AccessToken.new(response.to_hash)
             else
               logger.error("garage-auth_server_error; #{response.status_code}") unless response.status_code == 401
               nil
