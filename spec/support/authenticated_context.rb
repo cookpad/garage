@@ -7,7 +7,7 @@ module AuthenticatedContext
       header["Resource-Owner-Id"] = resource_owner_id
       header["Application-Id"] = application_id
       header["Scope"] = scopes
-      header["ExpiredAt"] = nil
+      header["Expired-At"] = nil
     end
 
     let(:scopes) do
