@@ -1,5 +1,5 @@
 module Garage
-  module AuthenticationStrategy
+  module Strategy
     module Test
       extend ActiveSupport::Concern
 

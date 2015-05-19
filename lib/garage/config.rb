@@ -12,7 +12,7 @@ module Garage
   class Config
     DEFAULT_RESCUE_ERROR = true
 
-    attr_writer :cast_resource, :docs, :rescue_error, :authentication_strategy
+    attr_writer :cast_resource, :docs, :rescue_error, :strategy
     attr_accessor :auth_server_url, :auth_server_host, :auth_server_timeout
 
     # Set false if you want to rescue errors by yourself
@@ -23,12 +23,12 @@ module Garage
       instance_variable_defined?(:@rescue_error) ? @rescue_error : DEFAULT_RESCUE_ERROR
     end
 
-    # Set authentication strategy module which must satisfy AuthenticationStrategy interface.
+    # Set authentication strategy module which must satisfy Strategy interface.
     # @return [Module] A auth strategy. default is NoAuthentication strategy.
     # @example
-    #   Garage.configuration.authentication_strategy = Garage::AuthenticationStrategy::AuthServer
-    def authentication_strategy
-      instance_variable_defined?(:@authentication_strategy) ? @authentication_strategy : Garage::AuthenticationStrategy::NoAuthentication
+    #   Garage.configuration.strategy = Garage::Strategy::AuthServer
+    def strategy
+      instance_variable_defined?(:@strategy) ? @strategy : Garage::Strategy::NoAuthentication
     end
 
     def docs

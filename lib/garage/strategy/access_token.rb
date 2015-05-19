@@ -1,5 +1,5 @@
 module Garage
-  module AuthenticationStrategy
+  module Strategy
     class AccessToken
       attr_reader :scope, :token, :token_type
 

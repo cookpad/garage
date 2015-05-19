@@ -13,7 +13,7 @@ Garage.configure do
   docs.docs_cache_enabled = false
 end
 
-Garage.configuration.authentication_strategy = Garage::AuthenticationStrategy::Test
+Garage.configuration.strategy = Garage::Strategy::Test
 
 Garage::TokenScope.configure do
   register :public do

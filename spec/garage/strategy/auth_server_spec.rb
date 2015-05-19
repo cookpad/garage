@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Garage::AuthenticationStrategy::AuthServer do
+RSpec.describe Garage::Strategy::AuthServer do
   before do
     allow(Garage.configuration).to receive(:auth_server_url).and_return(auth_server_url)
   end
@@ -8,7 +8,7 @@ RSpec.describe Garage::AuthenticationStrategy::AuthServer do
   let(:auth_server_url) { 'http://example.com/token' }
 
   describe 'AccessTokenFetcher.fetch' do
-    let(:fetcher) { Garage::AuthenticationStrategy::AuthServer::AccessTokenFetcher }
+    let(:fetcher) { Garage::Strategy::AuthServer::AccessTokenFetcher }
     let(:request) { double(:request, authorization: requested_token) }
     let(:requested_token) { 'dummy_token' }
 

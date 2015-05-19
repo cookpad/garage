@@ -71,24 +71,24 @@ Garage::TokenScope.configure do
 end
 
 # If you to want use different authentication/authorization logic.
-Garage.configuration.authentication_strategy = Garage::AuthenticationStrategy::Test
+Garage.configuration.strategy = Garage::Strategy::Test
 ```
 
 The following authentication strategies are available.
 
-- `Garage::AuthenticationStrategy::NoAuthentication` - Does not authenticate request and
+- `Garage::Strategy::NoAuthentication` - Does not authenticate request and
     does not verify permission and access on resource operation. For non-public,
     internal-use Garage application.
-- `Garage::AuthenticationStrategy::Test` - Trust request thoroughly, and build access token
+- `Garage::Strategy::Test` - Trust request thoroughly, and build access token
     from request headers. For testing or prototyping.
-- `Garage::AuthenticationStrategy::Doorkeeper` - Authenticate request with doorkeeper gem.
+- `Garage::Strategy::Doorkeeper` - Authenticate request with doorkeeper gem.
     To use this strategy, bundle [garage-doorkeeper gem](https://github.com/taiki45/garage-doorkeeper).
-- `Garage::AuthenticationStrategy::AuthServer` - Delegate authentication to OAuth server.
+- `Garage::Strategy::AuthServer` - Delegate authentication to OAuth server.
     This auth strategy has configurations.
 
 ## Delegate Authentication/Authorization to your OAuth server
 
-To delegate auth to your OAuth server, use `Garage::AuthenticationStrategy::AuthServer` strategy.
+To delegate auth to your OAuth server, use `Garage::Strategy::AuthServer` strategy.
 Then configure auth server strategy:
 
 - `Garage.configuration.auth_server_url` - A full url of your OAuth server's
@@ -113,7 +113,7 @@ When requested access token is invalid, OAuth server must response 401.
 ## Customize Authentication/Authorization
 
 Garage supports customizable Authentication/Authorization strategy.
-The AuthenticationStrategy has some conventions to follow.
+The Strategy has some conventions to follow.
 
 - Offer OAuth access token via `access_token` method. With no access token case
     (does not authenticate request) `access_token` should return `nil`.
@@ -125,7 +125,7 @@ The AuthenticationStrategy has some conventions to follow.
     `verify_permission` method. Return `true` to verify them.
 
 ```ruby
-module MyAuthenticationStrategy
+module MyStrategy
   extend ActiveSupport::Concern
 
   included do
@@ -136,7 +136,7 @@ module MyAuthenticationStrategy
   def access_token
     # Fetch some `attributes` from DB or auth server API using request.
     # Then returns an AccessToken with caching.
-    @access_token ||= Garage::AuthenticationStrategy::AccessToken.new(attributes)
+    @access_token ||= Garage::Strategy::AccessToken.new(attributes)
   end
 
   # Whether verify permission and access in `RestfulActions`.
