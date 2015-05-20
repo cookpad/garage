@@ -70,8 +70,8 @@ Garage::TokenScope.configure do
   end
 end
 
-# If you to want use different authentication/authorization logic.
-Garage.configuration.strategy = Garage::Strategy::Test
+# If you want to use different authentication/authorization logic.
+Garage.configuration.strategy = Garage::Strategy::AuthServer
 ```
 
 The following authentication strategies are available.
@@ -82,7 +82,7 @@ The following authentication strategies are available.
 - `Garage::Strategy::Test` - Trust request thoroughly, and build access token
     from request headers. For testing or prototyping.
 - `Garage::Strategy::Doorkeeper` - Authenticate request with doorkeeper gem.
-    To use this strategy, bundle [garage-doorkeeper gem](https://github.com/taiki45/garage-doorkeeper).
+    To use this strategy, bundle [garage-doorkeeper gem](https://github.com/cookpad/garage-doorkeeper).
 - `Garage::Strategy::AuthServer` - Delegate authentication to OAuth server.
     This auth strategy has configurations.
 
