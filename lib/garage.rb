@@ -1,6 +1,7 @@
 require "rails"
 require "rack-accept-default"
 
+require "garage/version"
 require "garage/strategy"
 require "garage/config"
 require "garage/nested_field_query"
