@@ -1,4 +1,14 @@
 # CHANGELOG
+## 1.5.0
+* Support Time type as primitive types.
+* Doorkeeper depndency was seprated to other gem as extension.
+  * Use https://github.com/cookpad/garage-doorkeeper to keep Doorkeeper integration.
+  * Remove no_authentiction feature. Use `Garage::Strategy::NoAuthentication` instread.
+  * Document feature requires both console-app uid and console-app secret. Previously,
+    this only required console-app uid.
+  * Default auth strategy is `NoAuthentication`. Use Doorkeeper or AuthServer strategy
+    to authentication/authorize request. See 'Advanced Configurations' section in README.
+
 ## 1.4.1
 * Support namespace in API document feature.
 
