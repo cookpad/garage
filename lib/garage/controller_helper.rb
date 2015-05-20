@@ -8,9 +8,7 @@ module Garage
 
       around_filter :notify_request_stats
 
-      before_action :doorkeeper_authorize!
-
-      # TODO current_user
+      include Garage.configuration.strategy
 
       if Garage.configuration.rescue_error
         rescue_from Garage::HTTPError do |exception|
@@ -24,10 +22,28 @@ module Garage
       self.responder = Garage::AppResponder
     end
 
-    def doorkeeper_unauthorized_render_options
+    # For backword compatiblility.
+    def doorkeeper_token
+      access_token
+    end
+
+    def resource_owner_id
+      access_token.try(:resource_owner_id)
+    end
+
+    # Use this method to render 'unauthorized'.
+    # Garage user may overwrite this method to response custom unauthorized response.
+    # @return [Hash]
+    def unauthorized_render_options
       { json: { status_code: 401, error: "Unauthorized (invalid token)" } }
     end
 
+    # Implement by using `resource_owner_id` like:
+    #
+    #   def current_resource_owner
+    #     @current_resource_owner ||= User.find(resource_owner_id) if resource_owner_id
+    #   end
+    #
     def current_resource_owner
       raise "Your ApplicationController needs to implement current_resource_owner!"
     end
@@ -50,15 +66,11 @@ module Garage
 
     # Public: returns if the current request includes the given OAuth scope
     def has_scope?(scope)
-      doorkeeper_token && doorkeeper_token.scopes.include?(scope)
-    end
-
-    def resource_owner_id
-      doorkeeper_token.resource_owner_id if doorkeeper_token
+      access_token && access_token.scopes.include?(scope)
     end
 
     def cache_context
-      { t: doorkeeper_token.try(:id) }
+      { t: access_token.try(:id) }
     end
 
     attr_accessor :representation, :field_selector
@@ -70,7 +82,7 @@ module Garage
   private
 
     def ability_from_token
-      Garage::TokenScope.ability(current_resource_owner, doorkeeper_token.try(:scopes) || [])
+      Garage::TokenScope.ability(current_resource_owner, access_token.try(:scopes) || [])
     end
 
     def notify_request_stats
@@ -79,11 +91,19 @@ module Garage
       begin
         payload = {
           :controller => self,
-          :token => doorkeeper_token,
+          :token => access_token,
           :resource_owner => current_resource_owner,
         }
         ActiveSupport::Notifications.instrument("garage.request", payload)
       rescue Exception
+      end
+    end
+
+    def verify_auth
+      if !access_token || !access_token.accessible?
+        error_status = :unauthorized
+        options = unauthorized_render_options
+        render options.merge(status: error_status)
       end
     end
   end

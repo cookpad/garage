@@ -3,7 +3,8 @@ Garage.configure do
     extend CurrentUserHelper
     current_user
   }
-  docs.console_app_uid = ENV['GARAGE_CONSOLE_APP_UID']
+  docs.console_app_uid = ENV['GARAGE_CONSOLE_APP_UID'] || ''
+  docs.console_app_secret = ENV['GARAGE_CONSOLE_APP_SECRET'] || ''
 
   if ENV['GARAGE_REMOTE_SERVER']
     docs.remote_server = ENV['GARAGE_REMOTE_SERVER']
@@ -11,6 +12,8 @@ Garage.configure do
 
   docs.docs_cache_enabled = false
 end
+
+Garage.configuration.strategy = Garage::Strategy::Test
 
 Garage::TokenScope.configure do
   register :public do
@@ -60,16 +63,6 @@ Garage::Meta::RemoteService.configure do
     endpoint "http://foo.api.example.com/v1"
     alternate_endpoint :internal, "http://foo.api-internal.example.amazonaws.com/v1"
   end
-end
-
-Doorkeeper.configure do
-  orm :active_record
-
-  resource_owner_authenticator do
-    User.find_by_id(session[:user_id]) || redirect_to(new_session_url)
-  end
-  default_scopes :public
-  optional_scopes *Garage::TokenScope.optional_scopes
 end
 
 ActiveSupport::Notifications.subscribe "garage.request" do |name, start, finish, id, payload|
