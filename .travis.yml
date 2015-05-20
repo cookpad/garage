@@ -4,13 +4,9 @@ rvm:
   - 2.0.0
   - 2.1
   - 2.2
-  - ruby-head
 gemfile:
   - gemfiles/rails_4.0.gemfile
   - gemfiles/rails_4.1.gemfile
   - gemfiles/rails_4.2.gemfile
 before_script:
   - RAILS_ENV=test bundle exec rake db:create db:migrate
-matrix:
-  allow_failures:
-    - rvm: ruby-head
