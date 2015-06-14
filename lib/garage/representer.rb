@@ -173,6 +173,7 @@ module Garage::Representer
         Bignum,
         Fixnum,
         Float,
+        BigDecimal,
         Hash,
         Array,
         String,
