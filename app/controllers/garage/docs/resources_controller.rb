@@ -1,9 +1,6 @@
 require 'oauth2'
-require 'http_accept_language'
 
 class Garage::Docs::ResourcesController < Garage::ApplicationController
-  include HttpAcceptLanguage::EasyAccess
-
   layout 'garage/application'
 
   before_filter :require_authentication
