@@ -2,6 +2,8 @@ require 'oauth2'
 require 'http_accept_language'
 
 class Garage::Docs::ResourcesController < Garage::ApplicationController
+  include HttpAcceptLanguage::EasyAccess
+
   layout 'garage/application'
 
   before_filter :require_authentication
@@ -73,7 +75,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   end
 
   def set_locale
-    @locale = params[:lang] || cookies[:garage_locale] || request.preferred_language_from(%w[en ja])
+    @locale = params[:lang] || cookies[:garage_locale] || http_accept_language.preferred_language_from(%w[en ja])
     cookies[:garage_locale] = @locale
   end
 
