@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.5.1
+* Bump version of http_accept_language to 2.0.0.
+
 ## 1.5.0
 * Support Time type as primitive types.
 * Doorkeeper depndency was seprated to other gem as extension.
