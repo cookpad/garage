@@ -1,5 +1,6 @@
 require "rails"
 require "rack-accept-default"
+require "http_accept_language"
 
 require "garage/version"
 require "garage/strategy"
