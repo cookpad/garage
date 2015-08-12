@@ -34,7 +34,7 @@ module Garage
     # Use this method to render 'unauthorized'.
     # Garage user may overwrite this method to response custom unauthorized response.
     # @return [Hash]
-    def unauthorized_render_options
+    def unauthorized_render_options(error: nil)
       { json: { status_code: 401, error: "Unauthorized (invalid token)" } }
     end
 
