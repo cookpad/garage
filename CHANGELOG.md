@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.5.2
+* `unauthorized_render_options` accepts `error` keyword argument.
+
 ## 1.5.1
 * Bump version of http_accept_language to 2.0.0.
 
