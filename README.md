@@ -59,6 +59,8 @@ end
 In `config/initializer/garage.rb`:
 
 ```ruby
+Garage.configure {}
+
 # Optional
 Garage::TokenScope.configure do
   register :public, desc: "accessing publicly available data" do
