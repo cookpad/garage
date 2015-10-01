@@ -75,6 +75,7 @@ module Garage::Representer
     attr_writer :representer_attrs
 
     def inherited(child)
+      super
       child.representer_attrs = self.representer_attrs.clone
     end
 
