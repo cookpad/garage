@@ -179,7 +179,8 @@ module Garage::Representer
         String,
         NilClass,
         TrueClass,
-        FalseClass
+        FalseClass,
+        Symbol,
       ].any? {|k| klass.ancestors.include?(k) }
     end
 
