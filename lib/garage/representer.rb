@@ -159,14 +159,14 @@ module Garage::Representer
     def encode_value(value, responder, selector)
       if !value.nil? && value.respond_to?(:represent!)
         responder.encode_to_hash(value, partial: true, selector: selector)
-      elsif primitive?(value.class)
+      elsif primitive?(value)
         value
       else
         raise NonEncodableValue, "#{value.class} can not be encoded directly. Forgot to include Garage::Representer?"
       end
     end
 
-    def primitive?(klass)
+    def primitive?(value)
       [
         ActiveSupport::TimeWithZone,
         Date,
@@ -181,7 +181,7 @@ module Garage::Representer
         TrueClass,
         FalseClass,
         Symbol,
-      ].any? {|k| klass.ancestors.include?(k) }
+      ].any? {|k| value.is_a?(k) }
     end
 
     private
