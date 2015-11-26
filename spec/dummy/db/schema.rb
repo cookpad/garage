@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(version: 20141209001746) do
     t.integer  "user_id",    limit: 4
     t.integer  "post_id",    limit: 4
     t.string   "body",       limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -54,8 +54,8 @@ ActiveRecord::Schema.define(version: 20141209001746) do
     t.string   "uid",          limit: 255,              null: false
     t.string   "secret",       limit: 255,              null: false
     t.string   "redirect_uri", limit: 255,              null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "scopes",       limit: 255, default: "", null: false
   end
 
@@ -65,15 +65,15 @@ ActiveRecord::Schema.define(version: 20141209001746) do
     t.integer  "user_id",    limit: 4
     t.string   "title",      limit: 255
     t.string   "body",       limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "users", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.string   "email",      limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
 end
