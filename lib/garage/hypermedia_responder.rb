@@ -19,16 +19,19 @@ module Garage
       end
     end
 
+    # Cache resource encoding result if the resource can be identified.
+    # Garage try to get resource identifier by acccess the resource
+    # `#resource_identifier` or `#id`.
     def encode_to_hash(resource, *args)
-      if resource.respond_to?(:id)
-        cache_key = "#{resource.class.name}:#{resource.id}"
+      if id = get_resource_identifier(resource)
+        cache_key = "#{resource.class.name}:#{id}"
         cache[cache_key] ||= _encode_to_hash(resource, *args)
       else
         _encode_to_hash(resource, *args)
       end
     end
 
-  private
+    private
 
     def _encode_to_hash(resource, options = {})
       resource.represent!
@@ -40,6 +43,17 @@ module Garage
 
     def cache
       @cache ||= {}
+    end
+
+    def get_resource_identifier(resource)
+      case
+      when resource.respond_to?(:resource_identifier)
+        resource.resource_identifier
+      when resource.respond_to?(:id)
+        resource.id
+      else
+        nil
+      end
     end
 
     def representation
