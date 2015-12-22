@@ -56,7 +56,7 @@ end
 
 ## Advanced Configurations
 
-In `config/initializer/garage.rb`:
+In `config/initializers/garage.rb`:
 
 ```ruby
 Garage.configure {}
