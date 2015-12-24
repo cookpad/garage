@@ -98,6 +98,26 @@ describe "Authorization" do
     end
   end
 
+  describe "PATCH /posts/:id" do
+    before do
+      params[:title] = "Bar"
+    end
+
+    context "with invalid requester" do
+      let(:requester) do
+        bob
+      end
+      it { should == 403 }
+    end
+
+    context "with response body option" do
+      it "returns 200 with response body" do
+        should == 200
+        response.body.should be_json_including(id: resource.id)
+      end
+    end
+  end
+
   describe "PUT /posts/:id" do
     before do
       params[:title] = "Bar"
