@@ -8,5 +8,9 @@ gemfile:
   - gemfiles/rails_4.0.gemfile
   - gemfiles/rails_4.1.gemfile
   - gemfiles/rails_4.2.gemfile
+matrix:
+  include:
+    - rvm: 2.2.2
+      gemfile: gemfiles/rails_5.0.gemfile
 before_script:
   - RAILS_ENV=test bundle exec rake db:create db:migrate
