@@ -6,7 +6,7 @@ module Garage
     included do
       use Rack::AcceptDefault
 
-      around_filter :notify_request_stats
+      around_action :notify_request_stats
 
       include Garage.configuration.strategy
 
@@ -16,7 +16,7 @@ module Garage
         end
       end
 
-      before_filter Garage::HypermediaFilter
+      before_action Garage::HypermediaFilter
 
       respond_to :json # , :msgpack
       self.responder = Garage::AppResponder

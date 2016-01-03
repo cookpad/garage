@@ -3,11 +3,11 @@ require 'oauth2'
 class Garage::Docs::ResourcesController < Garage::ApplicationController
   layout 'garage/application'
 
-  before_filter :require_authentication
-  before_filter :require_docs_application
-  before_filter :require_console_application
-  before_filter :set_locale
-  before_filter :require_document, only: :show
+  before_action :require_authentication
+  before_action :require_docs_application
+  before_action :require_console_application
+  before_action :set_locale
+  before_action :require_document, only: :show
 
   def index
     @documents = Garage::Docs::Document.all

@@ -1,11 +1,11 @@
 class PostsController < ApiController
   include Garage::RestfulActions
 
-  before_filter :require_user, only: :private
-  before_filter :require_private_resource, only: :private
-  before_filter :require_namespaced_resource, only: :namespaced
-  before_filter :require_index_resource, only: [:hide, :capped]
-  before_filter :require_action_permission, only: [:private, :hide, :capped, :namespaced]
+  before_action :require_user, only: :private
+  before_action :require_private_resource, only: :private
+  before_action :require_namespaced_resource, only: :namespaced
+  before_action :require_index_resource, only: [:hide, :capped]
+  before_action :require_action_permission, only: [:private, :hide, :capped, :namespaced]
 
   def private
     respond_with @resources
