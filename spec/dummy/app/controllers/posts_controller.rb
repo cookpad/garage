@@ -80,6 +80,7 @@ class PostsController < ApiController
     {
       delete: { body: true },
       put: { body: true },
+      patch: { body: true },
     }
   end
 
