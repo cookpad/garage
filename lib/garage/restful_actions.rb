@@ -21,9 +21,9 @@ module Garage
     extend ActiveSupport::Concern
 
     included do
-      before_filter :require_resource, :only => [:show, :update, :destroy]
-      before_filter :require_resources, :only => [:index, :create]
-      before_filter :require_action_permission_crud, :only => [:index, :create, :show, :update, :destroy], :if => -> (_) { verify_permission? }
+      before_action :require_resource, :only => [:show, :update, :destroy]
+      before_action :require_resources, :only => [:index, :create]
+      before_action :require_action_permission_crud, :only => [:index, :create, :show, :update, :destroy], :if => -> (_) { verify_permission? }
     end
 
     module ClassMethods
@@ -92,7 +92,7 @@ module Garage
     #
     # Examples
     #
-    #   before_filter :require_recipe
+    #   before_action :require_recipe
     #   def require_recipe
     #     @recipe = Recipe.find(params[:recipe_id])
     #     require_permission! @recipe, :read
@@ -110,7 +110,7 @@ module Garage
     #
     # Examples
     #
-    #   before_filter :require_stream
+    #   before_action :require_stream
     #   def require_stream
     #     require_access! PostStream, :read
     #   end

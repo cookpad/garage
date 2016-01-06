@@ -91,7 +91,7 @@ This declares that the access token should have scope(s) to access `PrivatePost`
 You can also *add* extra access scope or permission in addition to `@resource(s)` in your controller.
 
 ```ruby
-before_filter require_recipe
+before_action require_recipe
 def require_recipe
   @recipe = Recipe.find(params[:recipe_id])
   require_permission! @recipe, :read
