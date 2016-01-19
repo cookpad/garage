@@ -12,7 +12,7 @@ module Garage
     end
 
     def transform(resources)
-      if resources.respond_to?(:map)
+      if resources.respond_to?(:map) && resources.respond_to?(:to_a)
         resources.map {|resource| encode_to_hash(resource, partial: true) }
       else
         encode_to_hash(resources)
