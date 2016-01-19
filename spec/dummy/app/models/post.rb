@@ -23,6 +23,10 @@ class Post < ActiveRecord::Base
     user
   end
 
+  def map
+    'Tokyo'
+  end
+
   def build_permissions(perms, other)
     perms.permits! :read
     perms.permits! :write if owner == other

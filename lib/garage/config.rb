@@ -37,7 +37,7 @@ module Garage
 
     def cast_resource
       @cast_resource ||= proc { |resource|
-        if resource.respond_to?(:map)
+        if resource.respond_to?(:map) && resource.respond_to?(:to_a)
           resource.map(&:to_resource)
         else
           resource.to_resource
