@@ -12,8 +12,13 @@ module Garage
   class Config
     DEFAULT_RESCUE_ERROR = true
 
-    attr_writer :cast_resource, :docs, :rescue_error, :strategy
-    attr_accessor :auth_server_url, :auth_server_host, :auth_server_timeout
+    attr_writer :cast_resource, :docs, :rescue_error, :strategy, :cache_acceess_token_validation
+    attr_accessor :auth_server_url, :auth_server_host, :auth_server_timeout, :ttl_for_access_token_cache
+
+    def initialize
+      @cache_acceess_token_validation = false
+      @ttl_for_access_token_cache = 5.minutes
+    end
 
     # Set false if you want to rescue errors by yourself
     # @return [true, false] A flag to rescue Garage::HTTPError in ControllerHelper (default: true)
@@ -43,6 +48,10 @@ module Garage
           resource.to_resource
         end
       }
+    end
+
+    def cache_acceess_token_validation?
+      !!@cache_acceess_token_validation
     end
 
     class Builder

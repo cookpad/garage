@@ -23,6 +23,23 @@ module Garage
         true
       end
 
+      module Cache
+        def self.with_cache(key)
+          return yield unless Garage.configuration.cache_acceess_token_validation?
+
+          cached_token = Rails.cache.read(key)
+          return cached_token if cached_token && !cached_token.expired?
+
+          token = yield
+          Rails.cache.write(key, token, expires_in: default_ttl) if token && token.accessible?
+          token
+        end
+
+        def self.default_ttl
+          Garage.configuration.ttl_for_access_token_cache
+        end
+      end
+
       # Returns an AccessToken from request object or returns nil if failed.
       class AccessTokenFetcher
         READ_TIMEOUT = 1
@@ -38,27 +55,23 @@ module Garage
         end
 
         def fetch
-          if @request.authorization.present?
-            response = get
-            if response.valid?
-              Garage::Strategy::AccessToken.new(response.to_hash)
+          if has_any_valid_credentials?
+            if has_cacheable_credentials?
+              fetch_with_cache
             else
-              logger.error("garage-auth_server_error; #{response.status_code}") unless response.status_code == 401
-              nil
+              fetch_without_cache
             end
           else
-            logger.info('garage-bad_credentials')
             nil
           end
         rescue Timeout::Error
-          logger.error('garage-auth_server_timeout')
-          nil
+          raise AuthBackendTimeout.new(OPEN_TIMEOUT, read_timeout)
         end
 
         private
 
         def get
-          raw = http_client.get(uri.path, header)
+          raw = http_client.get(path_with_query, header)
           Response.new(raw)
         end
 
@@ -66,8 +79,20 @@ module Garage
           {
             'Authorization' => @request.authorization,
             'Host' => Garage.configuration.auth_server_host,
+            'Resource-Owner-Id' => @request.headers['Resource-Owner-Id'],
+            'Scopes' => @request.headers['Scopes'],
             'User-Agent' => USER_AGENT,
           }.reject {|_, v| v.nil? }
+        end
+
+        def path_with_query
+          result = uri.path
+          result << "?" + query unless query.empty?
+          result
+        end
+
+        def query
+          @query ||= @request.params.slice(:access_token, :bearer_token).to_query
         end
 
         def uri
@@ -90,8 +115,43 @@ module Garage
           Garage.configuration.auth_server_timeout or READ_TIMEOUT
         end
 
-        def logger
-          Rails.logger
+        def has_any_valid_credentials?
+          @request.authorization.present? ||
+            @request.params[:access_token].present? ||
+            @request.params[:bearer_token].present?
+        end
+
+        # Cacheable requests are:
+        #   - Bearer token request with `Authorization` header.
+        #
+        # We don't cache these requests because they are less requested:
+        #   - Bearer token request with query parameter which has been deprecated.
+        #   - Any other token type.
+        def has_cacheable_credentials?
+          bearer_token.present?
+        end
+
+        def bearer_token
+          @bearer_token ||= @request.authorization.try {|o| o.slice(/\ABearer\s+(.+)\z/, 1) }
+        end
+
+        def fetch_with_cache
+          Cache.with_cache("garage_gem/token_cache/#{Garage::VERSION}/#{bearer_token}") do
+            fetch_without_cache
+          end
+        end
+
+        def fetch_without_cache
+          response = get
+          if response.valid?
+            Garage::Strategy::AccessToken.new(response.to_hash)
+          else
+            if response.status_code == 401
+              nil
+            else
+              raise AuthBackendError.new(response)
+            end
+          end
         end
       end
 
