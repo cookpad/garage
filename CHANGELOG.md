@@ -1,4 +1,16 @@
 # CHANGELOG
+## 1.5.3
+* Add an option to respond with body for PATCH #35
+* Fix issue with STI models #38
+* Treat Symbol as a primitive type #39
+* Remove unnecessary `preserve` helper #40
+* Simplify primitive? check #42
+* use `xxx_action` instead of deprecated `xxx_filter` #46
+* Better checking to detect resource(s) is a collection #48
+* Identify resource by `#resource_identifier` in addition to `#id` #50
+* Improve AuthServer strategy #51
+* Remove forgotten doorkeeper things #52
+
 ## 1.5.2
 * `unauthorized_render_options` accepts `error` keyword argument.
 
