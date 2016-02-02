@@ -29,4 +29,21 @@ module Garage
 
   class PermissionError < Unauthorized; end
   class MissingScopeError < Unauthorized; end
+
+  class AuthBackendTimeout < HTTPError
+    def initialize(open_timeout, read_timeout)
+      @status = :internal_server_error
+      super("Auth backend timed out: open_timeout=#{open_timeout}, read_timeout=#{read_timeout}")
+    end
+  end
+
+  class AuthBackendError < HTTPError
+    attr_reader :response
+
+    def initialize(response)
+      @status = :internal_server_error
+      @response = response
+      super("Auth backend responded error: status=#{response.status_code}")
+    end
+  end
 end

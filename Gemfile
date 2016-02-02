@@ -23,6 +23,7 @@ end
 
 group :test do
   gem "webmock"
+  gem "timecop"
 end
 
 # Declare your gem's dependencies in garage.gemspec.
