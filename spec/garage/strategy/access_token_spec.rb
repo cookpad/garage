@@ -1,10 +1,26 @@
 require 'spec_helper'
 
 RSpec.describe Garage::Strategy::AccessToken do
+  let(:attrs) { { expired_at: expired_at, token: token, revoked_at: nil } }
+  let(:token) { 'xxx' }
+  let(:expired_at) { nil }
+
+  describe '#accessible?' do
+    subject { Garage::Strategy::AccessToken.new(attrs).accessible? }
+
+    context 'when valid case' do
+      it { should be_true }
+    end
+
+    context 'when token is null' do
+      let(:token) { nil }
+      it { should be_true }
+    end
+  end
+
   describe '#expired?' do
     before { Timecop.freeze(Time.zone.parse('2015/01/01 00:00:00')) }
     subject { Garage::Strategy::AccessToken.new(attrs).expired? }
-    let(:attrs) { { expired_at: expired_at, revoked_at: nil } }
 
     context 'when expired_at is null' do
       let(:expired_at) { nil }

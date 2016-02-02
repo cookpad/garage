@@ -12,7 +12,7 @@ module Garage
           @access_token
         else
           token = AccessToken.new(attributes.merge(token: requested_token, token_type: 'bearer'))
-          @access_token = token.valid? ? token : nil
+          @access_token = token.token.present? && token.accessible? ? token : nil
         end
       end
 
