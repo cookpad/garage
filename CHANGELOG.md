@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.5.4
+* Treat as valid access token with null token value #53
+
 ## 1.5.3
 * Add an option to respond with body for PATCH #35
 * Fix issue with STI models #38
