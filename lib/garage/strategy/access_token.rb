@@ -38,11 +38,7 @@ module Garage
       end
 
       def accessible?
-        valid? && !revoked? && !expired?
-      end
-
-      def valid?
-        token.present? && token_type.present?
+        !expired? && !revoked?
       end
 
       def revoked?
