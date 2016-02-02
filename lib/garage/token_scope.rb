@@ -17,6 +17,10 @@ module Garage
       configuration.scopes.values.select(&:optional?)
     end
 
+    def self.revealed_scopes
+      configuration.scopes.values.reject(&:hidden?)
+    end
+
     def self.hidden_scopes
       configuration.scopes.values.select(&:hidden?)
     end
