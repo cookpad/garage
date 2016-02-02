@@ -36,7 +36,7 @@
     = hidden_field_tag :authenticity_token, form_authenticity_token
     = hidden_field_tag :return_to, request.fullpath
     .modal-body
-      - Doorkeeper.configuration.scopes.all.each do |scope|
+      - Garage::TokenScope.revealed_scopes.each do |scope|
         = check_box_tag "scopes[]", scope, :selected => true
         = scope
         %br
