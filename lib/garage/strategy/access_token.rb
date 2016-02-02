@@ -18,13 +18,13 @@ module Garage
       end
 
       def expired_at
-        @expired_at ? DateTime.parse(@expired_at) : nil
+        @expired_at.present? ? Time.zone.parse(@expired_at) : nil
       rescue ArgumentError, TypeError
         nil
       end
 
       def revoked_at
-        @revoked_at ? DateTime.parse(@revoked_at) : nil
+        @revoked_at.present? ? Time.zone.parse(@revoked_at) : nil
       rescue ArgumentError, TypeError
         nil
       end
