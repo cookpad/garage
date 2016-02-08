@@ -1,8 +1,8 @@
-require 'redcarpet'
-
 module Garage
   module Docs
     class Renderer < ::Redcarpet::Render::HTML
+      include AnchorBuilding
+
       def header(text, header_level)
         console_link =
           if text.match(/^(POST|GET|PUT|DELETE)\s+(\/.*)$/)
@@ -12,7 +12,12 @@ module Garage
             ''
           end
 
-        "<h#{header_level}>#{text} #{console_link}</h#{header_level}>"
+        if header_level == 2
+          id = to_anchor(text)
+          %!<a href="##{id}"><h#{header_level} id="#{id}">#{text} #{console_link}</h#{header_level}></a>!
+        else
+          %!<h#{header_level}>#{text}</h#{header_level}>!
+        end
       end
     end
   end

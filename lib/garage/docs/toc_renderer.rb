@@ -1,8 +1,8 @@
-require 'redcarpet'
-
 module Garage
   module Docs
     class TocRenderer < ::Redcarpet::Render::HTML_TOC
+      include AnchorBuilding
+
       def header(text, header_level)
         return if header_level > 2
 
@@ -14,11 +14,7 @@ module Garage
             ''
           end
 
-        %'<li><a href="##{header_anchor(text)}">#{text}</a> #{console_link}</li>'
-      end
-
-      def header_anchor(text)
-        text.gsub(/ +/, '-').gsub(/<\/?[^>]*>/, '').downcase
+        %'<li><a href="##{to_anchor(text)}">#{text}</a> #{console_link}</li>'
       end
     end
   end
