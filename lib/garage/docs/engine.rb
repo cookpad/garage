@@ -5,6 +5,7 @@ require "coffee-rails"
 require "redcarpet"
 
 require "garage/docs/anchor_building"
+require "garage/docs/console_link_building"
 require "garage/docs/renderer"
 require "garage/docs/toc_renderer"
 require "garage/docs/application"
