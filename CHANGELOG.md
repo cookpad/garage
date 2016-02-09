@@ -1,4 +1,8 @@
 # CHANGELOG
+## 1.5.5
+* Fix broken toc feature #54
+  * Add links of permalink to header of document.
+
 ## 1.5.4
 * Treat as valid access token with null token value #53
 
