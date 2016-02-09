@@ -20,6 +20,27 @@ response:
 ]
 ```
 
+## GET /users
+Returns users
+
+```
+GET /users?per_page=1
+```
+
+### response
+```
+Status: 200
+response: 
+[
+  {
+    "created_at" => "2013-06-11T17:48:09Z",
+            "id" => 1077,
+          "name" => "name 15",
+    "properties" => {},
+    "updated_at" => "2013-06-11T17:48:09Z"
+  }
+]
+```
 
 ## GET /users/:id
 Returns the user
