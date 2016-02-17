@@ -5,7 +5,7 @@ require "garage/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "garage"
+  s.name        = "the_garage"
   s.version     = Garage::VERSION
   s.authors     = ["Tatsuhiko Miyagawa"]
   s.email       = ["miyagawa@bulknews.net"]
