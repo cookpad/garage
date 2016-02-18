@@ -1,4 +1,7 @@
 # CHANGELOG
+## 2.0.2
+* Require responders automatically #56
+
 ## 2.0.1
 * `Bundler.require` can require by `the_garage` name.
 
