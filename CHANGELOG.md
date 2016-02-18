@@ -1,4 +1,7 @@
 # CHANGELOG
+## 2.0.1
+* `Bundler.require` can require by `the_garage` name.
+
 ## 2.0.0
 * Apply new gem name: the_garage #55
 
