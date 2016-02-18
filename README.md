@@ -14,7 +14,8 @@ Garage supports OAuth 2 authorizations via Doorkeeper (more extensions to come),
 In `Gemfile`:
 
 ```ruby
-gem 'garage', github: 'cookpad/garage'
+# Notice this gem has "the_" prefix for gem name.
+gem 'the_garage'
 ```
 
 In your Rails model class:
