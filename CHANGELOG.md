@@ -1,4 +1,7 @@
 # CHANGELOG
+## 2.0.0
+* Apply new gem name: the_garage #55
+
 ## 1.5.5
 * Fix broken toc feature #54
   * Add links of permalink to header of document.
