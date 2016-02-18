@@ -1,6 +1,5 @@
-if Rails::VERSION::MAJOR > 4 ||
-    (Rails::VERSION::MAJOR == 4 && Rails::VERSION::MINOR >= 2)
-  require 'action_controller/responder'
+if Rails.gem_version >= Gem::Version.new('4.2.0')
+  require 'responders'
 else
   require 'action_controller'
 end
