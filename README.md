@@ -3,6 +3,9 @@
 
 Rails framework to add RESTful hypermedia API to your application.
 
+## Gem name changed!
+We renamed gem name `the_garage` from version 2.0.0. Please update your Gemfile.
+
 ## What Is It?
 
 Garage provides a simple, Hypermedia friendly RESTful API to your Rails application using its native RESTful routes. Garage provides a descriptive way to serve your ActiveRecord models, as well as plain old Ruby objects as JSON-based resources.
