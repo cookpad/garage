@@ -157,7 +157,7 @@ module Garage::Representer
     end
 
     def encode_value(value, responder, selector)
-      if !value.nil? && value.respond_to?(:represent!)
+      if value.is_a?(Garage::Representer)
         responder.encode_to_hash(value, partial: true, selector: selector)
       elsif primitive?(value)
         value
