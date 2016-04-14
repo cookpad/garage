@@ -1,4 +1,7 @@
 # CHANGELOG
+## 2.0.3
+* Check the value is a Representer #57
+
 ## 2.0.2
 * Require responders automatically #56
 
