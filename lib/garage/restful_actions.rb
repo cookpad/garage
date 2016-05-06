@@ -45,7 +45,7 @@ module Garage
 
     # Public: Get the resource
     # Renders `@resource` with options specified with `respond_with_resource_options`
-    # Requries `:read` permission on `@resource`
+    # Requires `:read` permission on `@resource`
     def show
       respond_with @resource, respond_with_resource_options
     end
