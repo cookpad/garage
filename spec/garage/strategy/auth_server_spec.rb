@@ -140,13 +140,15 @@ RSpec.describe Garage::Strategy::AuthServer do
       end
 
       context 'with basic authentication' do
-        let(:secrets) { 'xxx:yyy' }
-        let(:authorization) { "Basic #{Base64.strict_encode64(secrets)}" }
-        let(:url) { auth_server_url.gsub(%r{\A(http://)(.*)\z}) { "#{$1}#{secrets}@#{$2}" } }
+        let(:username) { 'xxx' }
+        let(:password) { 'password' }
+        let(:authorization) { "Basic #{Base64.strict_encode64("#{username}:#{password}")}" }
 
         it 'does not read cache and requests access token' do
           expect(Rails.cache).not_to receive(:read)
-          stub = stub_request(:get, url).to_return(body: response.to_json, status: 200)
+          stub = stub_request(:get, auth_server_url).
+            with(basic_auth: [username, password]).
+            to_return(body: response.to_json, status: 200)
 
           expect(fetcher.fetch(request)).to be_accessible
           expect(stub).to have_been_requested
