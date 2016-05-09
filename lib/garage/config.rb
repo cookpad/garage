@@ -6,7 +6,7 @@ module Garage
   end
 
   def self.configuration
-    @config
+    @config ||= configure {}
   end
 
   class Config
