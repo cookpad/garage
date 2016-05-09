@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resources :public_posts, only: :index
   end
 
+  resources :campaigns
   resource :session
   resource :echo
   resource :ping
