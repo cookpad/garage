@@ -18,6 +18,8 @@ Garage.configuration.strategy = Garage::Strategy::Test
 Garage::TokenScope.configure do
   register :public do
     access :read, Post
+    access :read, CampaignResource
+    access :write, CampaignResource
   end
 
   register :read_private_post do

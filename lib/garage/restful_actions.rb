@@ -32,7 +32,22 @@ module Garage
       end
 
       def resource_class
-        @resource_class ||= name.sub(/Controller\z/, '').demodulize.singularize.constantize
+        @resource_class ||= default_resource_class
+      end
+
+      private
+
+      def default_resource_class
+        class_name = name.sub(/Controller\z/, '').demodulize.singularize
+        begin
+          return "#{class_name}Resource".constantize
+        rescue NameError
+          begin
+            return class_name.constantize
+          rescue NameError
+            raise "Garage needs `#{class_name}Resource` or `#{class_name}` for resource class of #{name} but neither was found. If you want use an alternative class for the resource class, specify the resource class by `.resource_class=` in your controller."
+          end
+        end
       end
     end
 
@@ -173,7 +188,7 @@ module Garage
       elsif @resources
         MetaResource.new(self.class.resource_class)
       else
-        @resource
+        Garage.configuration.cast_resource.call(@resource)
       end
     end
 

@@ -26,6 +26,7 @@ In your Rails model class:
 ```ruby
 class Employee < ActiveRecord::Base
   include Garage::Representer
+  include Garage::Authorizable
 
   belongs_to :division
   has_many :projects
@@ -54,6 +55,34 @@ class EmployeesController < ApplicationController
 
   def require_resources
     @resources = Employee.all
+  end
+end
+```
+
+## Create decorator for your AR models
+With not small application, you may add a presentation layer to build API responses.
+Define a decorator class with `Resource` suffix and define `#to_resource` in
+your AR model.
+
+```ruby
+class User < ActiveRecord::Base
+  def to_resource
+    UserResource.new(self)
+  end
+end
+
+class UserResource
+  include Garage::Representer
+  include Garage::Authorizable
+
+  property :id
+  property :name
+  property :email
+
+  delegate :id, :name, :email, to: :@model
+
+  def initialize(model)
+    @model = model
   end
 end
 ```
