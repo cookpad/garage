@@ -1,9 +1,10 @@
 module Garage
   module Strategy
     class AccessToken
-      attr_reader :scope, :token, :token_type
+      attr_reader :scope, :token, :token_type, :raw_response
 
       def initialize(attrs)
+        @raw_response = attrs
         @scope, @token, @token_type = attrs[:scope], attrs[:token], attrs[:token_type]
         @application_id, @resource_owner_id = attrs[:application_id], attrs[:resource_owner_id]
         @expired_at, @revoked_at = attrs[:expired_at], attrs[:revoked_at]

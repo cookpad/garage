@@ -77,6 +77,19 @@ RSpec.describe Garage::Strategy::AuthServer do
           expect(token).to be_nil
         end
       end
+
+      context 'when auth server returns optional value' do
+        before do
+          response[:client_id] = 'client_id'
+          stub_request(:get, auth_server_url).to_return(status: 200, body: response.to_json)
+        end
+
+        it 'returns valid access token' do
+          token = fetcher.fetch(request)
+          expect(token).to be_accessible
+          expect(token.raw_response[:client_id]).to eq 'client_id'
+        end
+      end
     end
 
     describe '.fetch with caching' do
