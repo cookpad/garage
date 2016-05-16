@@ -1,4 +1,11 @@
 # CHANGELOG
+## 2.1.0
+* Hold raw response of auth server in AccessToken #62
+* Fully support the "presentation layer design" #60
+* Users can access configuration object without initialization #61
+* Fix typo in code document #58
+* Follow WebMock 2.0 changes #59
+
 ## 2.0.3
 * Check the value is a Representer #57
 
