@@ -46,13 +46,12 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
     end
   end
 
+  private
+
   def _current_user
     @current_user ||= instance_eval(&Garage.configuration.docs.current_user_method)
   end
-  hide_action :_current_user
   helper_method :_current_user
-
-  private
 
   def console_application
     {
