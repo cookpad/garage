@@ -5,13 +5,13 @@ module Garage::NestedFieldQuery
     describe ".build" do
       context "with nil fields" do
         it "returns DefaultSelector" do
-          Selector.build(nil).should be_a DefaultSelector
+          expect(Selector.build(nil)).to be_a DefaultSelector
         end
       end
 
       context "with empty string" do
         it "returns DefaultSelector" do
-          Selector.build("").should be_a DefaultSelector
+          expect(Selector.build("")).to be_a DefaultSelector
         end
       end
     end
@@ -41,11 +41,11 @@ module Garage::NestedFieldQuery
 
     samples.each do |fields, expected|
       it "parses fields=#{fields}" do
-        parser.parse(fields).should == expected
+        expect(parser.parse(fields)).to eq(expected)
       end
 
       it "roundtrips #{fields}" do
-        builder.build(expected).should == fields
+        expect(builder.build(expected)).to eq(fields)
       end
     end
 

@@ -20,8 +20,8 @@ describe Garage::Docs::Document do
   describe "#visible_to?" do
     context "with default settings" do
       it "returns true" do
-        document.visible_to?(user).should == true
-        document.visible_to?(admin).should == true
+        expect(document.visible_to?(user)).to eq(true)
+        expect(document.visible_to?(admin)).to eq(true)
       end
     end
 
@@ -34,8 +34,8 @@ describe Garage::Docs::Document do
       end
 
       it "returns the evaluation result of docs_authorization_method" do
-        document.visible_to?(user).should == false
-        document.visible_to?(admin).should == true
+        expect(document.visible_to?(user)).to eq(false)
+        expect(document.visible_to?(admin)).to eq(true)
       end
     end
   end

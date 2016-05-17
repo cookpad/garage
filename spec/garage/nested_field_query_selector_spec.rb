@@ -7,77 +7,77 @@ describe Garage::NestedFieldQuery::Selector do
 
   it 'has default scope for everything and it can also be nested' do
     sel = build_parsed nil
-    sel.includes?('foo').should be_false
-    sel.excludes?('foo').should be_false
-    sel['foo'].should be_a Garage::NestedFieldQuery::DefaultSelector
+    expect(sel.includes?('foo')).to be_falsey
+    expect(sel.excludes?('foo')).to be_falsey
+    expect(sel['foo']).to be_a Garage::NestedFieldQuery::DefaultSelector
   end
 
   it 'has default scope for everything and it can be nested' do
     sel = build_parsed '__default__'
-    sel.includes?('foo').should be_false
-    sel.excludes?('foo').should be_false
-    sel['foo'].should be_a Garage::NestedFieldQuery::DefaultSelector
+    expect(sel.includes?('foo')).to be_falsey
+    expect(sel.excludes?('foo')).to be_falsey
+    expect(sel['foo']).to be_a Garage::NestedFieldQuery::DefaultSelector
   end
 
   it 'has full scope for everything nested' do
     sel = build_parsed '*'
-    sel.includes?('foo').should be_true
-    sel.includes?('bar').should be_true
-    sel.excludes?('foo').should be_false
-    sel.excludes?('bar').should be_false
-    sel['foo'].should be_a Garage::NestedFieldQuery::FullSelector
+    expect(sel.includes?('foo')).to be_truthy
+    expect(sel.includes?('bar')).to be_truthy
+    expect(sel.excludes?('foo')).to be_falsey
+    expect(sel.excludes?('bar')).to be_falsey
+    expect(sel['foo']).to be_a Garage::NestedFieldQuery::FullSelector
   end
 
   it 'has default scope and specified ones' do
     sel = build_parsed '__default__,baz'
-    sel.includes?('foo').should be_false
-    sel.includes?('bar').should be_false
-    sel.includes?('baz').should be_true
-    sel.excludes?('foo').should be_false
-    sel.excludes?('bar').should be_false
-    sel['foo'].should be_a Garage::NestedFieldQuery::DefaultSelector
-    sel['baz'].should be_a Garage::NestedFieldQuery::DefaultSelector
+    expect(sel.includes?('foo')).to be_falsey
+    expect(sel.includes?('bar')).to be_falsey
+    expect(sel.includes?('baz')).to be_truthy
+    expect(sel.excludes?('foo')).to be_falsey
+    expect(sel.excludes?('bar')).to be_falsey
+    expect(sel['foo']).to be_a Garage::NestedFieldQuery::DefaultSelector
+    expect(sel['baz']).to be_a Garage::NestedFieldQuery::DefaultSelector
   end
 
   it 'has full scope if * is specified' do
     sel = build_parsed '__default__,bar,*'
-    sel.includes?('foo').should be_true
-    sel.includes?('bar').should be_true
-    sel.excludes?('foo').should be_false
-    sel.excludes?('bar').should be_false
-    sel['foo'].should be_a Garage::NestedFieldQuery::FullSelector
+    expect(sel.includes?('foo')).to be_truthy
+    expect(sel.includes?('bar')).to be_truthy
+    expect(sel.excludes?('foo')).to be_falsey
+    expect(sel.excludes?('bar')).to be_falsey
+    expect(sel['foo']).to be_a Garage::NestedFieldQuery::FullSelector
   end
 
   it 'has default scope for foo' do
     sel = build_parsed 'foo'
-    sel.includes?('foo').should be_true
-    sel.includes?('bar').should be_false
-    sel['foo'].should be_a Garage::NestedFieldQuery::DefaultSelector
+    expect(sel.includes?('foo')).to be_truthy
+    expect(sel.includes?('bar')).to be_falsey
+    expect(sel['foo']).to be_a Garage::NestedFieldQuery::DefaultSelector
   end
 
   it 'has default scope for foo' do
     sel = build_parsed 'foo[__default__]'
-    sel.includes?('foo').should be_true
-    sel.includes?('bar').should be_false
-    sel['foo'].includes?('bar').should be_false
-    sel['foo'].excludes?('bar').should be_false
+    expect(sel.includes?('foo')).to be_truthy
+    expect(sel.includes?('bar')).to be_falsey
+    expect(sel['foo'].includes?('bar')).to be_falsey
+    expect(sel['foo'].excludes?('bar')).to be_falsey
   end
 
   it 'has a scoped selector for foo' do
     sel = build_parsed 'foo[bar]'
-    sel.includes?('foo').should be_true
-    sel['foo'].includes?('bar').should be_true
-    sel['foo'].includes?('baz').should be_false
-    sel['foo'].excludes?('bar').should be_false
-    sel['foo'].excludes?('baz').should be_true
+    expect(sel.includes?('foo')).to be_truthy
+    expect(sel['foo'].includes?('bar')).to be_truthy
+    expect(sel['foo'].includes?('baz')).to be_falsey
+    expect(sel['foo'].excludes?('bar')).to be_falsey
+    expect(sel['foo'].excludes?('baz')).to be_truthy
   end
 
   it 'has a scoped selector for foo with *' do
     sel = build_parsed 'foo[*]'
-    sel.includes?('foo').should be_true
-    sel['foo'].includes?('bar').should be_true
-    sel['foo'].includes?('baz').should be_true
-    sel['foo'].excludes?('bar').should be_false
-    sel['foo'].excludes?('baz').should be_false
+    expect(sel.includes?('foo')).to be_truthy
+    expect(sel['foo'].includes?('bar')).to be_truthy
+    expect(sel['foo'].includes?('baz')).to be_truthy
+    expect(sel['foo'].excludes?('bar')).to be_falsey
+    expect(sel['foo'].excludes?('baz')).to be_falsey
   end
 end

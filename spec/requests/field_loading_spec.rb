@@ -19,8 +19,8 @@ describe "Field loading API" do
 
     context "with params[:fields] = nil" do
       it "returns default fields" do
-        should == 200
-        response.body.should be_json_as(
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(
           id: Fixnum,
           title: String,
           _links: Hash,
@@ -34,8 +34,8 @@ describe "Field loading API" do
       end
 
       it "returns default and user fields" do
-        should == 200
-        response.body.should be_json_as(
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(
           id: Fixnum,
           title: String,
           user: Hash,
@@ -50,8 +50,8 @@ describe "Field loading API" do
       end
 
       it "returns all fields" do
-        should == 200
-        response.body.should be_json_as(
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(
           id: Fixnum,
           title: String,
           label: String,
@@ -68,8 +68,8 @@ describe "Field loading API" do
       end
 
       it "returns only id field" do
-        should == 200
-        response.body.should be_json_as(id: Fixnum)
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(id: Fixnum)
       end
     end
 
@@ -79,8 +79,8 @@ describe "Field loading API" do
       end
 
       it "returns only id and title fields" do
-        should == 200
-        response.body.should be_json_as(
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(
           id: Fixnum,
           title: String,
           label: String
@@ -94,8 +94,8 @@ describe "Field loading API" do
       end
 
       it "returns only user's id field" do
-        should == 200
-        response.body.should be_json_as(
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(
           user: {
             id: Fixnum,
           },
@@ -109,8 +109,8 @@ describe "Field loading API" do
       end
 
       it "returns only comments default & post_owner fields" do
-        should == 200
-        response.body.should be_json_as(
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(
           comments: [
             {
               id: Fixnum,
@@ -129,8 +129,8 @@ describe "Field loading API" do
       end
 
       it "returns only comments all fields" do
-        should == 200
-        response.body.should be_json_as(
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(
           comments: [
             {
               id: Fixnum,
@@ -149,8 +149,8 @@ describe "Field loading API" do
       end
 
       it "returns only comments commenter id field" do
-        should == 200
-        response.body.should be_json_as(
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(
           comments: [
             {
               commenter: {
@@ -174,11 +174,11 @@ describe "Field loading API" do
 
     context "with caching" do
       it "caches response per params[:fields]" do
-        should == 200
-        response.body.should be_json_as([{ id: Fixnum, title: String, _links: Hash }])
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as([{ id: Fixnum, title: String, _links: Hash }])
         params[:fields] = "id"
         get path, params, env
-        response.body.should be_json_as([{ id: Fixnum }])
+        expect(response.body).to be_json_as([{ id: Fixnum }])
       end
     end
 
@@ -186,7 +186,7 @@ describe "Field loading API" do
       before do
         params[:fields] = "[]"
       end
-      it { should == 400 }
+      it { is_expected.to eq(400) }
     end
   end
 end

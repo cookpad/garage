@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Garage::HypermediaFilter do
   before do
-    Garage::NestedFieldQuery::Selector.stub(:build) {|fields| fields }
+    allow(Garage::NestedFieldQuery::Selector).to receive(:build) {|fields| fields }
   end
 
   let(:controller) do
@@ -31,7 +31,7 @@ describe Garage::HypermediaFilter do
 
   describe ".before" do
     it "assigns parsed field selector to controller.field_selector" do
-      controller.should_receive(:field_selector=).with("fields")
+      expect(controller).to receive(:field_selector=).with("fields")
       described_class.before(controller)
     end
 
@@ -41,12 +41,12 @@ describe Garage::HypermediaFilter do
       end
 
       it "assigns :dictionary to controller.representation" do
-        controller.should_receive(:representation=).with(:dictionary)
+        expect(controller).to receive(:representation=).with(:dictionary)
         described_class.before(controller)
       end
 
       it "assigns :json to controller.request.format" do
-        controller.request.should_receive(:format=).with(:json)
+        expect(controller.request).to receive(:format=).with(:json)
         described_class.before(controller)
       end
     end
@@ -57,19 +57,19 @@ describe Garage::HypermediaFilter do
       end
 
       it "assigns :dictionary to controller.representation" do
-        controller.should_receive(:representation=).with(:dictionary)
+        expect(controller).to receive(:representation=).with(:dictionary)
         described_class.before(controller)
       end
 
       it "assigns :msgpack to controller.request.format" do
-        controller.request.should_receive(:format=).with(:msgpack)
+        expect(controller.request).to receive(:format=).with(:msgpack)
         described_class.before(controller)
       end
     end
 
     context "with invalid fields param" do
       before do
-        Garage::NestedFieldQuery::Selector.stub(:build) do
+        allow(Garage::NestedFieldQuery::Selector).to receive(:build) do
           raise Garage::NestedFieldQuery::InvalidQuery
         end
       end

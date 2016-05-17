@@ -9,12 +9,12 @@ RSpec.describe Garage::Strategy::AccessToken do
     subject { Garage::Strategy::AccessToken.new(attrs).accessible? }
 
     context 'when valid case' do
-      it { should be_true }
+      it { is_expected.to be_truthy }
     end
 
     context 'when token is null' do
       let(:token) { nil }
-      it { should be_true }
+      it { is_expected.to be_truthy }
     end
   end
 
@@ -24,27 +24,27 @@ RSpec.describe Garage::Strategy::AccessToken do
 
     context 'when expired_at is null' do
       let(:expired_at) { nil }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'when expired_at is empty string' do
       let(:expired_at) { '' }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'when expired_at is invalid value' do
       let(:expired_at) { 'xxx' }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'when expired_at is future' do
       let(:expired_at) { Time.zone.parse('2015/02/01 00:00:00').to_s }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'when expired_at is past' do
       let(:expired_at) { Time.zone.parse('2014/12/01 00:00:00').to_s }
-      it { should be_true }
+      it { is_expected.to be_truthy }
     end
   end
 end

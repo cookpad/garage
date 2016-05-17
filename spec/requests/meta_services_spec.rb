@@ -13,13 +13,13 @@ describe "Meta Services" do
       let(:scopes) do
         "public"
       end
-      it { should == 403 }
+      it { is_expected.to eq(403) }
     end
 
     context "with valid condition" do
       it "returns services" do
-        should == 200
-        response.body.should be_json_as([Hash, Hash])
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as([Hash, Hash])
       end
     end
   end

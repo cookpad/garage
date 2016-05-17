@@ -18,7 +18,7 @@ describe Garage::ControllerHelper do
 
     context "without corresponding key" do
       it "returns nil" do
-        controller.send(:extract_datetime_query, "created").should == nil
+        expect(controller.send(:extract_datetime_query, "created")).to eq(nil)
       end
     end
 
@@ -33,10 +33,10 @@ describe Garage::ControllerHelper do
       end
 
       it "returns query Hash with matched operator => time" do
-        controller.send(:extract_datetime_query, "created").should == {
+        expect(controller.send(:extract_datetime_query, "created")).to eq({
           :lte => Time.zone.at(0),
           :gte => Time.zone.at(0),
-        }
+        })
       end
     end
   end
@@ -60,7 +60,7 @@ describe Garage::ControllerHelper do
       end
 
       it "returns false" do
-        controller.should_not be_requested_by user
+        expect(controller).not_to be_requested_by user
       end
     end
 
@@ -70,7 +70,7 @@ describe Garage::ControllerHelper do
       end
 
       it "returns false" do
-        controller.should_not be_requested_by user
+        expect(controller).not_to be_requested_by user
       end
     end
 
@@ -80,13 +80,13 @@ describe Garage::ControllerHelper do
       end
 
       it "returns false" do
-        controller.should_not be_requested_by user
+        expect(controller).not_to be_requested_by user
       end
     end
 
     context "with same user" do
       it "returns true" do
-        controller.should be_requested_by user
+        expect(controller).to be_requested_by user
       end
     end
   end
