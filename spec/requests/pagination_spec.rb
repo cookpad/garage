@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Pagination" do
+describe "Pagination", type: :request do
   include RestApiSpecHelper
   include AuthenticatedContext
 

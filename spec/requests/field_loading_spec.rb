@@ -1,20 +1,20 @@
 require "spec_helper"
 
-describe "Field loading API" do
+describe "Field loading API", type: :request do
   include RestApiSpecHelper
   include AuthenticatedContext
 
-  let(:post) do
+  let(:post_a) do
     FactoryGirl.create(:post)
   end
 
   describe "GET /posts/:id" do
     let(:id) do
-      post.id
+      post_a.id
     end
 
     let!(:comment) do
-      FactoryGirl.create(:comment, user: user, post: post)
+      FactoryGirl.create(:comment, user: user, post: post_a)
     end
 
     context "with params[:fields] = nil" do

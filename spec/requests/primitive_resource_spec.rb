@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Primitive Resource" do
+describe "Primitive Resource", type: :request do
   include RestApiSpecHelper
   include AuthenticatedContext
 

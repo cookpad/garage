@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe 'Resource conversion' do
+RSpec.describe 'Resource conversion', type: :request do
   include AuthenticatedContext
   let(:header) { { Accept: 'application/json' } }
 

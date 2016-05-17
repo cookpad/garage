@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Docs" do
+describe "Docs", type: :request do
   include RestApiSpecHelper
 
   before do
@@ -16,14 +16,14 @@ describe "Docs" do
     SecureRandom.uuid
   end
 
-  let!(:post) do
+  let!(:post_a) do
     FactoryGirl.create(:post)
   end
 
   describe "GET /docs/resources/post" do
     it "returns response with a link to the post example" do
       is_expected.to eq(200)
-      expect(response.body).to include "location=%2Fposts%2F#{post.id}"
+      expect(response.body).to include "location=%2Fposts%2F#{post_a.id}"
     end
 
     it "returns response with a title" do

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "HATEOAS" do
+describe "HATEOAS", type: :request do
   include RestApiSpecHelper
   include AuthenticatedContext
 
