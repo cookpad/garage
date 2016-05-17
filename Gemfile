@@ -8,7 +8,6 @@ group :development, :test do
   gem "rspec-rails"
   gem "mysql2"
   gem "pry-rails"
-  gem "quiet_assets"
   gem "database_cleaner"
   gem "factory_girl"
   gem "factory_girl_rails"
