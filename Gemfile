@@ -5,7 +5,7 @@ gem "kaminari"
 gem "responders"
 
 group :development, :test do
-  gem "rspec-rails", '~> 2.99'
+  gem "rspec-rails"
   gem "mysql2"
   gem "pry-rails"
   gem "quiet_assets"
