@@ -15,7 +15,6 @@ group :development, :test do
   gem "forgery"
   gem "link_header"
   gem "rspec-json_matcher"
-  gem 'transpec'
 end
 
 group :development do
