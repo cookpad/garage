@@ -9,7 +9,7 @@ describe Garage::ControllerHelper do
 
   describe "#extract_datetime_query" do
     before do
-      controller.stub(:params => params)
+      allow(controller).to receive_messages(:params => params)
     end
 
     let(:params) do
@@ -18,7 +18,7 @@ describe Garage::ControllerHelper do
 
     context "without corresponding key" do
       it "returns nil" do
-        controller.send(:extract_datetime_query, "created").should == nil
+        expect(controller.send(:extract_datetime_query, "created")).to eq(nil)
       end
     end
 
@@ -33,17 +33,17 @@ describe Garage::ControllerHelper do
       end
 
       it "returns query Hash with matched operator => time" do
-        controller.send(:extract_datetime_query, "created").should == {
+        expect(controller.send(:extract_datetime_query, "created")).to eq({
           :lte => Time.zone.at(0),
           :gte => Time.zone.at(0),
-        }
+        })
       end
     end
   end
 
   describe "#requested_by?" do
     before do
-      controller.stub(current_resource_owner: current_resource_owner)
+      allow(controller).to receive_messages(current_resource_owner: current_resource_owner)
     end
 
     let(:user) do
@@ -60,7 +60,7 @@ describe Garage::ControllerHelper do
       end
 
       it "returns false" do
-        controller.should_not be_requested_by user
+        expect(controller).not_to be_requested_by user
       end
     end
 
@@ -70,23 +70,23 @@ describe Garage::ControllerHelper do
       end
 
       it "returns false" do
-        controller.should_not be_requested_by user
+        expect(controller).not_to be_requested_by user
       end
     end
 
     context "with different classes" do
       before do
-        current_resource_owner.stub(class: Class.new)
+        allow(current_resource_owner).to receive_messages(class: Class.new)
       end
 
       it "returns false" do
-        controller.should_not be_requested_by user
+        expect(controller).not_to be_requested_by user
       end
     end
 
     context "with same user" do
       it "returns true" do
-        controller.should be_requested_by user
+        expect(controller).to be_requested_by user
       end
     end
   end

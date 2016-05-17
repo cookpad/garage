@@ -5,8 +5,8 @@ gem "kaminari"
 gem "responders"
 
 group :development, :test do
-  gem "rspec-rails" , "~> 2.14.0"
-  gem "mysql2", "~> 0.3.1"
+  gem "rspec-rails"
+  gem "mysql2"
   gem "pry-rails"
   gem "quiet_assets"
   gem "database_cleaner"
@@ -14,7 +14,7 @@ group :development, :test do
   gem "factory_girl_rails"
   gem "forgery"
   gem "link_header"
-  gem "rspec-json_matcher", "0.1.2"
+  gem "rspec-json_matcher"
 end
 
 group :development do

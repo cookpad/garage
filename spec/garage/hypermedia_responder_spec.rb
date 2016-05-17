@@ -64,7 +64,7 @@ describe Garage::HypermediaResponder do
 
   describe "#display" do
     it "calls resource.represent! method" do
-      resource.should_receive(:represent!)
+      expect(resource).to receive(:represent!)
       controller.action(:show).call(env)
     end
 
@@ -84,13 +84,13 @@ describe Garage::HypermediaResponder do
       end
 
       it "allows resource to refer to specified params" do
-        controller.action(:show).call(env)[2].body.should == { key1: "value1" }.to_json
+        expect(controller.action(:show).call(env)[2].body).to eq({ key1: "value1" }.to_json)
       end
     end
 
     context "with non-mappable resource" do
       it "renders a given resource as a Hash" do
-        controller.action(:show).call(env)[2].body.should == { name: "example" }.to_json
+        expect(controller.action(:show).call(env)[2].body).to eq({ name: "example" }.to_json)
       end
     end
 
@@ -100,7 +100,7 @@ describe Garage::HypermediaResponder do
       end
 
       it "renders a given resource as an Array of Hashes" do
-        controller.action(:show).call(env)[2].body.should == [{ name: "example" }].to_json
+        expect(controller.action(:show).call(env)[2].body).to eq([{ name: "example" }].to_json)
       end
     end
   end
@@ -127,7 +127,7 @@ describe Garage::HypermediaResponder::DataRenderer do
 
       context "by default" do
         it "returns argument as JSON" do
-          should == rendered.to_json
+          is_expected.to eq(rendered.to_json)
         end
       end
 
@@ -137,7 +137,7 @@ describe Garage::HypermediaResponder::DataRenderer do
         end
 
         it "returns argument as JSON" do
-          should == rendered.to_json
+          is_expected.to eq(rendered.to_json)
         end
       end
 
@@ -147,8 +147,8 @@ describe Garage::HypermediaResponder::DataRenderer do
         end
 
         it "replaces them with '\\u003C' & '\\u003E'" do
-          should_not match /<x>/
-          should == %<{"name":"\\u003Cx\\u003E"}>
+          is_expected.not_to match /<x>/
+          is_expected.to eq(%<{"name":"\\u003Cx\\u003E"}>)
         end
       end
     end
@@ -160,7 +160,7 @@ describe Garage::HypermediaResponder::DataRenderer do
 
       context "by default" do
         it "returns argument as JSON in Array" do
-          should == rendered.to_json
+          is_expected.to eq(rendered.to_json)
         end
       end
 
@@ -170,7 +170,7 @@ describe Garage::HypermediaResponder::DataRenderer do
         end
 
         it "returns argument as JSON in Hash" do
-          should == { resource["id"] => resource }.to_json
+          is_expected.to eq({ resource["id"] => resource }.to_json)
         end
       end
 
@@ -180,7 +180,7 @@ describe Garage::HypermediaResponder::DataRenderer do
         end
 
         it "returns argument as JSON in Array" do
-          should == rendered.to_json
+          is_expected.to eq(rendered.to_json)
         end
       end
     end
@@ -211,7 +211,7 @@ describe Garage::HypermediaResponder::Representation do
   describe "#dictionary?" do
     context "with controller.representation == :dictionary" do
       it "returns true" do
-        representation.dictionary?.should == true
+        expect(representation.dictionary?).to eq(true)
       end
     end
 
@@ -221,7 +221,7 @@ describe Garage::HypermediaResponder::Representation do
       end
 
       it "returns false" do
-        representation.dictionary?.should == false
+        expect(representation.dictionary?).to eq(false)
       end
     end
   end
@@ -229,7 +229,7 @@ describe Garage::HypermediaResponder::Representation do
   describe "#content_type" do
     context "with controller.request.format == 'application/json'" do
       it "returns 'application/vnd.cookpad.dictionary+json'" do
-        representation.content_type.should == "application/vnd.cookpad.dictionary+json"
+        expect(representation.content_type).to eq("application/vnd.cookpad.dictionary+json")
       end
     end
   end

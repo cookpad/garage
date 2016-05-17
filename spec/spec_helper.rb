@@ -3,7 +3,6 @@ require "garage"
 
 require File.expand_path("../dummy/config/environment", __FILE__)
 require "rspec/rails"
-require "rspec/autorun"
 require "webmock/rspec"
 # XXX: Should remove runtime dependency later
 require 'hashie'

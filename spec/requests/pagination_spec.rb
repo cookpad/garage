@@ -7,8 +7,8 @@ describe "Pagination" do
   describe "GET /posts" do
     context "with no post" do
       it "returns no link header" do
-        should == 200
-        response.header["Link"].should == nil
+        is_expected.to eq(200)
+        expect(response.header["Link"]).to eq(nil)
       end
     end
 
@@ -18,8 +18,8 @@ describe "Pagination" do
       end
 
       it "returns no link header" do
-        should == 200
-        response.header["Link"].should == nil
+        is_expected.to eq(200)
+        expect(response.header["Link"]).to eq(nil)
       end
     end
 
@@ -33,11 +33,11 @@ describe "Pagination" do
       end
 
       it "returns prev, first, next, and last link header" do
-        should == 200
-        link_for("first").should == { page: "1", per_page: "2" }
-        link_for("prev").should == { page: "1", per_page: "2" }
-        link_for("next").should == { page: "3", per_page: "2" }
-        link_for("last").should == { page: "3", per_page: "2" }
+        is_expected.to eq(200)
+        expect(link_for("first")).to eq({ page: "1", per_page: "2" })
+        expect(link_for("prev")).to eq({ page: "1", per_page: "2" })
+        expect(link_for("next")).to eq({ page: "3", per_page: "2" })
+        expect(link_for("last")).to eq({ page: "3", per_page: "2" })
       end
     end
 
@@ -51,9 +51,9 @@ describe "Pagination" do
       end
 
       it "returns next and lsat link header" do
-        should == 200
-        link_for("next").should == { page: "2", per_page: "1" }
-        link_for("last").should == { page: "2", per_page: "1" }
+        is_expected.to eq(200)
+        expect(link_for("next")).to eq({ page: "2", per_page: "1" })
+        expect(link_for("last")).to eq({ page: "2", per_page: "1" })
       end
     end
 
@@ -67,9 +67,9 @@ describe "Pagination" do
       end
 
       it "returns prev and first link header" do
-        should == 200
-        link_for("first").should == { page: "1", per_page: "1" }
-        link_for("prev").should == { page: "1", per_page: "1" }
+        is_expected.to eq(200)
+        expect(link_for("first")).to eq({ page: "1", per_page: "1" })
+        expect(link_for("prev")).to eq({ page: "1", per_page: "1" })
       end
     end
 
@@ -81,8 +81,8 @@ describe "Pagination" do
       end
 
       it "returns X-List-TotalCount header" do
-        should == 200
-        response.header["X-List-TotalCount"].should == "2"
+        is_expected.to eq(200)
+        expect(response.header["X-List-TotalCount"]).to eq("2")
       end
     end
 
@@ -92,8 +92,8 @@ describe "Pagination" do
       end
 
       it "returns no posts" do
-        should == 200
-        response.body.should be_json_as([])
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as([])
       end
     end
 
@@ -106,9 +106,9 @@ describe "Pagination" do
       end
 
       it "returns up to 100 resources per page" do
-        should == 200
-        response.header["X-List-TotalCount"].should == "200"
-        response.body.should be_json_as(->(array) { array.size == 100 } )
+        is_expected.to eq(200)
+        expect(response.header["X-List-TotalCount"]).to eq("200")
+        expect(response.body).to be_json_as(->(array) { array.size == 100 } )
       end
     end
   end
@@ -123,8 +123,8 @@ describe "Pagination" do
 
     context "with valid condition" do
       it "returns no X-List-TotalCount header" do
-        should == 200
-        response.header["X-List-TotalCount"].should == nil
+        is_expected.to eq(200)
+        expect(response.header["X-List-TotalCount"]).to eq(nil)
       end
     end
 
@@ -134,11 +134,11 @@ describe "Pagination" do
       end
 
       it "returns links except for last" do
-        should == 200
-        link_for("first").should == { page: "1", per_page: "1" }
-        link_for("prev").should == { page: "1", per_page: "1" }
-        link_for("next").should == { page: "3", per_page: "1" }
-        link_for("last").should == nil
+        is_expected.to eq(200)
+        expect(link_for("first")).to eq({ page: "1", per_page: "1" })
+        expect(link_for("prev")).to eq({ page: "1", per_page: "1" })
+        expect(link_for("next")).to eq({ page: "3", per_page: "1" })
+        expect(link_for("last")).to eq(nil)
       end
     end
 
@@ -148,11 +148,11 @@ describe "Pagination" do
       end
 
       it "returns links except for last" do
-        should == 200
-        link_for("first").should == { page: "1", per_page: "1" }
-        link_for("prev").should == { page: "2", per_page: "1" }
-        link_for("next").should == { page: "4", per_page: "1" }
-        link_for("last").should == nil
+        is_expected.to eq(200)
+        expect(link_for("first")).to eq({ page: "1", per_page: "1" })
+        expect(link_for("prev")).to eq({ page: "2", per_page: "1" })
+        expect(link_for("next")).to eq({ page: "4", per_page: "1" })
+        expect(link_for("last")).to eq(nil)
       end
     end
   end
@@ -167,23 +167,23 @@ describe "Pagination" do
       end
 
       it "returns up to limited count" do
-        should == 200
-        response.header["X-List-TotalCount"].should == nil
-        response.body.should be_json([])
-        link_for("first").should == { page: "1", per_page: "20" }
-        link_for("prev").should == { page: "6", per_page: "20" }
-        link_for("next").should == nil
-        link_for("last").should == nil
+        is_expected.to eq(200)
+        expect(response.header["X-List-TotalCount"]).to eq(nil)
+        expect(response.body).to be_json([])
+        expect(link_for("first")).to eq({ page: "1", per_page: "20" })
+        expect(link_for("prev")).to eq({ page: "6", per_page: "20" })
+        expect(link_for("next")).to eq(nil)
+        expect(link_for("last")).to eq(nil)
       end
     end
 
     context "with hard limit option" do
       it "hides last link" do
-        should == 200
-        link_for("first").should == nil
-        link_for("prev").should == nil
-        link_for("next").should == { page: "2", per_page: "20" }
-        link_for("last").should == nil
+        is_expected.to eq(200)
+        expect(link_for("first")).to eq(nil)
+        expect(link_for("prev")).to eq(nil)
+        expect(link_for("next")).to eq({ page: "2", per_page: "20" })
+        expect(link_for("last")).to eq(nil)
       end
     end
   end

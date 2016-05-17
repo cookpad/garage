@@ -13,20 +13,20 @@ describe "Meta Docs" do
       before do
         header.delete("Authorization")
       end
-      it { should == 401 }
+      it { is_expected.to eq(401) }
     end
 
     context "without meta scope" do
       let(:scopes) do
         "public"
       end
-      it { should == 403 }
+      it { is_expected.to eq(403) }
     end
 
     context "with valid condition" do
       it "returns meta resources about documentation" do
-        should == 200
-        response.body.should be_json_as(
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(
           [
             {
               name: "post",

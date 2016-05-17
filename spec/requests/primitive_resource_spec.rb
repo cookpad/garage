@@ -6,8 +6,8 @@ describe "Primitive Resource" do
 
   describe "GET /echo" do
     it "returns a Hash" do
-      should == 200
-      response.body.should be_json(message: "Hello World")
+      is_expected.to eq(200)
+      expect(response.body).to be_json(message: "Hello World")
     end
   end
 end

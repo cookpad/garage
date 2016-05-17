@@ -5,15 +5,15 @@ describe Garage::TokenScope do
     subject { Garage::TokenScope.optional_scopes.map(&:to_s) }
 
     it 'should not include hidden scopes' do
-      should_not include('sudo')
+      is_expected.not_to include('sudo')
     end
 
     it 'should not include public scope' do
-      should_not include('public')
+      is_expected.not_to include('public')
     end
 
     it 'should include optional scope' do
-      should include('write_post')
+      is_expected.to include('write_post')
     end
   end
 

@@ -22,21 +22,21 @@ describe "Docs" do
 
   describe "GET /docs/resources/post" do
     it "returns response with a link to the post example" do
-      should == 200
-      response.body.should include "location=%2Fposts%2F#{post.id}"
+      is_expected.to eq(200)
+      expect(response.body).to include "location=%2Fposts%2F#{post.id}"
     end
 
     it "returns response with a title" do
-      should == 200
-      response.body.should include "<title>Post API - Garage</title>"
+      is_expected.to eq(200)
+      expect(response.body).to include "<title>Post API - Garage</title>"
     end
   end
 
   describe "GET /docs/resources" do
     context "with valid condition" do
       it "returns default overview page" do
-        should == 200
-        response.body.should include "This is overview"
+        is_expected.to eq(200)
+        expect(response.body).to include "This is overview"
       end
     end
 
@@ -46,8 +46,8 @@ describe "Docs" do
       end
 
       it "returns Japanese overview page" do
-        should == 200
-        response.body.should include "Japanese page"
+        is_expected.to eq(200)
+        expect(response.body).to include "Japanese page"
       end
     end
 
@@ -57,8 +57,8 @@ describe "Docs" do
       end
 
       it "returns Japanese overview page" do
-        should == 200
-        response.body.should include "Japanese page"
+        is_expected.to eq(200)
+        expect(response.body).to include "Japanese page"
       end
     end
 
@@ -68,8 +68,8 @@ describe "Docs" do
       end
 
       it "returns default overview page" do
-        should == 200
-        response.body.should include "This is overview"
+        is_expected.to eq(200)
+        expect(response.body).to include "This is overview"
       end
     end
   end

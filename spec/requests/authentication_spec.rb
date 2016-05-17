@@ -11,13 +11,13 @@ describe "Authentication" do
       end
 
       it "returns 401 without access token verification" do
-        should == 401
-        response.body.should be_json
+        is_expected.to eq(401)
+        expect(response.body).to be_json
       end
     end
 
     context "with valid access token from auth server" do
-      it { should == 200 }
+      it { is_expected.to eq(200) }
     end
   end
 end
