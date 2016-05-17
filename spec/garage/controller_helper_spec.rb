@@ -9,7 +9,7 @@ describe Garage::ControllerHelper do
 
   describe "#extract_datetime_query" do
     before do
-      controller.stub(:params => params)
+      allow(controller).to receive_messages(:params => params)
     end
 
     let(:params) do
@@ -43,7 +43,7 @@ describe Garage::ControllerHelper do
 
   describe "#requested_by?" do
     before do
-      controller.stub(current_resource_owner: current_resource_owner)
+      allow(controller).to receive_messages(current_resource_owner: current_resource_owner)
     end
 
     let(:user) do
@@ -76,7 +76,7 @@ describe Garage::ControllerHelper do
 
     context "with different classes" do
       before do
-        current_resource_owner.stub(class: Class.new)
+        allow(current_resource_owner).to receive_messages(class: Class.new)
       end
 
       it "returns false" do
