@@ -18,4 +18,16 @@ RSpec.configure do |config|
   config.before(:each) do
     Rails.cache.clear
   end
+
+  config.before(:each, type: :request) do
+    %i[get post put delete].each do |name|
+      define_singleton_method(name) do |path, params = {}, headers = {}|
+        if Rails::VERSION::MAJOR >= 5
+          super(path, params: params, headers: headers)
+        else
+          super(path, params, headers)
+        end
+      end
+    end
+  end
 end

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Authorization" do
+describe "Authorization", type: :request do
   include RestApiSpecHelper
   include AuthenticatedContext
 

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Meta Services" do
+describe "Meta Services", type: :request do
   include RestApiSpecHelper
   include AuthenticatedContext
 

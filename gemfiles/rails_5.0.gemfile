@@ -2,13 +2,13 @@
 
 source "https://rubygems.org"
 
-gem "rails", "~> 4.0"
+gem "rails", "5.0.0.rc1"
 gem "kaminari"
 gem "responders"
 gem "jquery-rails"
 
 group :development, :test do
-  gem "rspec-rails"
+  gem "rspec-rails", "3.5.0.beta1"
   gem "mysql2"
   gem "pry-rails"
   gem "database_cleaner"
