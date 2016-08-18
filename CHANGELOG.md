@@ -1,4 +1,8 @@
 # CHANGELOG
+## 2.2.0
+* Migrate to RSpec3 #63
+* Support rails version 5 #64 #66
+
 ## 2.1.0
 * Hold raw response of auth server in AccessToken #62
 * Fully support the "presentation layer design" #60
