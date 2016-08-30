@@ -37,8 +37,9 @@
     = hidden_field_tag :return_to, request.fullpath
     .modal-body
       - Garage::TokenScope.revealed_scopes.each do |scope|
-        = check_box_tag "scopes[]", scope, :selected => true
-        = scope
+        %label
+          = check_box_tag "scopes[]", scope, :selected => true
+          = scope
         %br
     .modal-footer
       = button_tag "Close", :class => "modal-close"
