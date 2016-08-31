@@ -181,6 +181,10 @@ module MyStrategy
 end
 ```
 
+## Development
+
+See [DEVELOPMENT.md](DEVELOPMENT.md).
+
 ## Authors
 
 * Tatsuhiko Miyagawa
