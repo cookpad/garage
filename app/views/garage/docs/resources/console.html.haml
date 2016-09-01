@@ -38,9 +38,13 @@
     .modal-body
       - Garage::TokenScope.revealed_scopes.each do |scope|
         %label
-          = check_box_tag "scopes[]", scope, :selected => true
+          = check_box_tag "scopes[]", scope, { :selected => true }, :class => 'token-scope-checkbox'
           = scope
         %br
     .modal-footer
+      %label
+        = check_box_tag nil, nil, { :selected => true }, :class => 'token-scope-check-all'
+        Check all
+      %br
       = button_tag "Close", :class => "modal-close"
       = submit_tag "Authenticate"
