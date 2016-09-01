@@ -88,3 +88,12 @@ jQuery ()->
     if token
       $('#access_token').val(token)
       $('form.oauth-callback-redirect').submit()
+
+  $('#oauth-dialog .token-scope-check-all').click (ev) ->
+    $('.token-scope-checkbox').prop('checked', this.checked)
+
+  $('#oauth-dialog .token-scope-checkbox').click (ev) ->
+    if $('.token-scope-checkbox:not(:checked)').length == 0
+      $('.token-scope-check-all').prop('checked', true)
+    else if not this.checked
+      $('.token-scope-check-all').prop('checked', false)
