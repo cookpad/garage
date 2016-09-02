@@ -1,4 +1,9 @@
 # CHANGELOG
+## 2.3.0
+* Add label for scope checkbox [#67](https://github.com/cookpad/garage/pull/67)
+* Update documentation [#68](https://github.com/cookpad/garage/pull/68)
+* Add checkbox to check all scopes [#69](https://github.com/cookpad/garage/pull/69)
+
 ## 2.2.0
 * Migrate to RSpec3 #63
 * Support rails version 5 #64 #66
