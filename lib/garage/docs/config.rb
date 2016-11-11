@@ -13,7 +13,7 @@ module Garage
         @document_root = Rails.root.join('doc/garage')
         @current_user_method = Proc.new { current_user }
         @authenticate = Proc.new {}
-        @console_app_uid = ''
+        @console_app_uid, @console_app_secret = nil, nil
         @remote_server = Proc.new {|request| "#{request.protocol}#{request.host_with_port}" }
         @docs_authorization_method = nil
         @docs_cache_enabled = true
