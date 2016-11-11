@@ -10,6 +10,7 @@ jQuery ()->
     ev.preventDefault()
 
   $("#oauth-dialog .authenticate").click (ev) ->
+    $("#oauth-dialog #return_to").val(window.location.pathname + window.location.search)
     $("form#oauth-authenticate").submit()
     ev.preventDefault()
 
