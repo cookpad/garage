@@ -1,4 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
+ENV['GARAGE_CONSOLE_APP_UID'] ||= 'dummy'
+ENV['GARAGE_CONSOLE_APP_SECRET'] ||= 'dummy'
+
 require "garage"
 
 require File.expand_path("../dummy/config/environment", __FILE__)

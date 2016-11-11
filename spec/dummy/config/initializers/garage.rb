@@ -3,8 +3,8 @@ Garage.configure do
     extend CurrentUserHelper
     current_user
   }
-  docs.console_app_uid = ENV['GARAGE_CONSOLE_APP_UID'] || ''
-  docs.console_app_secret = ENV['GARAGE_CONSOLE_APP_SECRET'] || ''
+  docs.console_app_uid = ENV['GARAGE_CONSOLE_APP_UID']
+  docs.console_app_secret = ENV['GARAGE_CONSOLE_APP_SECRET']
 
   if ENV['GARAGE_REMOTE_SERVER']
     docs.remote_server = ENV['GARAGE_REMOTE_SERVER']
