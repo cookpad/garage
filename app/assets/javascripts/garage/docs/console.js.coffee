@@ -9,16 +9,6 @@ jQuery ()->
     $.colorbox.close()
     ev.preventDefault()
 
-  $("#oauth-dialog .authenticate").click (ev) ->
-    $("#oauth-dialog #return_to").val(window.location.pathname + window.location.search)
-    $("form#oauth-authenticate").submit()
-    ev.preventDefault()
-
-  $(".console .validate-token").click (ev) ->
-    $("#method").val('GET')
-    $("#location").val("/oauth/token/info")
-    $('.send-request').click()
-
   buildAuthorizedUrl = (base, location, token) ->
     url = base + location
     if url.indexOf('?') > 0
@@ -72,7 +62,9 @@ jQuery ()->
       dataType: 'json',
       complete: ->
         queryString = $.param({'location': $('#location').val(), 'method': $('#method').val()})
-        history.pushState('', '', "#{location.pathname}?#{queryString}")
+        newFullpath = "#{location.pathname}?#{queryString}"
+        history.pushState('', '', newFullpath)
+        $("#oauth-dialog #return_to").val(newFullpath)
       success: (data, textStatus, xhr) ->
         $('#api-headers').text("#{xhr.status} #{xhr.statusText}\n" + xhr.getAllResponseHeaders())
         $('#api-response').html buildHyperlinks(JSON.stringify(data, undefined, 2))
