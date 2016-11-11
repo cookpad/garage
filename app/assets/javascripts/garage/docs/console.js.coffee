@@ -9,11 +9,6 @@ jQuery ()->
     $.colorbox.close()
     ev.preventDefault()
 
-  $(".console .validate-token").click (ev) ->
-    $("#method").val('GET')
-    $("#location").val("/oauth/token/info")
-    $('.send-request').click()
-
   buildAuthorizedUrl = (base, location, token) ->
     url = base + location
     if url.indexOf('?') > 0
