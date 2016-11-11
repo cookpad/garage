@@ -1,4 +1,7 @@
 # CHANGELOG
+## 2.3.2
+* Correctly implement setting current path feature #72
+
 ## 2.3.1
 * Set current path with query parameters to `return_to` #71
 
