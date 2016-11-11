@@ -1,4 +1,7 @@
 # CHANGELOG
+## 2.3.1
+* Set current path with query parameters to `return_to` #71
+
 ## 2.3.0
 * Add label for scope checkbox [#67](https://github.com/cookpad/garage/pull/67)
 * Update documentation [#68](https://github.com/cookpad/garage/pull/68)
