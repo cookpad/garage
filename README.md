@@ -3,7 +3,7 @@
 
 Rails framework to add RESTful hypermedia API to your application.
 
-## Gem name changed!
+## Gem name has been changed!
 We renamed gem name `the_garage` from version 2.0.0. Please update your Gemfile.
 
 ## What Is It?
