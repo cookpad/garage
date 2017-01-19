@@ -1,7 +1,8 @@
 source "https://rubygems.org"
 
 gem "rails", ">= 4.0.0"
-gem "kaminari"
+# FIXME: Fix garage to work with kaminari v1.
+gem "kaminari", "< 1"
 gem "responders"
 
 group :development, :test do
