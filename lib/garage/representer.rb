@@ -166,22 +166,24 @@ module Garage::Representer
       end
     end
 
+    PRIMITIVE_CLASSES = [
+      ActiveSupport::TimeWithZone,
+      Date,
+      Time,
+      Integer,
+      Float,
+      Hash,
+      Array,
+      String,
+      NilClass,
+      TrueClass,
+      FalseClass,
+      Symbol,
+    ]
+    PRIMITIVE_CLASSES.push(Fixnum, Bignum) unless 0.class == Integer
+
     def primitive?(value)
-      [
-        ActiveSupport::TimeWithZone,
-        Date,
-        Time,
-        Bignum,
-        Fixnum,
-        Float,
-        Hash,
-        Array,
-        String,
-        NilClass,
-        TrueClass,
-        FalseClass,
-        Symbol,
-      ].any? {|k| value.is_a?(k) }
+      PRIMITIVE_CLASSES.any? {|k| value.is_a?(k) }
     end
 
     private
