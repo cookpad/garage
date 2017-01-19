@@ -180,7 +180,6 @@ module Garage::Representer
       FalseClass,
       Symbol,
     ]
-    PRIMITIVE_CLASSES.push(Fixnum, Bignum) unless 0.class == Integer
 
     def primitive?(value)
       PRIMITIVE_CLASSES.any? {|k| value.is_a?(k) }
