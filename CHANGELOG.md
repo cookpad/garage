@@ -1,4 +1,8 @@
 # CHANGELOG
+## 2.3.3
+* Compatible with ruby 2.4 (Integer unification). #73
+* Compatible with oj v2.18.0 (use_as_json option). #75
+
 ## 2.3.2
 * Correctly implement setting current path feature #72
 
