@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", '>= 4.0.0'
   s.add_dependency "rack-accept-default", "~> 0.0.2"
-  s.add_dependency "oj", "< 2.18.0" # FIXME: Use oj >= 2.18 and pass specs with Rails 5
+  s.add_dependency "oj"
   s.add_dependency "responders"
   s.add_dependency "oauth2"
   s.add_dependency "redcarpet", ">= 3.1.1"
