@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/cookpad/garage"
   s.summary     = "Garage Platform Engine"
   s.description = "Garage extends your RESTful, Hypermedia APIs as a Platform"
+  s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
 
