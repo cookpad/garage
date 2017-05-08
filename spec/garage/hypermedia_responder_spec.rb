@@ -78,7 +78,7 @@ describe Garage::HypermediaResponder do
           param :key1
 
           def render_hash(options = {})
-            params
+            params.as_json
           end
         end
       end
