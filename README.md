@@ -47,9 +47,15 @@ class Employee < ActiveRecord::Base
 end
 ```
 
-In your controller class:
+In your controller classes:
 
 ```ruby
+class ApplicationController < ActionController::Base
+  include Garage::ControllerHelper
+  
+  # ...
+end
+
 class EmployeesController < ApplicationController
   include Garage::RestfulActions
 
