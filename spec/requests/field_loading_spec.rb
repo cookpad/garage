@@ -56,7 +56,9 @@ describe "Field loading API", type: :request do
           title: String,
           label: String,
           user: Hash,
+          comment: Hash,
           comments: Array,
+          numbers: Array,
           _links: Hash,
         )
       end

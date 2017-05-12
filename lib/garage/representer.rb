@@ -83,16 +83,16 @@ module Garage::Representer
       @representer_attrs ||= []
     end
 
-    def property(name, options={})
-      representer_attrs << Definition.new(name, options)
+    def property(name, options={}, &block)
+      representer_attrs << Definition.new(name, options, block)
     end
 
     def link(rel, options={}, &block)
       representer_attrs << Link.new(rel, options, block)
     end
 
-    def collection(name, options={})
-      representer_attrs << Collection.new(name, options)
+    def collection(name, options={}, &block)
+      representer_attrs << Collection.new(name, options, block)
     end
 
     def oauth_scope(scope)
@@ -130,9 +130,10 @@ module Garage::Representer
   class Definition
     attr_reader :options
 
-    def initialize(name, options={})
+    def initialize(name, options={}, block)
       @name = name
       @options = options
+      @block = block
     end
 
     def requires_select?
@@ -152,7 +153,7 @@ module Garage::Representer
     end
 
     def encode(object, responder, selector = nil)
-      value = object.send(@name)
+      value = @block ? object.instance_eval(&@block) : object.send(@name)
       encode_value(value, responder, selector)
     end
 
@@ -194,7 +195,7 @@ module Garage::Representer
 
   class Collection < Definition
     def encode(object, responder, selector = nil)
-      value = object.send(@name)
+      value = @block ? object.instance_eval(&@block) : object.send(@name)
       value.map do |item|
         encode_value(item, responder, selector)
       end
