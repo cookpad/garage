@@ -20,6 +20,8 @@ module Garage
 
       respond_to :json # , :msgpack
       self.responder = Garage::AppResponder
+
+      protect_from_forgery with: :null_session
     end
 
     # For backword compatiblility.
