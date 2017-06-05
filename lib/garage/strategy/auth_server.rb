@@ -2,6 +2,8 @@ require 'json'
 require 'net/http'
 require 'uri'
 
+require 'garage/tracer'
+
 module Garage
   module Strategy
     module AuthServer
@@ -71,8 +73,13 @@ module Garage
         private
 
         def get
-          raw = http_client.get(path_with_query, header)
-          Response.new(raw)
+          Tracer.start do |tracer|
+            request_header = tracer.inject_trace_context(header)
+            tracer.record_http_request('GET', uri.to_s, request_header['User-Agent'])
+            raw = http_client.get(path_with_query, request_header)
+            tracer.record_http_response(raw.code.to_i, raw['Content-Length'] || 0)
+            Response.new(raw)
+          end
         end
 
         def header

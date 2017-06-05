@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'aws/xray'
 
 RSpec.describe Garage::Strategy::AuthServer do
   before do
@@ -165,6 +166,40 @@ RSpec.describe Garage::Strategy::AuthServer do
 
           expect(fetcher.fetch(request)).to be_accessible
           expect(stub).to have_been_requested
+        end
+      end
+    end
+
+    describe 'tracing' do
+      context 'with aws-xray tracer' do
+        before do
+          stub_request(:get, auth_server_url)
+            .with(headers: { 'X-Amzn-Trace-Id' => /\ARoot=1-67891233-abcdef012345678912345678/ })
+            .to_return(status: 200, body: response.to_json)
+        end
+
+        around do |ex|
+          back = Garage.configuration.tracing
+          Garage.configuration.tracing = { tracer: 'aws-xray', service: 'auth-server' }
+          Aws::Xray::Context.with_new_context('test-app', xray_client, trace) do
+            Aws::Xray::Context.current.base_trace { ex.run }
+          end
+          Garage.configuration.tracing = back
+        end
+
+        let(:xray_client) { Aws::Xray::Client.new(sock: io) }
+        let(:io) { Aws::Xray::TestSocket.new }
+        let(:trace) { Aws::Xray::Trace.new(root: '1-67891233-abcdef012345678912345678') }
+
+        it 'returns valid access token' do
+          token = fetcher.fetch(request)
+          expect(token).to be_accessible
+
+          body = JSON.parse(io.tap(&:rewind).read.split("\n")[1])
+          expect(body['trace_id']).to eq('1-67891233-abcdef012345678912345678')
+          expect(body['name']).to eq('auth-server')
+          expect(body['http']['request']['url']).to eq('http://example.com/token')
+          expect(body['http']['response']['status']).to eq(200)
         end
       end
     end

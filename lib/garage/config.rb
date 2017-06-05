@@ -36,6 +36,16 @@ module Garage
       instance_variable_defined?(:@strategy) ? @strategy : Garage::Strategy::NoAuthentication
     end
 
+    # Support distributed tracing for auth server accesses.
+    #
+    # @param [Hash] tracing a hash with
+    #   - `tracer`: specify tracing method.
+    #   - `service`: specify logical service name of auth server.
+    attr_writer :tracing
+    def tracing
+      @tracing ||= {}
+    end
+
     def docs
       @docs ||= Docs::Config.new
     end
