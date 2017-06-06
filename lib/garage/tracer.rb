@@ -8,12 +8,7 @@ module Garage
     private
 
     def tracer
-      case Garage.configuration.tracing[:tracer]
-      when 'aws-xray'
-        AwsXrayTracer
-      else
-        NullTracer
-      end
+      Garage.configuration.tracer
     end
 
     # Any tracers must have `.start` to start tracing context and:
@@ -45,9 +40,13 @@ module Garage
     end
 
     class AwsXrayTracer
+      class << self
+        attr_accessor :service
+      end
+
       def self.start(&block)
         if Aws::Xray::Context.started?
-          Aws::Xray::Context.current.child_trace(remote: true, name: Garage.configuration.tracing[:service]) do |sub|
+          Aws::Xray::Context.current.child_trace(remote: true, name: service) do |sub|
             yield new(sub)
           end
         else

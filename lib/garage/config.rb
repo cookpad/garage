@@ -38,12 +38,10 @@ module Garage
 
     # Support distributed tracing for auth server accesses.
     #
-    # @param [Hash] tracing a hash with
-    #   - `tracer`: specify tracing method.
-    #   - `service`: specify logical service name of auth server.
-    attr_writer :tracing
-    def tracing
-      @tracing ||= {}
+    # @param [Ojbect] tracer an object which implements tracer methods. See Garage::Tracer::NullTracer.
+    attr_writer :tracer
+    def tracer
+      @tracer ||= Garage::Tracer::NullTracer
     end
 
     def docs

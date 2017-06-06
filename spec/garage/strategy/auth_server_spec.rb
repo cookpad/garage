@@ -179,12 +179,13 @@ RSpec.describe Garage::Strategy::AuthServer do
         end
 
         around do |ex|
-          back = Garage.configuration.tracing
-          Garage.configuration.tracing = { tracer: 'aws-xray', service: 'auth-server' }
+          back = Garage.configuration.tracer
+          Garage::Tracer::AwsXrayTracer.service = 'auth-server'
+          Garage.configuration.tracer = Garage::Tracer::AwsXrayTracer
           Aws::Xray::Context.with_new_context('test-app', xray_client, trace) do
             Aws::Xray::Context.current.base_trace { ex.run }
           end
-          Garage.configuration.tracing = back
+          Garage.configuration.tracer = back
         end
 
         let(:xray_client) { Aws::Xray::Client.new(sock: io) }

@@ -198,7 +198,8 @@ Currently, we support following tracers:
 ```ruby
 # e.g. aws-xray tracer
 require 'aws/xray'
-Garage.configuration.tracing = { tracer: 'aws-xray', service: 'some-name' }
+Garage::Tracer::AwsXrayTracer.service = 'your-auth-server-name'
+Garage.configuration.tracer = Garage::Tracer::AwsXrayTracer
 ```
 
 ## Development
