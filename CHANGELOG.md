@@ -1,4 +1,7 @@
 # CHANGELOG
+## 2.4.0
+* Support distributed tracing. [#80](https://github.com/cookpad/garage/pull/80)
+
 ## 2.3.3
 * Compatible with ruby 2.4 (Integer unification). #73
 * Compatible with oj v2.18.0 (use_as_json option). #75
