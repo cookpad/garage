@@ -36,6 +36,14 @@ module Garage
       instance_variable_defined?(:@strategy) ? @strategy : Garage::Strategy::NoAuthentication
     end
 
+    # Support distributed tracing for auth server accesses.
+    #
+    # @param [Ojbect] tracer an object which implements tracer methods. See Garage::Tracer::NullTracer.
+    attr_writer :tracer
+    def tracer
+      @tracer ||= Garage::Tracer::NullTracer
+    end
+
     def docs
       @docs ||= Docs::Config.new
     end

@@ -187,6 +187,21 @@ module MyStrategy
 end
 ```
 
+## Distributed tracing
+In case you use auth-server strategy, you can setup distributed tracing for the service communication between garage application and auth server.
+Currently, we support following tracers:
+
+- `aws-xray` using [aws-xray](https://github.com/taiki45/aws-xray) gem.
+  - Bundle `aws-xray` gem in your application.
+  - Configure `service` option for a logical service name of the auth server.
+
+```ruby
+# e.g. aws-xray tracer
+require 'aws/xray'
+Garage::Tracer::AwsXrayTracer.service = 'your-auth-server-name'
+Garage.configuration.tracer = Garage::Tracer::AwsXrayTracer
+```
+
 ## Development
 
 See [DEVELOPMENT.md](DEVELOPMENT.md).
