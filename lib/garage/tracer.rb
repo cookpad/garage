@@ -47,7 +47,11 @@ module Garage
       def self.start(&block)
         if Aws::Xray::Context.started?
           Aws::Xray::Context.current.child_trace(remote: true, name: service) do |sub|
-            yield new(sub)
+            if Aws::Xray::Context.current.respond_to?(:disable_trace)
+              Aws::Xray::Context.current.disable_trace(:net_http) { yield new(sub) }
+            else
+              yield new(sub)
+            end
           end
         else
           yield NullTracer.new
