@@ -6,7 +6,7 @@ gem "kaminari", "< 1"
 gem "responders"
 
 group :development, :test do
-  gem "aws-xray", '>= 0.9.6'
+  gem "aws-xray", '>= 0.20.0'
   gem "rspec-rails"
   gem "mysql2"
   gem "pry-rails"

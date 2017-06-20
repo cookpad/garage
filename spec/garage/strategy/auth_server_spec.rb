@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'aws/xray'
+require 'aws/xray/hooks/net_http'
 
 RSpec.describe Garage::Strategy::AuthServer do
   before do

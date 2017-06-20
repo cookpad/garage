@@ -197,7 +197,7 @@ Currently, we support following tracers:
 
 ```ruby
 # e.g. aws-xray tracer
-require 'aws/xray'
+require 'aws/xray/hooks/net_http'
 Garage::Tracer::AwsXrayTracer.service = 'your-auth-server-name'
 Garage.configuration.tracer = Garage::Tracer::AwsXrayTracer
 ```
