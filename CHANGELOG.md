@@ -1,6 +1,9 @@
 # CHANGELOG
+## 2.4.2
+* Switch to use net/http hook to implement distributed tracing support. [#83](https://github.com/cookpad/garage/pull/83)
+
 ## 2.4.1
-* Use disable_trace to disable net/http hook by taiki45 [#81](https://github.com/cookpad/garage/pull/81)
+* Use disable_trace to disable net/http hook. [#81](https://github.com/cookpad/garage/pull/81)
 
 ## 2.4.0
 * Support distributed tracing. [#80](https://github.com/cookpad/garage/pull/80)
