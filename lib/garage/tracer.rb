@@ -45,48 +45,17 @@ module Garage
       end
 
       def self.start(&block)
-        if Aws::Xray::Context.started?
-          Aws::Xray::Context.current.child_trace(remote: true, name: service) do |sub|
-            if Aws::Xray::Context.current.respond_to?(:disable_trace)
-              Aws::Xray::Context.current.disable_trace(:net_http) { yield new(sub) }
-            else
-              yield new(sub)
-            end
-          end
-        else
-          yield NullTracer.new
-        end
-      end
-
-      def initialize(sub_segment)
-        @sub = sub_segment
+        yield new
       end
 
       def inject_trace_context(header)
-        header.merge('X-Amzn-Trace-Id' => @sub.generate_trace.to_header_value)
+        header.merge('X-Aws-Xray-Name' => self.class.service)
       end
 
       def record_http_request(method, url, user_agent)
-        request = Aws::Xray::Request.build(method: method.to_s.upcase, url: url, user_agent: user_agent)
-        @sub.set_http_request(request)
       end
 
       def record_http_response(status, content_length)
-        @sub.set_http_response(status, content_length || 0)
-
-        case status
-        when 499
-          cause = Aws::Xray::Cause.new(stack: caller, message: 'Got 499', type: 'http_request_error')
-          @sub.set_error(error: true, throttle: true, cause: cause)
-        when 400..498
-          cause = Aws::Xray::Cause.new(stack: caller, message: 'Got 4xx', type: 'http_request_error')
-          @sub.set_error(error: true, cause: cause)
-        when 500..599
-          cause = Aws::Xray::Cause.new(stack: caller, message: 'Got 5xx', type: 'http_request_error')
-          @sub.set_error(fault: true, remote: true, cause: cause)
-        else
-          # pass
-        end
       end
     end
   end
