@@ -177,20 +177,21 @@ RSpec.describe Garage::Strategy::AuthServer do
             .with(headers: { 'X-Amzn-Trace-Id' => /Root=/ })
             .to_return(status: 200, body: response.to_json)
           allow(Aws::Xray.config).to receive(:client_options).and_return(sock: io)
+          allow(Aws::Xray.config).to receive(:sampling_rate).and_return(1)
         end
 
         around do |ex|
           back = Garage.configuration.tracer
           Garage::Tracer::AwsXrayTracer.service = 'auth-server'
           Garage.configuration.tracer = Garage::Tracer::AwsXrayTracer
-          Aws::Xray.trace(name: 'test-app') { ex.run }
+          ex.run
           Garage.configuration.tracer = back
         end
 
         let(:io) { Aws::Xray::TestSocket.new }
 
         it 'returns valid access token' do
-          token = fetcher.fetch(request)
+          token = Aws::Xray.trace(name: 'test-app') { fetcher.fetch(request) }
           expect(token).to be_accessible
 
           body = JSON.parse(io.tap(&:rewind).read.split("\n")[1])
