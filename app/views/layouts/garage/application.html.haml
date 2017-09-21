@@ -19,7 +19,7 @@
             %li= link_to "Console", console_resources_path
           %ul.nav.navbar-nav.navbar-right
             - if _current_user
-              %li= link_to "Signout", "/signout", method: :post
+              %li= link_to "Signout", Garage.configuration.docs.signout_path, method: Garage.configuration.docs.signout_request_method
 
     .main
       .container
