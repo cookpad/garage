@@ -1,4 +1,7 @@
 # CHANGELOG
+## 2.4.3
+* Configurable signout path. [#84](https://github.com/cookpad/garage/pull/84)
+
 ## 2.4.2
 * Switch to use net/http hook to implement distributed tracing support. [#83](https://github.com/cookpad/garage/pull/83)
 
