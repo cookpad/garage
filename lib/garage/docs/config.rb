@@ -3,7 +3,8 @@ module Garage
     class Config
       attr_accessor :document_root, :current_user_method, :authenticate,
         :console_app_uid, :console_app_secret, :remote_server,
-        :docs_authorization_method, :docs_cache_enabled
+        :docs_authorization_method, :docs_cache_enabled,
+        :signout_path, :signout_request_method
 
       def initialize
         reset
@@ -17,6 +18,8 @@ module Garage
         @remote_server = Proc.new {|request| "#{request.protocol}#{request.host_with_port}" }
         @docs_authorization_method = nil
         @docs_cache_enabled = true
+        @signout_path = '/signout'
+        @signout_request_method = :post
       end
 
       class Builder
@@ -54,6 +57,14 @@ module Garage
 
         def docs_authorization_method(&block)
           @config.docs_authorization_method = block
+        end
+
+        def signout_path=(value)
+          @config.signout_path = value
+        end
+
+        def signout_request_method=(value)
+          @config.signout_request_method = value.to_sym
         end
       end
     end

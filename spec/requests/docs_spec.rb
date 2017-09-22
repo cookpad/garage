@@ -72,5 +72,33 @@ describe "Docs", type: :request do
         expect(response.body).to include "This is overview"
       end
     end
+
+    context 'with default singnout path' do
+      let(:user) { FactoryGirl.create(:user) }
+
+      before do
+        post session_path, { user: { name: user.name } }
+      end
+
+      it "shows customized signout link" do
+        is_expected.to eq(200)
+        expect(response.body).to include '<a rel="nofollow" data-method="post" href="/signout">Signout</a>'
+      end
+    end
+
+    context 'with custom singnout path' do
+      let(:user) { FactoryGirl.create(:user) }
+
+      before do
+        allow(Garage.configuration.docs).to receive(:signout_path).and_return('/session/logout')
+        allow(Garage.configuration.docs).to receive(:signout_request_method).and_return(:get)
+        post session_path, { user: { name: user.name } }
+      end
+
+      it "shows customized signout link" do
+        is_expected.to eq(200)
+        expect(response.body).to include '<a data-method="get" href="/session/logout">Signout</a>'
+      end
+    end
   end
 end
