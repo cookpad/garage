@@ -81,6 +81,10 @@ module Garage
     end
 
     def build_link_hash(rs, links)
+      unless total_count(rs) == 0
+        links[:current] = rs.current_page
+      end
+
       unless rs.first_page?
         links[:first] = 1
         links[:prev]  = rs.current_page - 1
