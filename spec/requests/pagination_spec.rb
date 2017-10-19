@@ -17,9 +17,9 @@ describe "Pagination", type: :request do
         FactoryGirl.create(:post)
       end
 
-      it "returns no link header" do
+      it "returns current link header" do
         is_expected.to eq(200)
-        expect(response.header["Link"]).to eq(nil)
+        expect(link_for("current")).to eq({ page: "1", per_page: "20" })
       end
     end
 
@@ -32,8 +32,9 @@ describe "Pagination", type: :request do
         params[:per_page] = 2
       end
 
-      it "returns prev, first, next, and last link header" do
+      it "returns current, prev, first, next, and last link header" do
         is_expected.to eq(200)
+        expect(link_for("current")).to eq({ page: "2", per_page: "2" })
         expect(link_for("first")).to eq({ page: "1", per_page: "2" })
         expect(link_for("prev")).to eq({ page: "1", per_page: "2" })
         expect(link_for("next")).to eq({ page: "3", per_page: "2" })
@@ -50,8 +51,9 @@ describe "Pagination", type: :request do
         params[:per_page] = 1
       end
 
-      it "returns next and lsat link header" do
+      it "returns current, next and lsat link header" do
         is_expected.to eq(200)
+        expect(link_for("current")).to eq({ page: "1", per_page: "1" })
         expect(link_for("next")).to eq({ page: "2", per_page: "1" })
         expect(link_for("last")).to eq({ page: "2", per_page: "1" })
       end
@@ -66,8 +68,9 @@ describe "Pagination", type: :request do
         params[:per_page] = 1
       end
 
-      it "returns prev and first link header" do
+      it "returns current, prev and first link header" do
         is_expected.to eq(200)
+        expect(link_for("current")).to eq({ page: "2", per_page: "1" })
         expect(link_for("first")).to eq({ page: "1", per_page: "1" })
         expect(link_for("prev")).to eq({ page: "1", per_page: "1" })
       end
@@ -133,8 +136,9 @@ describe "Pagination", type: :request do
         params[:page] = 2
       end
 
-      it "returns links except for last" do
+      it "returns current, links except for last" do
         is_expected.to eq(200)
+        expect(link_for("current")).to eq({ page: "2", per_page: "1" })
         expect(link_for("first")).to eq({ page: "1", per_page: "1" })
         expect(link_for("prev")).to eq({ page: "1", per_page: "1" })
         expect(link_for("next")).to eq({ page: "3", per_page: "1" })
@@ -149,6 +153,7 @@ describe "Pagination", type: :request do
 
       it "returns links except for last" do
         is_expected.to eq(200)
+        expect(link_for("current")).to eq({ page: "3", per_page: "1" })
         expect(link_for("first")).to eq({ page: "1", per_page: "1" })
         expect(link_for("prev")).to eq({ page: "2", per_page: "1" })
         expect(link_for("next")).to eq({ page: "4", per_page: "1" })
@@ -170,6 +175,7 @@ describe "Pagination", type: :request do
         is_expected.to eq(200)
         expect(response.header["X-List-TotalCount"]).to eq(nil)
         expect(response.body).to be_json([])
+        expect(link_for("current")).to eq({ page: "7", per_page: "20" })
         expect(link_for("first")).to eq({ page: "1", per_page: "20" })
         expect(link_for("prev")).to eq({ page: "6", per_page: "20" })
         expect(link_for("next")).to eq(nil)
@@ -180,6 +186,7 @@ describe "Pagination", type: :request do
     context "with hard limit option" do
       it "hides last link" do
         is_expected.to eq(200)
+        expect(link_for("current")).to eq({ page: "1", per_page: "20" })
         expect(link_for("first")).to eq(nil)
         expect(link_for("prev")).to eq(nil)
         expect(link_for("next")).to eq({ page: "2", per_page: "20" })
