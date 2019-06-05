@@ -24,7 +24,9 @@ module Garage
     # `#resource_identifier` or `#id`.
     def encode_to_hash(resource, *args)
       if id = get_resource_identifier(resource)
-        cache_key = "#{resource.class.name}:#{id}"
+        options = args[0] || {}
+        selector = options[:selector] || controller.field_selector
+        cache_key = "#{resource.class.name}:#{id}:#{selector.canonical}"
         cache[cache_key] ||= _encode_to_hash(resource, *args)
       else
         _encode_to_hash(resource, *args)

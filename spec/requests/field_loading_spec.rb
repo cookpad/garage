@@ -123,6 +123,37 @@ describe "Field loading API", type: :request do
       end
     end
 
+    context "with params[:fields] = 'comments[commenter[id],post_owner[id,name]]'" do
+      before do
+        params[:fields] = "comments[commenter[id],post_owner[id,name]]"
+      end
+
+      let(:post_a) do
+        FactoryGirl.create(:post, user: user)
+      end
+
+      let!(:comment) do
+        FactoryGirl.create(:comment, user: user, post: post_a)
+      end
+
+      it "returns different fields in commenter and post_owner" do
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(
+          comments: [
+            {
+              commenter: {
+                id: user.id,
+              },
+              post_owner: {
+                id: user.id,
+                name: user.name,
+              },
+            },
+          ],
+        )
+      end
+    end
+
     context "with params[:fields] = 'comments[*]'" do
       before do
         params[:fields] = "comments[*]"
