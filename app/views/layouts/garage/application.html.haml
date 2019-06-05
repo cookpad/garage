@@ -6,7 +6,7 @@
     = csrf_meta_tags
     = stylesheet_link_tag "garage/application", :media => "all"
     = javascript_include_tag "garage/application"
-    = favicon_link_tag "favicon.ico"
+    = favicon_link_tag "favicon.ico", skip_pipeline: true
 
   %body{ class: action_classes }
     .navbar.navbar-default.navbar-static-top
