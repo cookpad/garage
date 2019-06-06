@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'aws/xray/hooks/net_http'
 
 RSpec.describe Garage::Strategy::AuthServer do
   before do
@@ -174,10 +173,8 @@ RSpec.describe Garage::Strategy::AuthServer do
       context 'with aws-xray tracer' do
         before do
           stub_request(:get, auth_server_url)
-            .with(headers: { 'X-Amzn-Trace-Id' => /Root=/ })
+            .with(headers: { 'X-Aws-Xray-Name' => 'auth-server' })
             .to_return(status: 200, body: response.to_json)
-          allow(Aws::Xray.config).to receive(:client_options).and_return(sock: io)
-          allow(Aws::Xray.config).to receive(:sampling_rate).and_return(1)
         end
 
         around do |ex|
@@ -188,17 +185,9 @@ RSpec.describe Garage::Strategy::AuthServer do
           Garage.configuration.tracer = back
         end
 
-        let(:io) { Aws::Xray::TestSocket.new }
-
         it 'returns valid access token' do
           token = Aws::Xray.trace(name: 'test-app') { fetcher.fetch(request) }
           expect(token).to be_accessible
-
-          body = JSON.parse(io.tap(&:rewind).read.split("\n")[1])
-          expect(body['trace_id']).to be_a(String)
-          expect(body['name']).to eq('auth-server')
-          expect(body['http']['request']['url']).to eq('http://example.com/token')
-          expect(body['http']['response']['status']).to eq(200)
         end
       end
     end
