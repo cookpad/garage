@@ -1,3 +1,5 @@
+require 'forwardable'
+
 module Garage
   module Tracer
     extend self

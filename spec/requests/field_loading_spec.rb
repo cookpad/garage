@@ -21,7 +21,7 @@ describe "Field loading API", type: :request do
       it "returns default fields" do
         is_expected.to eq(200)
         expect(response.body).to be_json_as(
-          id: Fixnum,
+          id: Integer,
           title: String,
           _links: Hash,
         )
@@ -36,7 +36,7 @@ describe "Field loading API", type: :request do
       it "returns default and user fields" do
         is_expected.to eq(200)
         expect(response.body).to be_json_as(
-          id: Fixnum,
+          id: Integer,
           title: String,
           user: Hash,
           _links: Hash,
@@ -52,7 +52,7 @@ describe "Field loading API", type: :request do
       it "returns all fields" do
         is_expected.to eq(200)
         expect(response.body).to be_json_as(
-          id: Fixnum,
+          id: Integer,
           title: String,
           label: String,
           user: Hash,
@@ -69,7 +69,7 @@ describe "Field loading API", type: :request do
 
       it "returns only id field" do
         is_expected.to eq(200)
-        expect(response.body).to be_json_as(id: Fixnum)
+        expect(response.body).to be_json_as(id: Integer)
       end
     end
 
@@ -81,7 +81,7 @@ describe "Field loading API", type: :request do
       it "returns only id and title fields" do
         is_expected.to eq(200)
         expect(response.body).to be_json_as(
-          id: Fixnum,
+          id: Integer,
           title: String,
           label: String
         )
@@ -97,7 +97,7 @@ describe "Field loading API", type: :request do
         is_expected.to eq(200)
         expect(response.body).to be_json_as(
           user: {
-            id: Fixnum,
+            id: Integer,
           },
         )
       end
@@ -113,7 +113,7 @@ describe "Field loading API", type: :request do
         expect(response.body).to be_json_as(
           comments: [
             {
-              id: Fixnum,
+              id: Integer,
               body: String,
               commenter: Hash,
               post_owner: Hash,
@@ -133,7 +133,7 @@ describe "Field loading API", type: :request do
         expect(response.body).to be_json_as(
           comments: [
             {
-              id: Fixnum,
+              id: Integer,
               body: String,
               commenter: Hash,
               post_owner: Hash,
@@ -154,7 +154,7 @@ describe "Field loading API", type: :request do
           comments: [
             {
               commenter: {
-                id: Fixnum,
+                id: Integer,
               },
             },
           ],
@@ -175,10 +175,10 @@ describe "Field loading API", type: :request do
     context "with caching" do
       it "caches response per params[:fields]" do
         is_expected.to eq(200)
-        expect(response.body).to be_json_as([{ id: Fixnum, title: String, _links: Hash }])
+        expect(response.body).to be_json_as([{ id: Integer, title: String, _links: Hash }])
         params[:fields] = "id"
         get path, params, env
-        expect(response.body).to be_json_as([{ id: Fixnum }])
+        expect(response.body).to be_json_as([{ id: Integer }])
       end
     end
 
