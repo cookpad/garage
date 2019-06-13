@@ -1,4 +1,7 @@
 # CHANGELOG
+## 2.4.4
+* Include selector string to cache key. [#88](https://github.com/cookpad/garage/pull/88)
+
 ## 2.4.3
 * Configurable signout path. [#84](https://github.com/cookpad/garage/pull/84)
 
