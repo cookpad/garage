@@ -15,7 +15,7 @@ module AuthenticatedContext
     end
 
     let(:user) do
-      FactoryGirl.create(:user)
+      FactoryBot.create(:user)
     end
 
     let(:resource_owner_id) do

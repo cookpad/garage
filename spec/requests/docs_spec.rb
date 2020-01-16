@@ -17,7 +17,7 @@ describe "Docs", type: :request do
   end
 
   let!(:post_a) do
-    FactoryGirl.create(:post)
+    FactoryBot.create(:post)
   end
 
   describe "GET /docs/resources/post" do
@@ -74,7 +74,7 @@ describe "Docs", type: :request do
     end
 
     context 'with default singnout path' do
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user) { FactoryBot.create(:user) }
 
       before do
         post session_path, { user: { name: user.name } }
@@ -87,7 +87,7 @@ describe "Docs", type: :request do
     end
 
     context 'with custom singnout path' do
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user) { FactoryBot.create(:user) }
 
       before do
         allow(Garage.configuration.docs).to receive(:signout_path).and_return('/session/logout')
