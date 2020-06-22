@@ -17,6 +17,16 @@ RSpec.describe 'Resource conversion', type: :request do
       )
     end
 
+    it "builds resource from model with additional options" do
+      campaign = FactoryBot.create(:campaign)
+
+      get "/campaigns/#{campaign.id}", {}, header
+      expect(response.status).to eq(200)
+      expect(response.body).to be_json_including(
+        { 'id' => Integer, "current_user_id" => user.id }
+      )
+    end
+
     it 'uses `Xxx` class as a fallback' do
       FactoryBot.create(:post)
 

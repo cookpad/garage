@@ -6,7 +6,7 @@ module Garage::ResourceCastingResponder
 
   def display(resource, given_options={})
     if @caster
-      resource = @caster.call(resource)
+      resource = @caster.call(resource, @options)
     end
     super(resource, given_options)
   end
