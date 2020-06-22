@@ -22,4 +22,4 @@ matrix:
   fast_finish: false
   exclude:
     - rvm: 2.4.10
-      gemfile: gemfiles/6.0.gemfile
+      gemfile: gemfiles/rails_6.0.gemfile
