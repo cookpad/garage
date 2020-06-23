@@ -5,11 +5,11 @@ describe "Authorization", type: :request do
   include AuthenticatedContext
 
   let(:alice) do
-    FactoryGirl.create(:user)
+    FactoryBot.create(:user)
   end
 
   let(:bob) do
-    FactoryGirl.create(:user)
+    FactoryBot.create(:user)
   end
 
   let(:scopes) do
@@ -25,7 +25,7 @@ describe "Authorization", type: :request do
   end
 
   let(:resource) do
-    FactoryGirl.create(:post, user: alice)
+    FactoryBot.create(:post, user: alice)
   end
 
   let(:id) do
