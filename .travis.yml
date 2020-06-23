@@ -3,7 +3,6 @@ sudo: false
 services:
   - mysql
 rvm:
-  - 2.4.10
   - 2.5.8
   - 2.6.6
   - 2.7.1
@@ -18,8 +17,3 @@ before_install:
   - "[[ $BUNDLE_GEMFILE =~ rails_4\\.2 ]] && gem install bundler -v '< 2' || true"
 before_script:
   - RAILS_ENV=test bundle exec rake db:setup
-matrix:
-  fast_finish: false
-  exclude:
-    - rvm: 2.4.10
-      gemfile: gemfiles/rails_6.0.gemfile
