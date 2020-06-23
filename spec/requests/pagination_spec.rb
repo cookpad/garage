@@ -14,7 +14,7 @@ describe "Pagination", type: :request do
 
     context "with one post" do
       before do
-        FactoryGirl.create(:post)
+        FactoryBot.create(:post)
       end
 
       it "returns no link header" do
@@ -26,7 +26,7 @@ describe "Pagination", type: :request do
     context "with middle page" do
       before do
         6.times do
-          FactoryGirl.create(:post)
+          FactoryBot.create(:post)
         end
         params[:page] = 2
         params[:per_page] = 2
@@ -44,7 +44,7 @@ describe "Pagination", type: :request do
     context "with first page" do
       before do
         2.times do
-          FactoryGirl.create(:post)
+          FactoryBot.create(:post)
         end
         params[:page] = 1
         params[:per_page] = 1
@@ -60,7 +60,7 @@ describe "Pagination", type: :request do
     context "with last page" do
       before do
         2.times do
-          FactoryGirl.create(:post)
+          FactoryBot.create(:post)
         end
         params[:page] = 2
         params[:per_page] = 1
@@ -76,7 +76,7 @@ describe "Pagination", type: :request do
     context "with 2 posts" do
       before do
         2.times do
-          FactoryGirl.create(:post)
+          FactoryBot.create(:post)
         end
       end
 
@@ -100,7 +100,7 @@ describe "Pagination", type: :request do
     context "with 200 posts & params[:per_page] = 200" do
       before do
         200.times do
-          FactoryGirl.create(:post)
+          FactoryBot.create(:post)
         end
         params[:per_page] = 200
       end
@@ -116,7 +116,7 @@ describe "Pagination", type: :request do
   describe "GET /posts/hide" do
     before do
       3.times do
-        FactoryGirl.create(:post)
+        FactoryBot.create(:post)
       end
       params[:per_page] = 1
     end
@@ -161,7 +161,7 @@ describe "Pagination", type: :request do
     context "with 200 posts" do
       before do
         200.times do
-          FactoryGirl.create(:post)
+          FactoryBot.create(:post)
         end
         params[:page] = 7
       end

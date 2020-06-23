@@ -6,7 +6,7 @@ RSpec.describe 'Resource conversion', type: :request do
 
   describe 'RestfulActions' do
     it 'uses `XxxResource` class as a default resource class' do
-      FactoryGirl.create(:campaign)
+      FactoryBot.create(:campaign)
 
       get '/campaigns', {}, header
       expect(response.status).to eq(200)
@@ -18,7 +18,7 @@ RSpec.describe 'Resource conversion', type: :request do
     end
 
     it 'uses `Xxx` class as a fallback' do
-      FactoryGirl.create(:post)
+      FactoryBot.create(:post)
 
       get '/posts', {}, header
       expect(response.status).to eq(200)

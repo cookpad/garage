@@ -5,7 +5,7 @@ describe "Field loading API", type: :request do
   include AuthenticatedContext
 
   let(:post_a) do
-    FactoryGirl.create(:post)
+    FactoryBot.create(:post)
   end
 
   describe "GET /posts/:id" do
@@ -14,7 +14,7 @@ describe "Field loading API", type: :request do
     end
 
     let!(:comment) do
-      FactoryGirl.create(:comment, user: user, post: post_a)
+      FactoryBot.create(:comment, user: user, post: post_a)
     end
 
     context "with params[:fields] = nil" do
@@ -129,11 +129,11 @@ describe "Field loading API", type: :request do
       end
 
       let(:post_a) do
-        FactoryGirl.create(:post, user: user)
+        FactoryBot.create(:post, user: user)
       end
 
       let!(:comment) do
-        FactoryGirl.create(:comment, user: user, post: post_a)
+        FactoryBot.create(:comment, user: user, post: post_a)
       end
 
       it "returns different fields in commenter and post_owner" do
@@ -196,7 +196,7 @@ describe "Field loading API", type: :request do
 
   describe "GET /users/:user_id/posts" do
     before do
-      FactoryGirl.create(:post, user: user)
+      FactoryBot.create(:post, user: user)
     end
 
     let(:user_id) do
