@@ -15,6 +15,10 @@ gemfile:
 before_install:
   - "[[ $BUNDLE_GEMFILE =~ rails_4\\.2 ]] && gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true"
   - "[[ $BUNDLE_GEMFILE =~ rails_4\\.2 ]] && gem install bundler -v '< 2' || true"
-  - "[[ $BUNDLE_GEMFILE =~ rails_4\\.2 ]] && export BUNDLER_VERSION=1.17.3 || true"
 before_script:
   - RAILS_ENV=test bundle exec rake db:setup
+matrix:
+  fast_finish: false
+  exclude:
+    - rvm: 2.7.1
+      gemfile: gemfiles/rails_4.2.gemfile
