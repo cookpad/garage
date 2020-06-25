@@ -10,6 +10,6 @@ class CampaignsController < ApiController
   end
 
   def respond_with_resource_options
-    { cast_context: { current_user: current_resource_owner } }
+    { to_resource_options: { current_user: current_resource_owner } }
   end
 end

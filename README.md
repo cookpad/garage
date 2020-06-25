@@ -52,7 +52,7 @@ In your controller classes:
 ```ruby
 class ApplicationController < ActionController::Base
   include Garage::ControllerHelper
-  
+
   # ...
 end
 
@@ -64,6 +64,18 @@ class EmployeesController < ApplicationController
   end
 end
 ```
+
+Resources are rendered with [respond_with (responders gem)](https://github.com/heartcombo/responders).
+Additional options can be passed to respond_with by implementing `respond_with_resources_options` (index action)
+and `respond_with_resource_options` (show, update destroy actions).
+
+Available options
+* `:paginate` - (Boolean) Enable pagination when `true`. Paginates with the `per_page` and `page` params
+* `:per_page` - (Integer) value for default number of resources per page when paginating
+* `:max_per_page` - (Integer) Maximum resources per page, irrespective of requested per_page
+* `:hard_limit` - (Integer) Limit of retrievable records when paginating. Also hides total records.
+* `:distinct_by` - (Symbol) Specify a property to count by for total page count
+* `:to_resource_options` - (Hash) Options to pass as argument to `to_resource(options)`
 
 ## Create decorator for your AR models
 With not small application, you may add a presentation layer to build API responses.
