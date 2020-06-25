@@ -51,7 +51,7 @@ module Garage::Representer
     self.class
   end
 
-  def to_resource
+  def to_resource(options = {})
     self
   end
 

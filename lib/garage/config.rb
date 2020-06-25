@@ -49,11 +49,13 @@ module Garage
     end
 
     def cast_resource
-      @cast_resource ||= proc { |resource|
+      @cast_resource ||= proc { |resource, options|
+        options ||= {}
+        to_resource_args = [options[:cast_context]].compact
         if resource.respond_to?(:map) && resource.respond_to?(:to_a)
-          resource.map(&:to_resource)
+          resource.map { |r| r.to_resource(*to_resource_args) }
         else
-          resource.to_resource
+          resource.to_resource(*to_resource_args)
         end
       }
     end
