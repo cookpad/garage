@@ -1,4 +1,11 @@
 # CHANGELOG
+
+## 2.5.0
+
+* Allow options to be passed to `to_resource` when casting resources
+* Supports Ruby 2.7 and Rails 6 [#91](https://github.com/cookpad/garage/pull/91)
+* Dropped support for EOL Ruby 2.3, 2.4 [#91](https://github.com/cookpad/garage/pull/91)
+
 ## 2.4.4
 * Include selector string to cache key. [#88](https://github.com/cookpad/garage/pull/88)
 
