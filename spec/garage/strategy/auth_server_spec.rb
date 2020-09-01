@@ -6,7 +6,7 @@ RSpec.describe Garage::Strategy::AuthServer do
   end
 
   let(:auth_server_url) { 'http://example.com/token' }
-  let(:request) { double(:request, authorization: authorization, params: {}, headers: {}) }
+  let(:request) { double(:request, authorization: authorization, params: {}, headers: {}, uuid: nil) }
   let(:authorization) { "Bearer #{requested_token}" }
   let(:requested_token) { 'dummy_token' }
   let(:response) do
@@ -90,6 +90,19 @@ RSpec.describe Garage::Strategy::AuthServer do
           expect(token.raw_response[:client_id]).to eq 'client_id'
         end
       end
+
+      context 'when request id is available' do
+        let(:request) { double(:request, authorization: authorization, params: {}, headers: {}, uuid: 'request-id') }
+
+        before do
+          stub_request(:get, auth_server_url).to_return(status: 200, body: response.to_json)
+        end
+
+        it 'passes request id to auth server' do
+          fetcher.fetch(request)
+          assert_requested(:get, auth_server_url, headers: { 'X-Request-Id' => 'request-id' })
+        end
+      end
     end
 
     describe '.fetch with caching' do
@@ -139,7 +152,7 @@ RSpec.describe Garage::Strategy::AuthServer do
       end
 
       context 'with access token on request parameter' do
-        let(:request) { double(:request, authorization: nil, params: params, headers: {}) }
+        let(:request) { double(:request, authorization: nil, params: params, headers: {}, uuid: nil) }
         let(:params) { { access_token: requested_token } }
 
         it 'does not read cache and requests access token' do
