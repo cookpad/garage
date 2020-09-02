@@ -89,6 +89,8 @@ module Garage
             'Resource-Owner-Id' => @request.headers['Resource-Owner-Id'],
             'Scopes' => @request.headers['Scopes'],
             'User-Agent' => USER_AGENT,
+            # ActionDispatch::Request#request_id is only available in Rails 5.0 or later.
+            'X-Request-Id' => @request.uuid,
           }.reject {|_, v| v.nil? }
         end
 
