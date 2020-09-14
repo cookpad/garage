@@ -90,7 +90,7 @@ module Garage
         links[:next] = rs.current_page + 1
       end
 
-      unless rs.last_page? || hide_total?
+      unless rs.last_page? || hide_total? || rs.total_pages.zero?
         links[:last] = rs.total_pages
       end
     end

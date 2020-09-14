@@ -3,12 +3,12 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 4.2"
-gem "kaminari", "< 1"
+gem "kaminari-activerecord"
 gem "responders"
 gem "jquery-rails"
 
 group :development, :test do
-  gem "aws-xray", ">= 0.9.6"
+  gem "aws-xray", ">= 0.20.0"
   gem "rspec-rails"
   gem "mysql2"
   gem "pry-rails"
