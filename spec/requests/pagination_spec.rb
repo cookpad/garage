@@ -210,7 +210,6 @@ describe "Pagination", type: :request do
       let(:expected_posts) { posts.reverse.slice(11, 5) }
 
       before do
-        # Record before the expected posts
         params[:cursor] = posts.reverse[10].id
       end
 
@@ -224,7 +223,6 @@ describe "Pagination", type: :request do
         let(:expected_posts) { posts.reverse.slice(1, 5) }
 
         before do
-          # Record before the expected posts
           params[:cursor] = posts.reverse[6].id
           params[:rel] = "prev"
         end
@@ -236,26 +234,5 @@ describe "Pagination", type: :request do
         end
       end
     end
-
-      # id: 1
-      # [:id, :desc]
-      # 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
-      #              ^
-      # No cursor:
-      # 10..6
-      #
-      # Next Page
-      # cursor: 6
-      # next: 5..1 (after)
-      #
-      # Prev Page
-      # cursor: 5
-      # prev: 10..6
-
-
-      # Link for prev, next
-      # Item count
-      # order: :id
-      # order: :created_at
-    end
   end
+end

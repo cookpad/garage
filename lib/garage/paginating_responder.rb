@@ -81,10 +81,11 @@ module Garage
       per_page = [ max_per_page, (controller.params[:per_page] || @options[:per_page] || 20).to_i ].min
 
       cursor = controller.params[:cursor]
+      rel = controller.params[:rel]
       space = relation.seek([:id, :desc])
       if cursor
         point = space.at(relation.find(cursor))
-        point.after.limit(per_page)
+        rel == "prev" ? point.before.limit(per_page).reverse : point.after.limit(per_page)
       else
         space.scope.limit(per_page)
       end
