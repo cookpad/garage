@@ -189,21 +189,73 @@ describe "Pagination", type: :request do
   end
 
   describe "GET /posts/cursor" do
+    let!(:posts) do
+      100.times.map do |x|
+        FactoryBot.create(:post, title: "title_#{x}")
+      end
+    end
+
+    before do
+      params[:per_page] = 5
+    end
+
+    context "when no cursor specified" do
+      it "returns the first page of results" do
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(->(array) { array.size == 5 } )
+      end
+    end
+
+    context "when cursor is given" do
+      let(:expected_posts) { posts.reverse.slice(11, 5) }
+
       before do
-        100.times do |x|
-          FactoryBot.create(:post, title: "title_#{x}")
-        end
-        params[:per_page] = 10
+        # Record before the expected posts
+        params[:cursor] = posts.reverse[10].id
       end
 
-    it {
-      is_expected.to eq(200)
-      expect(response.body).to be_json_as(->(array) { array.size == 10 } )
-    }
+      it "returns the next page of results by default" do
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(->(array) { array.size == 5 } )
+        expect(response.body).to be_json_as(->(array) { array.map{|r| r["id"]} == expected_posts.map(&:id) } )
+      end
 
-    # Link for prev, next
-    # Item count
-    # order: :id
-    # order: :created_at
+      context "when previous page of results is requested" do
+        let(:expected_posts) { posts.reverse.slice(1, 5) }
+
+        before do
+          # Record before the expected posts
+          params[:cursor] = posts.reverse[6].id
+          params[:rel] = "prev"
+        end
+
+        it "returns the prev page of results" do
+          is_expected.to eq(200)
+          expect(response.body).to be_json_as(->(array) { array.size == 5 } )
+          expect(response.body).to be_json_as(->(array) { array.map{|r| r["id"]} == expected_posts.map(&:id) } )
+        end
+      end
+    end
+
+      # id: 1
+      # [:id, :desc]
+      # 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+      #              ^
+      # No cursor:
+      # 10..6
+      #
+      # Next Page
+      # cursor: 6
+      # next: 5..1 (after)
+      #
+      # Prev Page
+      # cursor: 5
+      # prev: 10..6
+
+
+      # Link for prev, next
+      # Item count
+      # order: :id
+      # order: :created_at
+    end
   end
-end
