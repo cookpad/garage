@@ -79,12 +79,14 @@ module Garage
 
     def cursor(relation)
       per_page = [ max_per_page, (controller.params[:per_page] || @options[:per_page] || 20).to_i ].min
+
       next_cursor = controller.params[:id]
+
       space = relation.seek([:id, :desc])
       if next_cursor
         point = space.at(relation.find(next_cursor))
       else
-        point = space.at(relation.first)
+        point = space.at(space.first)
       end
       point.after.limit(per_page)
     end

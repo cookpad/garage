@@ -4,6 +4,7 @@ class Post < ActiveRecord::Base
 
   include Garage::Representer
   include Garage::Authorizable
+  include OrderQuery
 
   property :id
   property :title

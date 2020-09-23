@@ -187,4 +187,23 @@ describe "Pagination", type: :request do
       end
     end
   end
+
+  describe "GET /posts/cursor" do
+      before do
+        100.times do |x|
+          FactoryBot.create(:post, title: "title_#{x}")
+        end
+        params[:per_page] = 10
+      end
+
+    it {
+      is_expected.to eq(200)
+      expect(response.body).to be_json_as(->(array) { array.size == 10 } )
+    }
+
+    # Link for prev, next
+    # Item count
+    # order: :id
+    # order: :created_at
+  end
 end

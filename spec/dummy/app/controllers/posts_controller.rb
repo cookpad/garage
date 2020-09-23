@@ -4,8 +4,8 @@ class PostsController < ApiController
   before_action :require_user, only: :private
   before_action :require_private_resource, only: :private
   before_action :require_namespaced_resource, only: :namespaced
-  before_action :require_index_resource, only: [:hide, :capped]
-  before_action :require_action_permission, only: [:private, :hide, :capped, :namespaced]
+  before_action :require_index_resource, only: [:hide, :capped, :cursor]
+  before_action :require_action_permission, only: [:private, :hide, :capped, :namespaced, :cursor]
 
   def private
     respond_with @resources
@@ -21,6 +21,10 @@ class PostsController < ApiController
 
   def namespaced
     respond_with @resources
+  end
+
+  def cursor
+    respond_with @resources, paginate: true, cursor: true
   end
 
   private
@@ -84,7 +88,7 @@ class PostsController < ApiController
   end
 
   def respond_with_resources_options
-    { paginate: true, cursor: true }
+    { paginate: true }
   end
 
   def has_user?

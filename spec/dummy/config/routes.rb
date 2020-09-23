@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get :hide
       get :capped
       get :namespaced
+      get :cursor
     end
   end
 
