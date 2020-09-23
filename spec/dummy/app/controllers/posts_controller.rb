@@ -84,7 +84,7 @@ class PostsController < ApiController
   end
 
   def respond_with_resources_options
-    { paginate: true }
+    { paginate: true, cursor: true }
   end
 
   def has_user?
