@@ -187,4 +187,52 @@ describe "Pagination", type: :request do
       end
     end
   end
+
+  describe "GET /posts/cursor" do
+    let!(:posts) do
+      100.times.map do |x|
+        FactoryBot.create(:post, title: "title_#{x}")
+      end
+    end
+
+    before do
+      params[:per_page] = 5
+    end
+
+    context "when no cursor specified" do
+      it "returns the first page of results" do
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(->(array) { array.size == 5 } )
+      end
+    end
+
+    context "when cursor is given" do
+      let(:expected_posts) { posts.reverse.slice(11, 5) }
+
+      before do
+        params[:cursor] = posts.reverse[10].id
+      end
+
+      it "returns the next page of results by default" do
+        is_expected.to eq(200)
+        expect(response.body).to be_json_as(->(array) { array.size == 5 } )
+        expect(response.body).to be_json_as(->(array) { array.map{|r| r["id"]} == expected_posts.map(&:id) } )
+      end
+
+      context "when previous page of results is requested" do
+        let(:expected_posts) { posts.reverse.slice(1, 5) }
+
+        before do
+          params[:cursor] = posts.reverse[6].id
+          params[:rel] = "prev"
+        end
+
+        it "returns the prev page of results" do
+          is_expected.to eq(200)
+          expect(response.body).to be_json_as(->(array) { array.size == 5 } )
+          expect(response.body).to be_json_as(->(array) { array.map{|r| r["id"]} == expected_posts.map(&:id) } )
+        end
+      end
+    end
+  end
 end

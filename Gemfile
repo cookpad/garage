@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gem "rails", ">= 4.0.0"
 gem "kaminari-activerecord"
 gem "responders"
+gem "order_query"
 
 group :development, :test do
   gem "aws-xray", '>= 0.20.0'

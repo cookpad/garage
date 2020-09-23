@@ -1,7 +1,9 @@
 module Garage
   module PaginatingResponder
     def display(resource, *args)
-      if @options[:paginate]
+      if @options[:cursor]
+        resource = paginate_with_cursor resource
+      elsif @options[:paginate]
         resource = paginate resource
       end
       super(resource, *args)
@@ -73,6 +75,20 @@ module Garage
       end
 
       rs
+    end
+
+    def paginate_with_cursor(relation)
+      per_page = [ max_per_page, (controller.params[:per_page] || @options[:per_page] || 20).to_i ].min
+
+      cursor = controller.params[:cursor]
+      rel = controller.params[:rel]
+      space = relation.seek([:id, :desc])
+      if cursor
+        point = space.at(relation.find(cursor))
+        rel == "prev" ? point.before.limit(per_page).reverse : point.after.limit(per_page)
+      else
+        space.scope.limit(per_page)
+      end
     end
 
     def construct_links(rs, per_page)
