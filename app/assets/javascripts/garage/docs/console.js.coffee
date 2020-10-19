@@ -9,14 +9,6 @@ jQuery ()->
     $.colorbox.close()
     ev.preventDefault()
 
-  buildAuthorizedUrl = (base, location, token) ->
-    url = base + location
-    if url.indexOf('?') > 0
-      url += '&'
-    else
-      url += '?'
-    url + 'access_token=' + token
-
   addNewParamField = (container) ->
     nextId = "parameter-" + $('.parameter', container).length
     copy = $('.template .parameter').clone().attr('id', nextId)
@@ -52,11 +44,11 @@ jQuery ()->
     $('#api-headers').text ''
     $('#api-response').text ''
 
-    url = buildAuthorizedUrl $('#base').val(), $('#location').val(), $('#access_token').val()
     console.log buildData($('.parameters'))
     $.ajax
       type: $('#method').val(),
-      url: url,
+      url: $('#base').val() + $('#location').val(),
+      headers: {'Authorization': 'Bearer ' + $('#access_token').val()},
       cache: false,
       data: buildData($('.parameters')),
       dataType: 'json',
