@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.6.0
+
+* Pass the X-Request-Id header to an auth server [#96](https://github.com/cookpad/garage/pull/96)
+* Support Kaminari 1.x [#97](https://github.com/cookpad/garage/pull/97)
+* Use the Authorization header instead of the access_token query parameter to send an access token in the console [#99](https://github.com/cookpad/garage/pull/99)
+
 ## 2.5.0
 
 * Allow options to be passed to `to_resource` when casting resources
