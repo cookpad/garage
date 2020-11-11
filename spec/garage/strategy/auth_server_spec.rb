@@ -116,13 +116,25 @@ RSpec.describe Garage::Strategy::AuthServer do
 
       context 'with bearer token on authorization header' do
         context 'when cache hits' do
-          let(:access_token) { double(:access_token, expired?: false) }
+          let(:access_token) { Garage::Strategy::AccessToken.new(token: requested_token) }
 
           it 'reads cache then return cache' do
             expect(Rails.cache).to receive(:read).
               with(cache_key).
               and_return(access_token)
             expect(fetcher.fetch(request)).to eq(access_token)
+          end
+        end
+
+        context 'when cached access token does not have token string' do
+          let(:access_token) { Garage::Strategy::AccessToken.new({}) }
+
+          before do
+            allow(Rails.cache).to receive(:read).with(cache_key).and_return(access_token)
+          end
+
+          it 'returns access token whose token string is the received token' do
+            expect(fetcher.fetch(request).token).to eq(requested_token)
           end
         end
 
@@ -135,6 +147,20 @@ RSpec.describe Garage::Strategy::AuthServer do
 
             expect(fetcher.fetch(request)).to be_accessible
             expect(stub).to have_been_requested
+          end
+        end
+
+        context 'when auth server does not return token string' do
+          before do
+            allow(Rails.cache).to receive(:read).with(cache_key).and_return(nil)
+            allow(Rails.cache).to receive(:write)
+
+            response.delete(:token)
+            stub_request(:get, auth_server_url).to_return(body: response.to_json, status: 200)
+          end
+
+          it 'returns access token whose token string is the received token' do
+            expect(fetcher.fetch(request).token).to eq(requested_token)
           end
         end
 
@@ -162,6 +188,18 @@ RSpec.describe Garage::Strategy::AuthServer do
 
           expect(fetcher.fetch(request)).to be_accessible
           expect(stub).to have_been_requested
+        end
+
+        context 'when auth server does not return token string' do
+          before do
+            response.delete(:token)
+            stub_request(:get, auth_server_url + "?access_token=#{requested_token}").
+              to_return(body: response.to_json, status: 200)
+          end
+
+          it 'returns access token whose token string is the received token' do
+            expect(fetcher.fetch(request).token).to eq(requested_token)
+          end
         end
       end
 
