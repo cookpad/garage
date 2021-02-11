@@ -48,12 +48,12 @@ class PostsController < ApiController
   def create_resource
     @resource = @resources.new
     @resource.user = current_resource_owner
-    @resource.update_attributes!(post_params)
+    @resource.update!(post_params)
     @resource
   end
 
   def update_resource
-    @resource.update_attributes!(post_params)
+    @resource.update!(post_params)
     @resource
   end
 

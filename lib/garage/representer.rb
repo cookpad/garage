@@ -1,3 +1,5 @@
+require 'active_support/time_with_zone'
+
 module Garage::Representer
   attr_accessor :params, :representer_attrs, :partial, :selector
 
