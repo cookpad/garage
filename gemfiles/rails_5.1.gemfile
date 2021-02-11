@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "rails", "~> 5.1"
+gem "rails", "~> 5.1.0"
 gem "kaminari-activerecord"
 gem "responders"
 gem "jquery-rails"
@@ -29,4 +29,4 @@ group :test do
   gem "timecop"
 end
 
-gemspec :path => "../"
+gemspec path: "../"
