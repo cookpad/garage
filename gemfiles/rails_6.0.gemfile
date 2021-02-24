@@ -2,13 +2,13 @@
 
 source "https://rubygems.org"
 
-gem "rails", "~> 6.0"
-gem "kaminari"
+gem "rails", "~> 6.0.0"
+gem "kaminari-activerecord"
 gem "responders"
 gem "jquery-rails"
 
 group :development, :test do
-  gem "aws-xray", ">= 0.9.6"
+  gem "aws-xray", ">= 0.20.0"
   gem "rspec-rails"
   gem "mysql2"
   gem "pry-rails"
@@ -29,4 +29,4 @@ group :test do
   gem "timecop"
 end
 
-gemspec :path => "../"
+gemspec path: "../"
