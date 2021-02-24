@@ -23,7 +23,7 @@ class PostsController < ApiController
   end
   
   def update_resource
-    @resource.update_attributes!(params.slice(...))
+    @resource.update!(params.slice(...))
     @resource
   end
   
