@@ -58,10 +58,8 @@ module Garage
 
         def fetch
           if has_any_valid_credentials?
-            if has_cacheable_credentials?
-              fetch_with_cache
-            else
-              fetch_without_cache
+            fetch_access_token&.tap do |access_token|
+              access_token.token ||= token_string
             end
           else
             nil
@@ -144,6 +142,14 @@ module Garage
           @bearer_token ||= @request.authorization.try {|o| o.slice(/\ABearer\s+(.+)\z/, 1) }
         end
 
+        def fetch_access_token
+          if has_cacheable_credentials?
+            fetch_with_cache
+          else
+            fetch_without_cache
+          end
+        end
+
         def fetch_with_cache
           Cache.with_cache("garage_gem/token_cache/#{Garage::VERSION}/#{bearer_token}") do
             fetch_without_cache
@@ -161,6 +167,12 @@ module Garage
               raise AuthBackendError.new(response)
             end
           end
+        end
+
+        def token_string
+          bearer_token.presence ||
+            @request.params[:access_token].presence ||
+            @request.params[:bearer_token].presence
         end
       end
 

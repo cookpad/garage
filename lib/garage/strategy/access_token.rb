@@ -1,7 +1,8 @@
 module Garage
   module Strategy
     class AccessToken
-      attr_reader :scope, :token, :token_type, :raw_response
+      attr_accessor :token
+      attr_reader :scope, :token_type, :raw_response
 
       def initialize(attrs)
         @raw_response = attrs
