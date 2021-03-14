@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.6.1
+
+* Support Rails 6.1 [#102](https://github.com/cookpad/garage/pull/102)
+
 ## 2.6.0
 
 * Pass the X-Request-Id header to an auth server [#96](https://github.com/cookpad/garage/pull/96)
