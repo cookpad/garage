@@ -99,6 +99,10 @@ module Garage
     class DefaultSelector
       # kinda NullObject pattern
 
+      def initialize(accepted_nest_depth = nil)
+        @accepted_nest_depth = accepted_nest_depth || 5
+      end
+
       # Doesn't specify anything - includes/excludes returns both false :)
 
       def includes?(field)
@@ -109,8 +113,12 @@ module Garage
         false
       end
 
+      def eof?
+        @accepted_nest_depth && @accepted_nest_depth < 0
+      end
+
       def [](name)
-        DefaultSelector.new
+        DefaultSelector.new(@accepted_nest_depth - 1)
       end
 
       def canonical
@@ -128,7 +136,7 @@ module Garage
       end
 
       def [](name)
-        FullSelector.new
+        FullSelector.new(@accepted_nest_depth - 1)
       end
 
       def canonical
@@ -139,31 +147,32 @@ module Garage
     class Selector
       # includes eager loading
 
-      def self.build(fields)
+      def self.build(fields, accepted_nest_depth = nil)
         if fields.present?
-          build_parsed(Parser.parse(fields))
+          build_parsed(Parser.parse(fields), accepted_nest_depth)
         else
-          NestedFieldQuery::DefaultSelector.new
+          NestedFieldQuery::DefaultSelector.new(accepted_nest_depth)
         end
       end
 
-      def self.build_parsed(fields)
+      def self.build_parsed(fields, accepted_nest_depth = nil)
         if fields.key? '*'
-          FullSelector.new
+          FullSelector.new(accepted_nest_depth)
         else
-          self.new(fields)
+          self.new(fields, accepted_nest_depth)
         end
       end
 
-      def initialize(fields = {})
+      def initialize(fields = {}, accepted_nest_depth = nil)
         @fields = fields
+        @accepted_nest_depth = accepted_nest_depth || 5
       end
 
       def [](name)
         if @fields[name].nil?
-          DefaultSelector.new
+          DefaultSelector.new(@accepted_nest_depth - 1)
         else
-          Selector.build_parsed(@fields[name])
+          Selector.build_parsed(@fields[name], @accepted_nest_depth - 1)
         end
       end
 
@@ -177,6 +186,10 @@ module Garage
 
       def excludes?(field)
         !@fields.has_key?('__default__') && !@fields.has_key?(field)
+      end
+
+      def eof?
+        @accepted_nest_depth && @accepted_nest_depth < 0
       end
     end
   end
