@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  mysql:
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_USER: root
+    image: mysql:5.7
+  rails:
+    build: .
+    command: spec/dummy/bin/rails server --binding=0.0.0.0 --pid=/dev/null
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_HOST: mysql
+    ports:
+      - 127.0.0.1:3000:3000
+    volumes:
+      - .:/workspace
+      - data-gem:/usr/local/bundle
+
+volumes:
+  data-gem:
