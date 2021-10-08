@@ -15,8 +15,10 @@ jobs:
             continue-on-error: true # XXX: Temporary
           - ruby: '3.0'
             rails: '6.0'
+            continue-on-error: false
           - ruby: '3.0'
             rails: '6.1'
+            continue-on-error: false
     continue-on-error: ${{ matrix.continue-on-error }}
     services:
       mysql:
