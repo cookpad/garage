@@ -11,20 +11,12 @@ jobs:
         continue-on-error: [false]
         include:
           - ruby: '3.0'
-            rails: '5.0'
-            continue-on-error: true
-          - ruby: '3.0'
-            rails: '5.1'
-            continue-on-error: true
-          - ruby: '3.0'
             rails: '5.2'
             continue-on-error: true
           - ruby: '3.0'
             rails: '6.0'
-            continue-on-error: true
           - ruby: '3.0'
             rails: '6.1'
-            continue-on-error: true
     continue-on-error: ${{ matrix.continue-on-error }}
     services:
       mysql:
