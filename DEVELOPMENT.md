@@ -12,8 +12,8 @@ RAILS_ENV=test bundle exec rake db:create db:migrate
 For testing different versions of Rails, you can use specific Gemfile.
 
 ```
-BUNDLE_GEMFILE=gemfiles/Gemfile.5.0 bundle install
-BUNDLE_GEMFILE=gemfiles/Gemfile.5.0 bundle exec rspec
+BUNDLE_GEMFILE=gemfiles/rails_5.0.gemfile bundle install
+BUNDLE_GEMFILE=gemfiles/rails.5.0.gemfile bundle exec rspec
 ```
 
 ## Run local server
