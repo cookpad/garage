@@ -9,16 +9,20 @@ bundle install
 RAILS_ENV=test bundle exec rake db:create db:migrate
 ```
 
-We use [Appraisal](https://github.com/thoughtbot/appraisal) to test with different versions of Rails.
+For testing different versions of Rails, you can use specific Gemfile.
 
 ```
-appraisal install
+# Install with specific version of Rails
+BUNDLE_GEMFILE=gemfiles/rails_5.0.gemfile bundle install
 
 # Run with specific version of Rails
-appraisal rails-4.1 rspec
+BUNDLE_GEMFILE=gemfiles/rails.5.0.gemfile bundle exec rspec
+
+# Install with all versions of Rails
+script/bundle_install_all
 
 # Run with all versions of Rails
-appraisal rspec
+script/test_all
 ```
 
 ## Run local server
