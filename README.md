@@ -153,7 +153,7 @@ Then configure auth server strategy:
 
 The OAuth server must response a json with following structure.
 
-- `token`(string) - OAuth access token value.
+- `token` (string, null) - OAuth access token value.
 - `token_type` (string) - OAuth access token value. i.e. `bearer` type.
 - `scope` (string) - OAuth scopes separated by spaces. i.e. `public read_user`.
 - `application_id` (integer) - OAuth application id of the access token.
