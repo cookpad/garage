@@ -86,7 +86,7 @@ class Garage::Docs::ResourcesController < Garage::ApplicationController
   def require_console_application
     @app = console_application
     if @app[:uid].blank? || @app[:secret].blank?
-      render(text: 'Configuration for console application is missing.', status: :forbidden)
+      render(plain: 'Configuration for console application is missing.', status: :forbidden)
     end
   end
 

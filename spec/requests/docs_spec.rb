@@ -33,6 +33,15 @@ describe "Docs", type: :request do
   end
 
   describe "GET /docs/resources" do
+    context "without application_uid" do
+      let(:application_uid) do
+      end
+
+      it "returns 403" do
+        is_expected.to eq(403)
+      end
+    end
+
     context "with valid condition" do
       it "returns default overview page" do
         is_expected.to eq(200)
