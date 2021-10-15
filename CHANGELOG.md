@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2.7.0 (2021-10-15)
+
+* Fix double running rspec [#103](https://github.com/cookpad/garage/pull/103)
+* Replace render :text with :plain for Rails 5.1+ [#104](https://github.com/cookpad/garage/pull/104)
+* Setup docker for development use [#105](https://github.com/cookpad/garage/pull/105)
+* Use GitHub Actions [#106](https://github.com/cookpad/garage/pull/106)
+* **BREAKING CHANGE:** Drop support for Rails 4.0 and 4.1 [#107](https://github.com/cookpad/garage/pull/107)
+
 ## 2.6.1
 
 * Support Rails 6.1 [#102](https://github.com/cookpad/garage/pull/102)
