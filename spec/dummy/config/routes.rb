@@ -26,4 +26,6 @@ Rails.application.routes.draw do
   resource :ping
 
   get :mine, to: 'public_posts#my'
+
+  resources :location_test_posts, only: :create
 end
