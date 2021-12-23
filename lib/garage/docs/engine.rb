@@ -1,6 +1,6 @@
 require "rails"
 require "haml"
-require "sass-rails"
+require "sassc-rails"
 require "coffee-rails"
 require "redcarpet"
 
