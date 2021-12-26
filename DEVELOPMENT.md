@@ -13,10 +13,10 @@ For testing different versions of Rails, you can use specific Gemfile.
 
 ```
 # Install with specific version of Rails
-BUNDLE_GEMFILE=gemfiles/rails_5.0.gemfile bundle install
+BUNDLE_GEMFILE=gemfiles/Gemfile_rails_5.0.rb bundle install
 
 # Run with specific version of Rails
-BUNDLE_GEMFILE=gemfiles/rails.5.0.gemfile bundle exec rspec
+BUNDLE_GEMFILE=gemfiles/Gemfile_rails_5.0.rb bundle exec rspec
 
 # Install with all versions of Rails
 script/bundle_install_all
