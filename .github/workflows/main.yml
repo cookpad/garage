@@ -26,7 +26,7 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     name: Test on Ruby ${{ matrix.ruby }} & Rails ${{ matrix.rails }}
     env:
-      BUNDLE_GEMFILE: gemfiles/rails_${{ matrix.rails }}.gemfile
+      BUNDLE_GEMFILE: gemfiles/Gemfile_rails_${{ matrix.rails }}.rb
       DATABASE_URL: mysql2://root@127.0.0.1:3306/garage_dummy_test
     steps:
     - uses: actions/checkout@v2

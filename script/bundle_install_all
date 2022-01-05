@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-for gemfile in gemfiles/*.gemfile; do
+for gemfile in gemfiles/*.rb; do
   BUNDLE_GEMFILE="${gemfile}" bundle install
 done
