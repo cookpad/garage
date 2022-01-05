@@ -228,7 +228,12 @@ module Garage
     end
 
     def location
-      { action: :show, id: @resource.id } if @resource.try(:respond_to?, :id)
+      if @resource.try(:respond_to?, :id)
+        hash = { action: :show, id: @resource.id }
+        url_for(hash)
+        hash
+      end
+    rescue ActionController::UrlGenerationError
     end
   end
 end
