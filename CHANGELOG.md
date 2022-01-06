@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2.8.0
+
 * Don't return location from #create if URL pattern for #show is not found [#108](https://github.com/cookpad/garage/pull/108)
 * Migrate from sass-rails to sassc-rails [#109](https://github.com/cookpad/garage/pull/109)
 
