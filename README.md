@@ -113,13 +113,15 @@ In `config/initializers/garage.rb`:
 Garage.configure {}
 
 # Optional
-Garage::TokenScope.configure do
-  register :public, desc: "accessing publicly available data" do
-    access :read, Recipe
-  end
+Rails.application.config.to_prepare do
+  Garage::TokenScope.configure do
+    register :public, desc: "accessing publicly available data" do
+      access :read, Recipe
+    end
 
-  register :read_post, desc: "reading blog post" do
-    access :read, Post
+    register :read_post, desc: "reading blog post" do
+      access :read, Post
+    end
   end
 end
 
