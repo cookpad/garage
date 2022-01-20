@@ -15,38 +15,40 @@ end
 
 Garage.configuration.strategy = Garage::Strategy::Test
 
-Garage::TokenScope.configure do
-  register :public do
-    access :read, Post
-    access :read, CampaignResource
-    access :write, CampaignResource
-  end
+Rails.application.config.to_prepare do
+  Garage::TokenScope.configure do
+    register :public do
+      access :read, Post
+      access :read, CampaignResource
+      access :write, CampaignResource
+    end
 
-  register :read_private_post do
-    access :read, PrivatePost
-  end
+    register :read_private_post do
+      access :read, PrivatePost
+    end
 
-  register :write_post do
-    access :write, Post
-  end
+    register :write_post do
+      access :write, Post
+    end
 
-  register :read_post_body do
-    access :read, PostBody
-  end
+    register :read_post_body do
+      access :read, PostBody
+    end
 
-  register :sudo, hidden: true do
-    access :read, PrivatePost
-    access :read, PostStream
-  end
+    register :sudo, hidden: true do
+      access :read, PrivatePost
+      access :read, PostStream
+    end
 
-  register :meta do
-    access :read, Garage::Meta::RemoteService
-    access :read, Garage::Docs::Document
-  end
+    register :meta do
+      access :read, Garage::Meta::RemoteService
+      access :read, Garage::Docs::Document
+    end
 
-  namespace :foobar do
-    register :read_post do
-      access :read, NamespacedPost
+    namespace :foobar do
+      register :read_post do
+        access :read, NamespacedPost
+      end
     end
   end
 end
