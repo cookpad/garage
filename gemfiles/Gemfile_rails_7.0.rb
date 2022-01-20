@@ -1,0 +1,30 @@
+source "https://rubygems.org"
+
+gem "rails", "~> 7.0.0"
+gem "kaminari-activerecord"
+gem "responders"
+gem "jquery-rails"
+
+group :development, :test do
+  gem "aws-xray", ">= 0.20.0"
+  gem "rspec-rails"
+  gem "mysql2"
+  gem "pry-rails"
+  gem "database_cleaner"
+  gem "factory_bot"
+  gem "factory_bot_rails"
+  gem "forgery"
+  gem "link_header"
+  gem "rspec-json_matcher"
+end
+
+group :development do
+  gem "puma"
+end
+
+group :test do
+  gem "webmock"
+  gem "timecop"
+end
+
+gemspec path: "../"
