@@ -4,6 +4,8 @@ gem "rails", "~> 6.1.0"
 gem "kaminari-activerecord"
 gem "responders"
 gem "jquery-rails"
+# For Ruby 3.1
+gem 'net-smtp', require: false
 
 group :development, :test do
   gem "aws-xray", ">= 0.20.0"
