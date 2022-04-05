@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* Removed depndency to coffee-rails [#115](https://github.com/cookpad/garage/pull/115)
+
 ## 2.8.0 - 2022-01-11
 
 * Don't return location from #create if URL pattern for #show is not found [#108](https://github.com/cookpad/garage/pull/108)

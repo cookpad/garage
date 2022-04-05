@@ -1,7 +1,6 @@
 require "rails"
 require "haml"
 require "sassc-rails"
-require "coffee-rails"
 require "redcarpet"
 
 require "garage/docs/anchor_building"
