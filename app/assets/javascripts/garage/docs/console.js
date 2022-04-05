@@ -1,8 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 jQuery(function(){
   $(".get-oauth-token").colorbox({
     transition: "none",
@@ -12,7 +7,7 @@ jQuery(function(){
 
   $(".modal-close").click(function(ev) {
     $.colorbox.close();
-    return ev.preventDefault();
+    ev.preventDefault();
   });
 
   var addNewParamField = function(container) {
@@ -20,7 +15,7 @@ jQuery(function(){
     const copy = $('.template .parameter').clone().attr('id', nextId);
     $('.close-field', copy).click(ev => $('#' + nextId).detach());
     $('.add-field', copy).click(ev => addNewParamField(container));
-    return copy.show().appendTo(container);
+    copy.show().appendTo(container);
   };
 
   const buildData = function(container) {
@@ -36,10 +31,10 @@ jQuery(function(){
   $('.console #method').change(function(ev) {
     if (($(this).val() === 'POST') || ($(this).val() === 'PUT')) {
       if ($('.parameters .parameter').length === 0) {
-        return addNewParamField($('.parameters'));
+        addNewParamField($('.parameters'));
       }
     } else {
-      return $('.parameters').empty();
+      $('.parameters').empty();
     }
   });
 
@@ -68,18 +63,18 @@ jQuery(function(){
         const queryString = $.param({'location': $('#location').val(), 'method': $('#method').val()});
         const newFullpath = `${location.pathname}?${queryString}`;
         history.pushState('', '', newFullpath);
-        return $("#oauth-dialog #return_to").val(newFullpath);
+        $("#oauth-dialog #return_to").val(newFullpath);
       },
       success(data, textStatus, xhr) {
         $('#api-headers').text(`${xhr.status} ${xhr.statusText}\n` + xhr.getAllResponseHeaders());
-        return $('#api-response').html(buildHyperlinks(JSON.stringify(data, undefined, 2)));
+        $('#api-response').html(buildHyperlinks(JSON.stringify(data, undefined, 2)));
       },
       error(xhr, textStatus, error) {
         $('#api-headers').text(`${xhr.status} ${xhr.statusText}\n` + xhr.getAllResponseHeaders());
-        return $('#api-response').text(xhr.responseText);
+        $('#api-response').text(xhr.responseText);
       }
     });
-    return ev.preventDefault();
+    ev.preventDefault();
   });
 
   if (($('.console #token').val() !== '') && ($('.console #location').val() !== '') && ($('.console #method').val() === 'GET')) {
@@ -95,14 +90,14 @@ jQuery(function(){
   }
 
   $('#oauth-dialog .token-scope-check-all').click(function(ev) {
-    return $('.token-scope-checkbox').prop('checked', this.checked);
+    $('.token-scope-checkbox').prop('checked', this.checked);
   });
 
   return $('#oauth-dialog .token-scope-checkbox').click(function(ev) {
     if ($('.token-scope-checkbox:not(:checked)').length === 0) {
-      return $('.token-scope-check-all').prop('checked', true);
+      $('.token-scope-check-all').prop('checked', true);
     } else if (!this.checked) {
-      return $('.token-scope-check-all').prop('checked', false);
+      $('.token-scope-check-all').prop('checked', false);
     }
   });
 });
