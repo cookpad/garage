@@ -25,6 +25,5 @@ Gem::Specification.new do |s|
   s.add_dependency "haml"
   s.add_dependency "hashie"
   s.add_dependency "sassc-rails"
-  s.add_dependency "coffee-rails"
   s.add_dependency "http_accept_language", ">= 2.0.0"
 end
