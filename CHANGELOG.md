@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Unreleased
+## 2.8.1 - 2022-04-05
 
 * Removed depndency to coffee-rails [#115](https://github.com/cookpad/garage/pull/115)
 
