@@ -1,6 +1,5 @@
 require "rails"
 require "haml"
-require "sassc-rails"
 require "redcarpet"
 
 require "garage/docs/anchor_building"
