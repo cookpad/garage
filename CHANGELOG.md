@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## 2.8.2 - 2022-05-17
+
+* Delete sassc-rails from dependencies [#116](https://github.com/cookpad/garage/pull/116)
+
 ## 2.8.1 - 2022-04-05
 
-* Removed depndency to coffee-rails [#115](https://github.com/cookpad/garage/pull/115)
+* Removed dependency to coffee-rails [#115](https://github.com/cookpad/garage/pull/115)
 
 ## 2.8.0 - 2022-01-11
 
