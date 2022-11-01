@@ -16,7 +16,7 @@ module Garage
     end
 
     def fuzzy_parse(date)
-      if date.is_a?(Numeric) || /^\d+$/ === date
+      if date.is_a?(Numeric) || /\A\d+\z/ === date
         Time.zone.at(date.to_i)
       else
         Time.zone.parse(date)
