@@ -1,8 +1,10 @@
 # CHANGELOG
 
-## 2.8.2 - 2022-05-17
+## 2.8.2 - 2022-11-01
 
 * Delete sassc-rails from dependencies [#116](https://github.com/cookpad/garage/pull/116)
+* Avoid unexpected error at `Garage::Utils#fuzzy_parse` [#118](https://github.com/cookpad/garage/pull/118)
+* Modify typo of `Garage::Tracer::NullTracer`'s docs [#119](https://github.com/cookpad/garage/pull/119)
 
 ## 2.8.1 - 2022-04-05
 
