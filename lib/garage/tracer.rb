@@ -16,7 +16,7 @@ module Garage
     # Any tracers must have `.start` to start tracing context and:
     #   - `#inject_trace_context` to add tracing context to the given request header.
     #   - `#record_http_request` to record http request in tracer.
-    #   - `#record_http_response` to recrod http response in tracer.
+    #   - `#record_http_response` to record http response in tracer.
     class NullTracer
       def self.start(&block)
         yield new
