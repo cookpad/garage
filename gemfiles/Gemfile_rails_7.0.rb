@@ -1,12 +1,9 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 6.0.0"
+gem "rails", "~> 7.0.0"
 gem "kaminari-activerecord"
 gem "responders"
 gem "jquery-rails"
-# For Ruby 3.1
-gem 'psych', '~> 3.0'
-gem 'net-smtp', require: false
 
 group :development, :test do
   gem "aws-xray", ">= 0.20.0"
