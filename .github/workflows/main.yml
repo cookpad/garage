@@ -43,7 +43,7 @@ jobs:
       BUNDLE_GEMFILE: gemfiles/Gemfile_rails_${{ matrix.rails }}.rb
       DATABASE_URL: mysql2://root@127.0.0.1:3306/garage_dummy_test
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
