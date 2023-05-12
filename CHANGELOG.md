@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Unreleased
+
+* Replace TravisCI badge with GitHub Actions badge in README [#122](https://github.com/cookpad/garage/pull/122)
+* Fix the gem versions used in CI [#123](https://github.com/cookpad/garage/pull/123)
+* Add Ruby 3.2 to environments of GitHub Actions [#124](https://github.com/cookpad/garage/pull/124)
+
 ## 2.8.2 - 2022-11-01
 
 * Add Rails 7 & Ruby 3.1 to environments of GitHub Actions [#114](https://github.com/cookpad/garage/pull/114)
