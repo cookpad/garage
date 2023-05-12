@@ -1,5 +1,6 @@
 # Garage
-[![Build Status](https://travis-ci.org/cookpad/garage.svg?branch=master)](https://travis-ci.org/cookpad/garage) [![Gem Version](https://badge.fury.io/rb/the_garage.svg)](https://badge.fury.io/rb/the_garage)
+[![Ruby](https://github.com/cookpad/garage/actions/workflows/main.yml/badge.svg)](https://github.com/cookpad/garage/actions/workflows/main.yml)
+[![Gem Version](https://badge.fury.io/rb/the_garage.svg)](https://badge.fury.io/rb/the_garage)
 
 Rails framework to add RESTful hypermedia API to your application.
 
