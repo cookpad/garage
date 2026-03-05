@@ -170,7 +170,7 @@ GEM
     puma (6.0.0)
       nio4r (~> 2.0)
     racc (1.6.2)
-    rack (2.2.4)
+    rack (2.2.22)
     rack-accept-default (0.0.2)
       rack
     rack-test (2.0.2)
